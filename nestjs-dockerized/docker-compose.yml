@@ -4,17 +4,20 @@ services:
   nestjs:
     user: ${UID}
     container_name: nestjs
-    build: ./nestjs
+    image: nestjs
+    build:
+      dockerfile: Dockerfile
+      context: .
     networks:
       - network
     env_file:
       - .env
     volumes:
       - .:/usr/src/app
-      - /usr/src/app/node_modules
+    working_dir: /usr/src/app
     ports:
       # - ${SERVER_PORT}:${SERVER_PORT}
-      - 9229:9229
+      - "3000:3000"
     command: npm run start:dev
     depends_on:
       - postgres
@@ -34,7 +37,7 @@ services:
       POSTGRES_DB: ${DB_DATABASE_NAME}
       PG_DATA: /var/lib/postgresql/data
     ports:
-      - 5432:5432
+      - "5432:5432"
     restart: always
     
   pgadmin:
@@ -52,6 +55,5 @@ services:
 networks:
   network:
     name: network
-    driver: bridge
 # volumes:
 #   pgdata:
