@@ -2,7 +2,7 @@
 
 services:
   nestjs:
-    user: ${UID}
+    # user: ${UID}
     container_name: nestjs
     image: nestjs
     build:
@@ -18,13 +18,13 @@ services:
     ports:
       # - ${SERVER_PORT}:${SERVER_PORT}
       - "3000:3000"
-    command: npm run start:dev
+    command: npm run start:dev 
     depends_on:
       - postgres
     
 
   postgres:
-    user: ${UID}
+    # user: ${UID}
     container_name: postgres
     image: postgres:17.0-alpine3.20
     networks:
