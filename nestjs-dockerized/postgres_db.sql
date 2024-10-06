@@ -81,14 +81,14 @@ ALTER TABLE IF EXISTS public."ACHIEVEMENTS"
 
 
 ALTER TABLE IF EXISTS public."BLOCKED"
-    ADD CONSTRAINT fk_user_id FOREIGN KEY (blocked_user_id, user_id)
-    REFERENCES public."USER" (user_id, user_id) MATCH SIMPLE
+    ADD CONSTRAINT fk_blocked_user_id FOREIGN KEY (blocked_user_id)
+    REFERENCES public."USER" (user_id) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION
     NOT VALID;
 
 
-ALTER TABLE IF EXISTS public."CHAT_MESSAGE"
+ALTER TABLE IF EXISTS public."BLOCKED"
     ADD CONSTRAINT fk_user_id FOREIGN KEY (user_id)
     REFERENCES public."USER" (user_id) MATCH SIMPLE
     ON UPDATE NO ACTION
@@ -104,7 +104,7 @@ ALTER TABLE IF EXISTS public."CHAT_MESSAGE"
     NOT VALID;
 
 
-ALTER TABLE IF EXISTS public."CHAT_PARTICIPANT"
+ALTER TABLE IF EXISTS public."CHAT_MESSAGE"
     ADD CONSTRAINT fk_user_id FOREIGN KEY (user_id)
     REFERENCES public."USER" (user_id) MATCH SIMPLE
     ON UPDATE NO ACTION
@@ -115,22 +115,64 @@ ALTER TABLE IF EXISTS public."CHAT_PARTICIPANT"
 ALTER TABLE IF EXISTS public."CHAT_PARTICIPANT"
     ADD CONSTRAINT fk_chat_room_id FOREIGN KEY (chat_room_id)
     REFERENCES public."CHAT_ROOM" (chat_room_id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION
+    NOT VALID;
+
+
+ALTER TABLE IF EXISTS public."CHAT_PARTICIPANT"
+    ADD CONSTRAINT fk_user_id FOREIGN KEY (user_id)
+    REFERENCES public."USER" (user_id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION
+    NOT VALID;
+
+
+ALTER TABLE IF EXISTS public."CHAT_ROOM"
+    ADD CONSTRAINT fk_chat_room_id FOREIGN KEY (chat_room_id)
+    REFERENCES public."CHAT_ROOM" (chat_room_id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION
+    NOT VALID;
+CREATE INDEX IF NOT EXISTS "CHAT_ROOM_pkey"
+    ON public."CHAT_ROOM"(chat_room_id);
+
+
+ALTER TABLE IF EXISTS public."FRIENDS"
+    ADD CONSTRAINT fk_person1_user_id FOREIGN KEY (person1_user_id)
+    REFERENCES public."USER" (user_id) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION
     NOT VALID;
 
 
 ALTER TABLE IF EXISTS public."FRIENDS"
-    ADD CONSTRAINT fk_user_id FOREIGN KEY (person1_user_id, person2_user_id)
-    REFERENCES public."USER" (user_id, user_id) MATCH SIMPLE
+    ADD CONSTRAINT fk_person2_user_id FOREIGN KEY (person2_user_id)
+    REFERENCES public."USER" (user_id) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION
     NOT VALID;
 
 
 ALTER TABLE IF EXISTS public."GAME"
-    ADD CONSTRAINT fk_user_id FOREIGN KEY (player1_user_id, player2_user_id, winner_user_id)
-    REFERENCES public."USER" (user_id, user_id, user_id) MATCH SIMPLE
+    ADD CONSTRAINT fk_player1_user_id FOREIGN KEY (player1_user_id)
+    REFERENCES public."USER" (user_id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION
+    NOT VALID;
+
+
+ALTER TABLE IF EXISTS public."GAME"
+    ADD CONSTRAINT fk_player2_user_id FOREIGN KEY (player2_user_id)
+    REFERENCES public."USER" (user_id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION
+    NOT VALID;
+
+
+ALTER TABLE IF EXISTS public."GAME"
+    ADD CONSTRAINT fk_winner_user_id FOREIGN KEY (winner_user_id)
+    REFERENCES public."USER" (user_id) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION
     NOT VALID;
