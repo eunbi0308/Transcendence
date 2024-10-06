@@ -129,8 +129,8 @@ ALTER TABLE IF EXISTS public."FRIENDS"
 
 
 ALTER TABLE IF EXISTS public."GAME"
-    ADD CONSTRAINT fk_user_id FOREIGN KEY (player1_user_id, player2_user_id)
-    REFERENCES public."USER" (user_id, user_id) MATCH SIMPLE
+    ADD CONSTRAINT fk_user_id FOREIGN KEY (player1_user_id, player2_user_id, winner_user_id)
+    REFERENCES public."USER" (user_id, user_id, user_id) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION
     NOT VALID;
