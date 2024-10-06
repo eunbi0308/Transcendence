@@ -8,17 +8,18 @@ services:
     build:
       dockerfile: Dockerfile
       context: .
-    networks:
-      - network
+    # networks:
+    #   - network
     env_file:
       - .env
     volumes:
       - .:/usr/src/app
+      - /usr/src/app/node_modules
     working_dir: /usr/src/app
     ports:
       # - ${SERVER_PORT}:${SERVER_PORT}
       - "3000:3000"
-    command: npm run start:dev 
+    command: sh -c "npm ci && npm run start:dev"
     depends_on:
       - postgres
     
@@ -26,9 +27,11 @@ services:
   postgres:
     # user: ${UID}
     container_name: postgres
-    image: postgres:17.0-alpine3.20
-    networks:
-      - network
+    image: postgres:16
+    # networks:
+    #   - network
+    volumes:
+      - ./data:/var/lib/postgresql/data
     env_file:
       - .env
     environment:
@@ -43,6 +46,8 @@ services:
   pgadmin:
     container_name: pgadmin
     image: dpage/pgadmin4:latest
+    # networks:
+    #   - network
     environment:
       - PGADMIN_DEFAULT_EMAIL=${PGADMIN_MAIL}
       - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PW}
@@ -52,8 +57,9 @@ services:
 
     # volumes:
     #   - pgdata:/var/lib/postgresql/data
-networks:
-  network:
-    name: network
+# networks:
+#   network:
+#     name: network
+#     driver: bridge
 # volumes:
 #   pgdata:
