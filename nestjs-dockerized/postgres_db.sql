@@ -5,15 +5,15 @@ BEGIN;
 
 CREATE TABLE IF NOT EXISTS public."ACHIEVEMENTS"
 (
-    achievement_id integer NOT NULL,
     user_id integer NOT NULL,
+    achievement_id serial NOT NULL,
     CONSTRAINT "ACHIEVEMENTS_pkey" PRIMARY KEY (achievement_id)
 );
 
 CREATE TABLE IF NOT EXISTS public."BLOCKED"
 (
     blocked_user_id integer NOT NULL,
-    date date NOT NULL,
+    date timestamp with time zone NOT NULL DEFAULT now(),
     user_id integer NOT NULL
 );
 
@@ -21,8 +21,8 @@ CREATE TABLE IF NOT EXISTS public."CHAT_MESSAGE"
 (
     chat_room_id integer NOT NULL,
     user_id integer NOT NULL,
-    content character varying COLLATE pg_catalog."default" NOT NULL,
-    sent_time date NOT NULL
+    content text COLLATE pg_catalog."default" NOT NULL,
+    sent_time timestamp with time zone NOT NULL DEFAULT now()
 );
 
 CREATE TABLE IF NOT EXISTS public."CHAT_PARTICIPANT"
@@ -32,17 +32,18 @@ CREATE TABLE IF NOT EXISTS public."CHAT_PARTICIPANT"
     role chat_participant_roles NOT NULL,
     is_banned boolean NOT NULL DEFAULT false,
     is_muted boolean NOT NULL DEFAULT false,
-    entrance_time date NOT NULL
+    entrance_time timestamp with time zone NOT NULL DEFAULT now()
 );
 
 CREATE TABLE IF NOT EXISTS public."CHAT_ROOM"
 (
-    chat_room_id integer NOT NULL,
     title character varying COLLATE pg_catalog."default" NOT NULL,
     password character varying COLLATE pg_catalog."default",
     type chat_room_types NOT NULL,
-    creation_date date NOT NULL,
+    creation_date timestamp with time zone NOT NULL DEFAULT now(),
+    chat_room_id serial NOT NULL,
     CONSTRAINT "CHAT_ROOM_pkey" PRIMARY KEY (chat_room_id)
+        INCLUDE(chat_room_id)
 );
 
 CREATE TABLE IF NOT EXISTS public."FRIENDS"
@@ -61,7 +62,6 @@ CREATE TABLE IF NOT EXISTS public."GAME"
 
 CREATE TABLE IF NOT EXISTS public."USER"
 (
-    user_id integer NOT NULL,
     nickname character varying COLLATE pg_catalog."default",
     avatar bytea NOT NULL,
     is_second_auth_done boolean NOT NULL DEFAULT false,
@@ -69,7 +69,9 @@ CREATE TABLE IF NOT EXISTS public."USER"
     second_auth_email character varying COLLATE pg_catalog."default",
     ladder_level integer NOT NULL DEFAULT 0,
     user_status user_status NOT NULL,
+    user_id serial NOT NULL,
     CONSTRAINT "USER_pkey" PRIMARY KEY (user_id)
+        INCLUDE(user_id)
 );
 
 ALTER TABLE IF EXISTS public."ACHIEVEMENTS"
@@ -126,16 +128,6 @@ ALTER TABLE IF EXISTS public."CHAT_PARTICIPANT"
     ON UPDATE NO ACTION
     ON DELETE NO ACTION
     NOT VALID;
-
-
-ALTER TABLE IF EXISTS public."CHAT_ROOM"
-    ADD CONSTRAINT fk_chat_room_id FOREIGN KEY (chat_room_id)
-    REFERENCES public."CHAT_ROOM" (chat_room_id) MATCH SIMPLE
-    ON UPDATE NO ACTION
-    ON DELETE NO ACTION
-    NOT VALID;
-CREATE INDEX IF NOT EXISTS "CHAT_ROOM_pkey"
-    ON public."CHAT_ROOM"(chat_room_id);
 
 
 ALTER TABLE IF EXISTS public."FRIENDS"
