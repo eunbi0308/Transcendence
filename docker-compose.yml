@@ -6,7 +6,7 @@ services:
     container_name: nestjs
     image: nestjs
     build:
-      dockerfile: Dockerfile
+      dockerfile: ./backend/Dockerfile
       context: .
     # networks:
     #   - network
@@ -19,7 +19,7 @@ services:
     ports:
       # - ${SERVER_PORT}:${SERVER_PORT}
       - "3000:3000"
-    command: sh -c "npm ci && npm run start:dev"
+    command: sh -c "cd ./backend && npm ci && npm run start:dev"
     depends_on:
       - postgres
     
