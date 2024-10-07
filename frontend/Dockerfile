@@ -9,4 +9,6 @@ COPY ./ ./
 
 RUN npm install
 
-CMD ["npm", "run"]
+EXPOSE 3000
+
+CMD ["npm", "start"]{% raw %}`
