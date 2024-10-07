@@ -1,13 +1,27 @@
 # version: '3.7'
 
 services:
+  frontend:
+    container_name: frontend
+    image: frontend
+    build:
+      dockerfile: Dockerfile
+      context: "./frontend"
+    depends_on:
+      - nestjs
+    volumes:
+      - /frontend/node_modules
+      - ./frontend:/app
+    ports:
+      - "3001:3000"
+
   nestjs:
     # user: ${UID}
     container_name: nestjs
     image: nestjs
     build:
-      dockerfile: ./backend/Dockerfile
-      context: .
+      dockerfile: Dockerfile
+      context: "./backend"
     # networks:
     #   - network
     env_file:
