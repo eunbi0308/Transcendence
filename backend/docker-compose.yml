@@ -1,0 +1,59 @@
+# version: '3.7'
+
+services:
+  nestjs:
+    # user: ${UID}
+    container_name: nestjs
+    image: nestjs
+    build:
+      dockerfile: Dockerfile
+      context: .
+    networks:
+      - network
+    env_file:
+      - .env
+    volumes:
+      - .:/usr/src/app
+    working_dir: /usr/src/app
+    ports:
+      # - ${SERVER_PORT}:${SERVER_PORT}
+      - "3000:3000"
+    command: npm run start:dev 
+    depends_on:
+      - postgres
+    
+
+  postgres:
+    # user: ${UID}
+    container_name: postgres
+    image: postgres:17.0-alpine3.20
+    networks:
+      - network
+    env_file:
+      - .env
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_DB: ${DB_DATABASE_NAME}
+      PG_DATA: /var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: always
+    
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4:latest
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_MAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PW}
+    ports:
+      - "5050:80"
+    restart: always
+
+    # volumes:
+    #   - pgdata:/var/lib/postgresql/data
+networks:
+  network:
+    name: network
+# volumes:
+#   pgdata:
