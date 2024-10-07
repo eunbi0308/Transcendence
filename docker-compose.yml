@@ -45,7 +45,7 @@ services:
     # networks:
     #   - network
     volumes:
-      - ./data:/var/lib/postgresql/data
+      - pg-data:/var/lib/postgresql/data
     env_file:
       - .env
     environment:
@@ -75,5 +75,5 @@ services:
 #   network:
 #     name: network
 #     driver: bridge
-# volumes:
-#   pgdata:
+volumes:
+  pg-data:
