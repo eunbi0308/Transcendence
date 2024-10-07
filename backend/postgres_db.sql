@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS public."CHAT_PARTICIPANT"
 (
     user_id integer NOT NULL,
     chat_room_id integer NOT NULL,
-    role chat_participant_roles NOT NULL,
+    role chat_participant_roles NOT NULL DEFAULT 'guest'::chat_participant_roles,
     is_banned boolean NOT NULL DEFAULT false,
     is_muted boolean NOT NULL DEFAULT false,
     entrance_time timestamp with time zone NOT NULL DEFAULT now()
@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS public."CHAT_ROOM"
 (
     title character varying COLLATE pg_catalog."default" NOT NULL,
     password character varying COLLATE pg_catalog."default",
-    type chat_room_types NOT NULL,
+    type chat_room_types NOT NULL DEFAULT 'public'::chat_room_types,
     creation_date timestamp with time zone NOT NULL DEFAULT now(),
     chat_room_id serial NOT NULL,
     CONSTRAINT "CHAT_ROOM_pkey" PRIMARY KEY (chat_room_id)
@@ -68,7 +68,7 @@ CREATE TABLE IF NOT EXISTS public."USER"
     second_auth_code smallint,
     second_auth_email character varying COLLATE pg_catalog."default",
     ladder_level integer NOT NULL DEFAULT 0,
-    user_status user_status NOT NULL,
+    user_status user_status NOT NULL DEFAULT 'offline'::user_status,
     user_id serial NOT NULL,
     CONSTRAINT "USER_pkey" PRIMARY KEY (user_id)
         INCLUDE(user_id)
