@@ -40,4 +40,5 @@ export class USER {
 	default: user_status.Offline
   })
   user_status: user_status;
+
 }
