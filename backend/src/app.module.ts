@@ -41,6 +41,7 @@ import { AppService } from './app.service';
 import { AppController } from './app.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './users/users.module';
+import { AchievementsModule } from './achievements/achievements.module';
 import { Controller } from '@nestjs/common';
 
 @Module({
@@ -58,6 +59,7 @@ import { Controller } from '@nestjs/common';
       logging: true,
     }),
     UsersModule,
+    AchievementsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
