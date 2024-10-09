@@ -5,6 +5,7 @@ import { AppController } from './app.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './users/users.module';
 import { AchievementsModule } from './achievements/achievements.module';
+import { ChatMessagesModule } from './chat_messages/chat_messages.module';
 import { Controller } from '@nestjs/common';
 
 @Module({
@@ -23,6 +24,7 @@ import { Controller } from '@nestjs/common';
     }),
     UsersModule,
     AchievementsModule,
+    ChatMessagesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -3,12 +3,12 @@
 BEGIN;
 
 
-CREATE TABLE IF NOT EXISTS public."ACHIEVEMENTS"
-(
-    user_id integer NOT NULL,
-    achievement_id serial NOT NULL,
-    CONSTRAINT "ACHIEVEMENTS_pkey" PRIMARY KEY (achievement_id)
-);
+-- CREATE TABLE IF NOT EXISTS public."ACHIEVEMENTS"
+-- (
+--     user_id integer NOT NULL,
+--     achievement_id serial NOT NULL,
+--     CONSTRAINT "ACHIEVEMENTS_pkey" PRIMARY KEY (achievement_id)
+-- );
 
 CREATE TABLE IF NOT EXISTS public."BLOCKED"
 (
@@ -17,13 +17,13 @@ CREATE TABLE IF NOT EXISTS public."BLOCKED"
     user_id integer NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS public."CHAT_MESSAGE"
-(
-    chat_room_id integer NOT NULL,
-    user_id integer NOT NULL,
-    content text COLLATE pg_catalog."default" NOT NULL,
-    sent_time timestamp with time zone NOT NULL DEFAULT now()
-);
+-- CREATE TABLE IF NOT EXISTS public."CHAT_MESSAGE"
+-- (
+--     chat_room_id integer NOT NULL,
+--     user_id integer NOT NULL,
+--     content text COLLATE pg_catalog."default" NOT NULL,
+--     sent_time timestamp with time zone NOT NULL DEFAULT now()
+-- );
 
 CREATE TABLE IF NOT EXISTS public."CHAT_PARTICIPANT"
 (
