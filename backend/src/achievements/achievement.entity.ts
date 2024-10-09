@@ -1,10 +1,12 @@
-import { Entity, Column, PrimaryGeneratedColumn} from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn} from 'typeorm';
+import { User } from '../users/user.entity';
 
-@Entity()
+@Entity('ACHIEVEMENTS')
 export class Achievement {
   @PrimaryGeneratedColumn()
-  id: number;
+  achievement_id: number;
 
-  @Column({ type: "integer" })
-  user_id: number;
+  @ManyToOne(() => User, (user) => user.achievements)
+  @JoinColumn({ name: 'user_id' })
+  user_id: User;
 }

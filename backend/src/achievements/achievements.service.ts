@@ -26,9 +26,9 @@ export class AchievementsService {
     return await this.usersRepository.find();
   }
 
-  async findOne(id: number): Promise<Achievement> {
+  async findOne(achievement_id: number): Promise<Achievement> {
     const userData =
-        await this.usersRepository.findOneBy({ id });
+        await this.usersRepository.findOneBy({ achievement_id });
     if (!userData)
         throw new HttpException(
             'Achievement Not Found',

@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn, Binary } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Achievement } from '../achievements/achievement.entity';
 
 export enum user_status {
 	Offline = "offline",
@@ -7,10 +8,10 @@ export enum user_status {
 	Playing = "playing"
 }
 
-@Entity()
+@Entity('USER')
 export class User {
   @PrimaryGeneratedColumn()
-  id: number;
+  user_id: number;
 
   @Column({ type: "bytea" })
   avatar: Buffer;
@@ -21,7 +22,7 @@ export class User {
   @Column({ default: false })
   is_second_auth_done: boolean;
 
-  @Column({ type: "smallint" })
+  @Column({ type: "smallint", nullable: true })
   second_auth_code: number;
 
   @Column({ nullable: false, })
@@ -37,8 +38,35 @@ export class User {
   @Column({
 	type: "enum",
 	enum: user_status,
-	default: user_status.Offline
+	default: 'offline',
   })
   user_status: user_status;
 
+  // Relationships
+  @OneToMany(() => Achievement, achievement => achievement.user_id)
+  achievements: Achievement[];
+
+  // @OneToMany(() => Blocked, blocked => blocked.user)
+  // blockedUsers: Blocked[];
+
+  // @OneToMany(() => ChatMessage, message => message.user)
+  // chatMessages: ChatMessage[];
+
+  // @OneToMany(() => ChatParticipant, participant => participant.user)
+  // chatParticipants: ChatParticipant[];
+
+  // @OneToMany(() => Friend, friend => friend.person1)
+  // friends1: Friend[];
+
+  // @OneToMany(() => Friend, friend => friend.person2)
+  // friends2: Friend[];
+
+  // @OneToMany(() => Game, game => game.player1)
+  // gamesAsPlayer1: Game[];
+
+  // @OneToMany(() => Game, game => game.player2)
+  // gamesAsPlayer2: Game[];
+
+  // @OneToMany(() => Game, game => game.winner)
+  // gamesAsWinner: Game[];
 }
