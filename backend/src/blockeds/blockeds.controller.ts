@@ -8,27 +8,27 @@ import {
     ParseIntPipe,
     Delete,
   } from '@nestjs/common';
-  import { CreateFriendDto } from './dto/create-friend.dto';
-  import { UpdateFriendDto } from './dto/update-friend.dto';
-  import { Friend } from './friend.entity';
-  import { FriendsService } from './friends.service';
+  import { CreateBlockedDto } from './dto/create-blocked.dto';
+  import { UpdateBlockedDto } from './dto/update-blocked.dto';
+  import { Blocked } from './blocked.entity';
+  import { BlockedsService } from './blockeds.service';
   
-  @Controller('friends')
-  export class FriendsController {
-    constructor(private readonly friendsService: FriendsService) {}
+  @Controller('blockeds')
+  export class BlockedsController {
+    constructor(private readonly blockedsService: BlockedsService) {}
   
     @Post()
     async create(
-        @Body() createFriendDto: CreateFriendDto,
+        @Body() createBlockedDto: CreateBlockedDto,
     ) {
         try {
-            await this.friendsService.create(
-                createFriendDto,
+            await this.blockedsService.create(
+                createBlockedDto,
             );
 
             return {
                 success: true,
-                message: 'Friend Created Successfully',
+                message: 'Blocked Created Successfully',
             };
         } catch (error) {
             return {
@@ -42,11 +42,11 @@ import {
     async findAll() {
         try {
             const data =
-                await this.friendsService.findAll();
+                await this.blockedsService.findAll();
             return {
                 success: true,
                 data,
-                message: 'Friend Fetched Successfully',
+                message: 'Blocked Fetched Successfully',
             };
         } catch (error) {
             return {
@@ -59,13 +59,13 @@ import {
     @Get(':id')
     async findOne(@Param('id') id: string) {
         try {
-            const data = await this.friendsService.findByPersonUserId(
+            const data = await this.blockedsService.findByUserId(
                 +id,
             );
             return {
                 success: true,
                 data,
-                message: 'Friend Fetched Successfully',
+                message: 'Blocked Fetched Successfully',
             };
         } catch (error) {
             return {
@@ -74,14 +74,14 @@ import {
             };
         }
     }
-
+  
     @Delete(':id')
     async remove(@Param('id') id: string) {
         try {
-            await this.friendsService.remove(+id);
+            await this.blockedsService.remove(+id);
             return {
                 success: true,
-                message: 'Friend Deleted Successfully',
+                message: 'Blocked Deleted Successfully',
             };
         } catch (error) {
             return {

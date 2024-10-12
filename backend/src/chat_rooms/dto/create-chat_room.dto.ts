@@ -1,31 +1,24 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, IsEmail
+import { IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, IsEmail, IsDate
  } from 'class-validator';
 import { chat_room_types } from '../chat_room.entity';
 
 export class CreateChatRoomDto {
-    @ApiProperty({ description: 'ChatRoom avatar' })
-    @IsOptional()
-    avatar: Buffer;
-  
-    @ApiProperty({ description: 'ChatRoom nickname' })
+    @ApiProperty({ description: 'ChatRoom title' })
     @IsNotEmpty()
     @IsString()
-    nickname: string;
+    title: string;
   
-    @ApiProperty({ description: 'Second authentication code' })
+    @ApiProperty({ description: 'ChatRoom password' })
     @IsOptional()
-    @IsNumber()
-    second_auth_code: number;
+    @IsString()
+    password: string;
   
-    @ApiProperty({ description: 'Second authentication email' })
-    @IsEmail()
-    second_auth_email: string;
-  
-    @ApiProperty({ description: 'Ladder level' })
-    @IsNumber()
-    ladder_level: number;
-  
+    @ApiProperty({ description: 'Creation date' })
+    @IsNotEmpty()
+    @IsDate()
+    creation_date: Date;
+
     @ApiProperty({ description: 'ChatRoom types' })
     @IsEnum(chat_room_types)
     chat_room_type: chat_room_types;

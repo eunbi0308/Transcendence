@@ -14,7 +14,7 @@ export class ChatMessage {
   @JoinColumn({ name: 'user_id' })
   users: User;
   
-  @ManyToOne(() => ChatRoom, (chatRoom) => chatRoom.chatMessage)
+  @ManyToOne(() => ChatRoom, (chatRoom) => chatRoom.chatMessages)
   @JoinColumn({ name: 'chat_room_id' })
   chatRooms: ChatRoom;
 }

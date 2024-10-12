@@ -25,6 +25,7 @@ export class CreateUserDto extends PartialType(User)  {
     second_auth_code: number;
   
     @ApiProperty({ description: 'Second authentication email' })
+    @IsNotEmpty()
     @IsEmail()
     second_auth_email: string;
   

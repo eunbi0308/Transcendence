@@ -1,5 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { ChatMessage } from '../chat_messages/chat_message.entity';
+import { ChatParticipant } from 'chat_participants/chat_participant.entity';
 
 export enum chat_room_types {
 	Public = "public",
@@ -30,6 +31,9 @@ export class ChatRoom {
 
   // Relationships
   @OneToMany(() => ChatMessage, chatMessage => chatMessage.chatRooms)
-  chatMessage: ChatMessage[];
+  chatMessages: ChatMessage[];
+
+  @OneToMany(() => ChatParticipant, (chatParticipant) => chatParticipant.chatRooms)
+  chatParticipants: ChatParticipant[];  
 
 }

@@ -8,27 +8,25 @@ import {
     ParseIntPipe,
     Delete,
   } from '@nestjs/common';
-  import { CreateFriendDto } from './dto/create-friend.dto';
-  import { UpdateFriendDto } from './dto/update-friend.dto';
-  import { Friend } from './friend.entity';
-  import { FriendsService } from './friends.service';
+  import { CreateGameDto } from './dto/create-game.dto';
+  import { GamesService } from './games.service';
   
-  @Controller('friends')
-  export class FriendsController {
-    constructor(private readonly friendsService: FriendsService) {}
+  @Controller('games')
+  export class GamesController {
+    constructor(private readonly gamesService: GamesService) {}
   
     @Post()
     async create(
-        @Body() createFriendDto: CreateFriendDto,
+        @Body() createGameDto: CreateGameDto,
     ) {
         try {
-            await this.friendsService.create(
-                createFriendDto,
+            await this.gamesService.create(
+                createGameDto,
             );
 
             return {
                 success: true,
-                message: 'Friend Created Successfully',
+                message: 'Game Created Successfully',
             };
         } catch (error) {
             return {
@@ -42,11 +40,11 @@ import {
     async findAll() {
         try {
             const data =
-                await this.friendsService.findAll();
+                await this.gamesService.findAll();
             return {
                 success: true,
                 data,
-                message: 'Friend Fetched Successfully',
+                message: 'Game Fetched Successfully',
             };
         } catch (error) {
             return {
@@ -59,13 +57,13 @@ import {
     @Get(':id')
     async findOne(@Param('id') id: string) {
         try {
-            const data = await this.friendsService.findByPersonUserId(
+            const data = await this.gamesService.findByUserId(
                 +id,
             );
             return {
                 success: true,
                 data,
-                message: 'Friend Fetched Successfully',
+                message: 'Game Fetched Successfully',
             };
         } catch (error) {
             return {
@@ -78,10 +76,10 @@ import {
     @Delete(':id')
     async remove(@Param('id') id: string) {
         try {
-            await this.friendsService.remove(+id);
+            await this.gamesService.remove(+id);
             return {
                 success: true,
-                message: 'Friend Deleted Successfully',
+                message: 'Game Deleted Successfully',
             };
         } catch (error) {
             return {

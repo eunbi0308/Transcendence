@@ -1,18 +1,23 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsNotEmpty } from 'class-validator';
+import { IsNumber, IsDate, IsNotEmpty } from 'class-validator';
 import { DeepPartial } from 'typeorm';
 import { User } from '../../users/user.entity';
 import { PartialType } from '@nestjs/mapped-types';
-import { Friend } from 'friends/friend.entity';
+import { Blocked } from 'blockeds/blocked.entity';
 
-export class CreateFriendDto extends PartialType(Friend) {
+export class CreateBlockedDto extends PartialType(Blocked) {
+    
+    @ApiProperty({ description: 'blocked_time' })
+    @IsDate()
+    blocked_time: Date;
+
     @ApiProperty({ description: 'user_id' })
     @IsNotEmpty()
     @IsNumber()
-    person1_user_id: DeepPartial<User>;
+    blocked_user_id: DeepPartial<User>;
 
     @ApiProperty({ description: 'user_id' })
     @IsNotEmpty()
     @IsNumber()
-    person2_user_id: DeepPartial<User>;
+    user_id: DeepPartial<User>;
 }

@@ -8,27 +8,25 @@ import {
     ParseIntPipe,
     Delete,
   } from '@nestjs/common';
-  import { CreateFriendDto } from './dto/create-friend.dto';
-  import { UpdateFriendDto } from './dto/update-friend.dto';
-  import { Friend } from './friend.entity';
-  import { FriendsService } from './friends.service';
+  import { CreateChatParticipantDto } from './dto/create-chat_participant.dto';
+  import { ChatParticipantsService } from './chat_participants.service';
   
-  @Controller('friends')
-  export class FriendsController {
-    constructor(private readonly friendsService: FriendsService) {}
+  @Controller('chatParticipants')
+  export class ChatParticipantsController {
+    constructor(private readonly chatParticipantsService: ChatParticipantsService) {}
   
     @Post()
     async create(
-        @Body() createFriendDto: CreateFriendDto,
+        @Body() createChatParticipantDto: CreateChatParticipantDto,
     ) {
         try {
-            await this.friendsService.create(
-                createFriendDto,
+            await this.chatParticipantsService.create(
+                createChatParticipantDto,
             );
 
             return {
                 success: true,
-                message: 'Friend Created Successfully',
+                message: 'ChatParticipant Created Successfully',
             };
         } catch (error) {
             return {
@@ -42,11 +40,11 @@ import {
     async findAll() {
         try {
             const data =
-                await this.friendsService.findAll();
+                await this.chatParticipantsService.findAll();
             return {
                 success: true,
                 data,
-                message: 'Friend Fetched Successfully',
+                message: 'ChatParticipant Fetched Successfully',
             };
         } catch (error) {
             return {
@@ -59,13 +57,13 @@ import {
     @Get(':id')
     async findOne(@Param('id') id: string) {
         try {
-            const data = await this.friendsService.findByPersonUserId(
+            const data = await this.chatParticipantsService.findByChatRoomId(
                 +id,
             );
             return {
                 success: true,
                 data,
-                message: 'Friend Fetched Successfully',
+                message: 'ChatParticipant Fetched Successfully',
             };
         } catch (error) {
             return {
@@ -74,14 +72,14 @@ import {
             };
         }
     }
-
+  
     @Delete(':id')
     async remove(@Param('id') id: string) {
         try {
-            await this.friendsService.remove(+id);
+            await this.chatParticipantsService.remove(+id);
             return {
                 success: true,
-                message: 'Friend Deleted Successfully',
+                message: 'ChatParticipant Deleted Successfully',
             };
         } catch (error) {
             return {
