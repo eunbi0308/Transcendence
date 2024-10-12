@@ -1,5 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { Achievement } from '../achievements/achievement.entity';
+import { ChatMessage } from '../chat_messages/chat_message.entity';
+import { Friend } from '../friends/friend.entity';
 
 export enum user_status {
 	Offline = "offline",
@@ -11,7 +13,7 @@ export enum user_status {
 @Entity('USER')
 export class User {
   @PrimaryGeneratedColumn()
-  user_id: number;
+  id: number;
 
   @Column({ type: "bytea" })
   avatar: Buffer;
@@ -43,23 +45,25 @@ export class User {
   user_status: user_status;
 
   // Relationships
-  @OneToMany(() => Achievement, achievement => achievement.user_id)
+  @OneToMany((type) => Achievement, achievement => achievement.users, {
+    cascade: true,
+  })
   achievements: Achievement[];
 
   // @OneToMany(() => Blocked, blocked => blocked.user)
   // blockedUsers: Blocked[];
 
-  // @OneToMany(() => ChatMessage, message => message.user)
-  // chatMessages: ChatMessage[];
+  @OneToMany(() => ChatMessage, message => message.users)
+  chatMessages: ChatMessage[];
 
   // @OneToMany(() => ChatParticipant, participant => participant.user)
   // chatParticipants: ChatParticipant[];
 
-  // @OneToMany(() => Friend, friend => friend.person1)
-  // friends1: Friend[];
+  @OneToMany(() => Friend, friend => friend.person1Users)
+  friends1: Friend[];
 
-  // @OneToMany(() => Friend, friend => friend.person2)
-  // friends2: Friend[];
+  @OneToMany(() => Friend, friend => friend.person2Users)
+  friends2: Friend[];
 
   // @OneToMany(() => Game, game => game.player1)
   // gamesAsPlayer1: Game[];

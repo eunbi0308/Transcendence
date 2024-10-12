@@ -1,14 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, IsEmail
  } from 'class-validator';
-import { user_status } from '../chat_room.entity';
+import { chat_room_types } from '../chat_room.entity';
 
-export class CreateUserDto {
-    @ApiProperty({ description: 'User avatar' })
+export class CreateChatRoomDto {
+    @ApiProperty({ description: 'ChatRoom avatar' })
     @IsOptional()
     avatar: Buffer;
   
-    @ApiProperty({ description: 'User nickname' })
+    @ApiProperty({ description: 'ChatRoom nickname' })
     @IsNotEmpty()
     @IsString()
     nickname: string;
@@ -26,7 +26,7 @@ export class CreateUserDto {
     @IsNumber()
     ladder_level: number;
   
-    @ApiProperty({ description: 'User status' })
-    @IsEnum(user_status)
-    user_status: user_status;
+    @ApiProperty({ description: 'ChatRoom types' })
+    @IsEnum(chat_room_types)
+    chat_room_type: chat_room_types;
 }

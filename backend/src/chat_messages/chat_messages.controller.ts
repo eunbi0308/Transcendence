@@ -9,8 +9,6 @@ import {
     Delete,
   } from '@nestjs/common';
   import { CreateChatMessageDto } from './dto/create-chat_message.dto';
-  import { UpdateChatMessageDto } from './dto/update-chat_message.dto';
-  import { ChatMessage } from './chat_message.entity';
   import { ChatMessagesService } from './chat_messages.service';
   
   @Controller('chatMessages')
@@ -59,35 +57,13 @@ import {
     @Get(':id')
     async findOne(@Param('id') id: string) {
         try {
-            const data = await this.chatMessagesService.findOne(
+            const data = await this.chatMessagesService.findByChatRoomId(
                 +id,
             );
             return {
                 success: true,
                 data,
                 message: 'ChatMessage Fetched Successfully',
-            };
-        } catch (error) {
-            return {
-                success: false,
-                message: error.message,
-            };
-        }
-    }
-
-    @Patch(':id')
-    async update(
-        @Param('id') id: string,
-        @Body() updateChatMessageDto: UpdateChatMessageDto,
-    ) {
-        try {
-            await this.chatMessagesService.update(
-                +id,
-                updateChatMessageDto,
-            );
-            return {
-                success: true,
-                message: 'ChatMessage Updated Successfully',
             };
         } catch (error) {
             return {

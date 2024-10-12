@@ -1,5 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn} from 'typeorm';
 import { User } from '../users/user.entity';
+import { ChatRoom } from '../chat_rooms/chat_room.entity';
 
 @Entity('CHAT_MESSAGE')
 export class ChatMessage {
@@ -9,11 +10,11 @@ export class ChatMessage {
   @Column({ type: 'timestamp with time zone', default: () => 'CURRENT_TIMESTAMP' })
   sent_time: Date;
   
-  @ManyToOne(() => User, (user) => user.chatMessage)
+  @ManyToOne(() => User, (user) => user.chatMessages)
   @JoinColumn({ name: 'user_id' })
-  user_id: User;
+  users: User;
   
   @ManyToOne(() => ChatRoom, (chatRoom) => chatRoom.chatMessage)
   @JoinColumn({ name: 'chat_room_id' })
-  chat_room_id: number;
+  chatRooms: ChatRoom;
 }

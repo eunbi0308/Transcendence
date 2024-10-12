@@ -4,31 +4,45 @@ import { Repository } from 'typeorm';
 import { CreateAchievementDto } from './dto/create-achievement.dto';
 import { UpdateAchievementDto } from './dto/update-achievement.dto';
 import { Achievement } from './achievement.entity';
+import { User } from '../users/user.entity';
 
 @Injectable()
 export class AchievementsService {
   constructor(
     @InjectRepository(Achievement)
-    private readonly usersRepository: Repository<Achievement>,
+    private readonly achievementsRepository: Repository<Achievement>,
   ) {}
 
   async create(
     createAchievementDto: CreateAchievementDto,
     ): Promise<Achievement> {
-        const userData =
-            await this.usersRepository.create(
+        const achievementData =
+            await this.achievementsRepository.create(
                 createAchievementDto,
             );
-    return this.usersRepository.save(userData);
+    return this.achievementsRepository.save(achievementData);
   }
 
   async findAll(): Promise<Achievement[]> {
-    return await this.usersRepository.find();
+    return await this.achievementsRepository.find();
   }
 
-  async findOne(achievement_id: number): Promise<Achievement> {
+  async findOne(id: number): Promise<Achievement> {
+    const achievementData =
+        await this.achievementsRepository.findOneBy({ id });
+    if (!achievementData)
+        throw new HttpException(
+            'Achievement Not Found',
+            404,
+        );
+        return achievementData;
+  }
+
+  async findByUserId(userId: number): Promise<Achievement[]> {
     const userData =
-        await this.usersRepository.findOneBy({ achievement_id });
+        await this.achievementsRepository.find({ 
+          where: { users: { id: userId }},
+         });
     if (!userData)
         throw new HttpException(
             'Achievement Not Found',
@@ -37,22 +51,19 @@ export class AchievementsService {
         return userData;
   }
 
-  async update(
-    id: number,
-    UpdateAchievementDto: UpdateAchievementDto,
-  ): Promise<Achievement> {
+  async update(id: number, updateAchievementDto: UpdateAchievementDto,): Promise<Achievement> {
     const existingAchievement = await this.findOne(id);
-    const userData = this.usersRepository.merge(
+    const achievementData = this.achievementsRepository.merge(
         existingAchievement,
-        UpdateAchievementDto,
+        updateAchievementDto,
     );
-    return await this.usersRepository.save(
-        userData,
+    return await this.achievementsRepository.save(
+        achievementData,
     );
   }
 
   async remove(id: number): Promise<Achievement> {
     const existingAchievement = await this.findOne(id);
-    return await this.usersRepository.remove(existingAchievement,);
+    return await this.achievementsRepository.remove(existingAchievement,);
   }
 }

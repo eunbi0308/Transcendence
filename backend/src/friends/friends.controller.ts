@@ -8,27 +8,27 @@ import {
     ParseIntPipe,
     Delete,
   } from '@nestjs/common';
-  import { CreateAchievementDto } from './dto/create-achievement.dto';
-  import { UpdateAchievementDto } from './dto/update-achievement.dto';
-  import { Achievement } from './achievement.entity';
-  import { AchievementsService } from './achievements.service';
+  import { CreateFriendDto } from './dto/create-friend.dto';
+  import { UpdateFriendDto } from './dto/update-friend.dto';
+  import { Friend } from './friend.entity';
+  import { FriendsService } from './friends.service';
   
-  @Controller('achievements')
-  export class AchievementsController {
-    constructor(private readonly achievementsService: AchievementsService) {}
+  @Controller('friends')
+  export class FriendsController {
+    constructor(private readonly friendsService: FriendsService) {}
   
     @Post()
     async create(
-        @Body() createAchievementDto: CreateAchievementDto,
+        @Body() createFriendDto: CreateFriendDto,
     ) {
         try {
-            await this.achievementsService.create(
-                createAchievementDto,
+            await this.friendsService.create(
+                createFriendDto,
             );
 
             return {
                 success: true,
-                message: 'Achievement Created Successfully',
+                message: 'Friend Created Successfully',
             };
         } catch (error) {
             return {
@@ -42,11 +42,11 @@ import {
     async findAll() {
         try {
             const data =
-                await this.achievementsService.findAll();
+                await this.friendsService.findAll();
             return {
                 success: true,
                 data,
-                message: 'Achievement Fetched Successfully',
+                message: 'Friend Fetched Successfully',
             };
         } catch (error) {
             return {
@@ -57,15 +57,15 @@ import {
     }
   
     @Get(':id')
-    async findOne(@Param('id') id: number) {
+    async findOne(@Param('id') id: string) {
         try {
-            const data = await this.achievementsService.findOne(
+            const data = await this.friendsService.findOne(
                 +id,
             );
             return {
                 success: true,
                 data,
-                message: 'Achievement Fetched Successfully',
+                message: 'Friend Fetched Successfully',
             };
         } catch (error) {
             return {
@@ -77,17 +77,17 @@ import {
 
     @Patch(':id')
     async update(
-        @Param('id') id: number,
-        @Body() updateAchievementDto: UpdateAchievementDto,
+        @Param('id') id: string,
+        @Body() updateFriendDto: UpdateFriendDto,
     ) {
         try {
-            await this.achievementsService.update(
+            await this.friendsService.update(
                 +id,
-                updateAchievementDto,
+                updateFriendDto,
             );
             return {
                 success: true,
-                message: 'Achievement Updated Successfully',
+                message: 'Friend Updated Successfully',
             };
         } catch (error) {
             return {
@@ -98,12 +98,12 @@ import {
     }
   
     @Delete(':id')
-    async remove(@Param('id') id: number) {
+    async remove(@Param('id') id: string) {
         try {
-            await this.achievementsService.remove(+id);
+            await this.friendsService.remove(+id);
             return {
                 success: true,
-                message: 'Achievement Deleted Successfully',
+                message: 'Friend Deleted Successfully',
             };
         } catch (error) {
             return {
@@ -112,5 +112,4 @@ import {
             };
         }
     }
-
   }

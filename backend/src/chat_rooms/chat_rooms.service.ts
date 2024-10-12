@@ -1,58 +1,58 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateUserDto } from './dto/create-chat_room.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { User } from './user.entity';
+import { CreateChatRoomDto } from './dto/create-chat_room.dto';
+import { UpdateChatRoomDto } from './dto/update-chat_room.dto';
+import { ChatRoom } from './chat_room.entity';
 
 @Injectable()
-export class UsersService {
+export class ChatRoomsService {
   constructor(
-    @InjectRepository(User)
-    private readonly usersRepository: Repository<User>,
+    @InjectRepository(ChatRoom)
+    private readonly chatRoomsRepository: Repository<ChatRoom>,
   ) {}
 
   async create(
-    createUserDto: CreateUserDto,
-    ): Promise<User> {
-        const userData =
-            await this.usersRepository.create(
-                createUserDto,
+    createChatRoomDto: CreateChatRoomDto,
+    ): Promise<ChatRoom> {
+        const chatRoomData =
+            await this.chatRoomsRepository.create(
+                createChatRoomDto,
             );
-    return this.usersRepository.save(userData);
+    return this.chatRoomsRepository.save(chatRoomData);
   }
 
-  async findAll(): Promise<User[]> {
-    return await this.usersRepository.find();
+  async findAll(): Promise<ChatRoom[]> {
+    return await this.chatRoomsRepository.find();
   }
 
-  async findOne(user_id: number): Promise<User> {
-    const userData =
-        await this.usersRepository.findOneBy({ user_id });
-    if (!userData)
+  async findOne(id: number): Promise<ChatRoom> {
+    const chatRoomData =
+        await this.chatRoomsRepository.findOneBy({ id });
+    if (!chatRoomData)
         throw new HttpException(
-            'User Not Found',
+            'ChatRoom Not Found',
             404,
         );
-        return userData;
+        return chatRoomData;
   }
 
   async update(
     id: number,
-    UpdateUserDto: UpdateUserDto,
-  ): Promise<User> {
-    const existingUser = await this.findOne(id);
-    const userData = this.usersRepository.merge(
-        existingUser,
-        UpdateUserDto,
+    UpdateChatRoomDto: UpdateChatRoomDto,
+  ): Promise<ChatRoom> {
+    const existingChatRoom = await this.findOne(id);
+    const chatRoomData = this.chatRoomsRepository.merge(
+        existingChatRoom,
+        UpdateChatRoomDto,
     );
-    return await this.usersRepository.save(
-        userData,
+    return await this.chatRoomsRepository.save(
+        chatRoomData,
     );
   }
 
-  async remove(id: number): Promise<User> {
-    const existingUser = await this.findOne(id);
-    return await this.usersRepository.remove(existingUser,);
+  async remove(id: number): Promise<ChatRoom> {
+    const existingChatRoom = await this.findOne(id);
+    return await this.chatRoomsRepository.remove(existingChatRoom,);
   }
 }

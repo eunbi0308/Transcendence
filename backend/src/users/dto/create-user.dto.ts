@@ -1,9 +1,10 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, IsEmail
+import { ApiProperty, ApiTags } from '@nestjs/swagger';
+import { IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, IsEmail, IsBoolean
  } from 'class-validator';
-import { user_status } from '../user.entity';
+import { User, user_status } from '../user.entity';
+import { PartialType } from '@nestjs/mapped-types';
 
-export class CreateUserDto {
+export class CreateUserDto extends PartialType(User)  {
     @ApiProperty({ description: 'User avatar' })
     @IsOptional()
     avatar: Buffer;
@@ -12,6 +13,11 @@ export class CreateUserDto {
     @IsNotEmpty()
     @IsString()
     nickname: string;
+
+    @ApiProperty({ description: 'Second authentication check' })
+    @IsNotEmpty()
+    @IsBoolean()
+    is_second_auth_done: boolean;
   
     @ApiProperty({ description: 'Second authentication code' })
     @IsOptional()

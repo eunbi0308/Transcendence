@@ -10,7 +10,7 @@ export enum chat_room_types {
 @Entity('CHAT_ROOM')
 export class ChatRoom {
   @PrimaryGeneratedColumn()
-  chat_room_id: number;
+  id: number;
   
   @Column({ nullable: false })
   title: string;
@@ -29,7 +29,7 @@ export class ChatRoom {
   chat_room_type: chat_room_types;
 
   // Relationships
-  @OneToMany(() => ChatMessage, chatMessage => chatMessage.chat_room_id)
+  @OneToMany(() => ChatMessage, chatMessage => chatMessage.chatRooms)
   chatMessage: ChatMessage[];
 
 }
