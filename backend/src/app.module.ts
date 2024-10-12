@@ -5,7 +5,11 @@ import { AppController } from './app.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './users/users.module';
 import { AchievementsModule } from './achievements/achievements.module';
+import { ChatsModule } from './chats/chats.module';
 import { Controller } from '@nestjs/common';
+import { User } from './users/user.entity';
+import { Chat } from './chats/chat.entity'
+import { GetController } from './getFetch.controller';
 
 @Module({
   imports: [
@@ -23,8 +27,11 @@ import { Controller } from '@nestjs/common';
     }),
     UsersModule,
     AchievementsModule,
+    ChatsModule,
+
   ],
-  controllers: [AppController],
+  controllers: [AppController, GetController],
   providers: [AppService],
+  exports: [AppService],
 })
 export class AppModule {}

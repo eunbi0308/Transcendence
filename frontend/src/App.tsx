@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import './App.css';
-import ChatUser from './ChatUser';
-import ChatContact from './ChatContact'; 
+import FetchComponent from './FetchComponent.tsx';
+import PostComponent from './PostComponent.tsx';
 
 const App: React.FC = () => {
   const [items, setItems] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState<string>('');
-  const [responses, setResponses] = useState<string[]>([]); // Changed to `responses`
+  const [response, setResponse] = useState<string[]>([]);
+  const apiUrl = 'http://localhost:3000/chats/hallo';
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
@@ -22,7 +23,7 @@ const App: React.FC = () => {
 
   const addResponse = () => {
     if (inputValue.trim() !== '') {
-      setResponses([...responses, inputValue]);
+      setResponse([...response, inputValue]);
     }
   }
 
@@ -31,9 +32,28 @@ const App: React.FC = () => {
       <h1>Chat</h1>
 
       <div className='chatContainer'>
-         <ChatUser items={items} />
-         <ChatContact responses={responses} /> {/* Ensure this matches the state name */}
-      </div>
+      <div className='chatUser'>
+      <ul>
+        {items.map((item, index) => (
+           <li key={index}>
+           <strong>User:</strong> {/* Add the label above the message */}
+           <div>{item}</div>
+         </li>
+        ))}
+      </ul>
+        </div>
+
+        <div className='chatContact'>
+        <ul>
+          {items.map((response, index) => (
+            <li key={index}>
+              <strong>Contact:</strong> {}
+              <div>{response}</div>
+            </li>
+          ))}
+        </ul>
+        </div>
+        </div>
 
       <div className='addButton'>
       <input
@@ -44,6 +64,8 @@ const App: React.FC = () => {
       />
       <button onClick={addItem}>Add Item</button> {/* Step 4 */}
       </div>
+      <FetchComponent url={apiUrl} />
+
     </div>
   );
 }
