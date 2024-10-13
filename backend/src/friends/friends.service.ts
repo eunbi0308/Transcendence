@@ -29,8 +29,8 @@ export class FriendsService {
     const friendData =
         await this.friendsRepository.find({ 
           where: [
-            { person1Users: { id }},
-            { person2Users: { id }}
+            { person1User: { id }},
+            { person2User: { id }}
           ]
         });
     if (!friendData)

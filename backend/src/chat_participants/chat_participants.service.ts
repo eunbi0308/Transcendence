@@ -29,7 +29,7 @@ export class ChatParticipantsService {
   async findByChatRoomId(id: number): Promise<ChatParticipant[]> {
     const chatRoomData =
         await this.chatParticipantsRepository.find({
-          where: { chatRooms: { id } },
+          where: { chatRoom: { id } },
         });
     if (!chatRoomData)
       throw new HttpException(
@@ -42,7 +42,7 @@ export class ChatParticipantsService {
   async findByUserId(userId: number): Promise<ChatParticipant> {
     const userData =
         await this.chatParticipantsRepository.findOne({ 
-          where: { users: { id: userId }},
+          where: { user: { id: userId }},
          });
     if (!userData)
         throw new HttpException(

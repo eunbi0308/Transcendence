@@ -1,9 +1,5 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { CreateFriendDto } from './create-friend.dto';
-import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber } from 'class-validator';
-import { DeepPartial } from 'typeorm';
-import { User } from 'users/user.entity';
 
 export class UpdateFriendDto extends PartialType(CreateFriendDto) {
     // @ApiProperty({ description: 'person1 users' })

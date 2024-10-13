@@ -28,7 +28,7 @@ export class ChatMessagesService {
   async findByChatRoomId(id: number): Promise<ChatMessage[]> {
     const chatRoomData =
         await this.chatMessagesRepository.find({
-          where: { chatRooms: { id } },
+          where: { chatRoom: { id } },
         });
     if (!chatRoomData)
       throw new HttpException(

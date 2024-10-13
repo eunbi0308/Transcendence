@@ -1,21 +1,30 @@
-import { Entity, ManyToOne, JoinColumn, Column} from 'typeorm';
+import { Entity, ManyToOne, JoinColumn, Column, PrimaryColumn} from 'typeorm';
 import { User } from '../users/user.entity';
 
 @Entity('GAME')
 export class Game {
 
+  @PrimaryColumn()
+  player1_user_id: number;
+  
+  @PrimaryColumn()
+  player2_user_id: number;
+
+  @PrimaryColumn()
+  winner_user_id: number;
+  
   @ManyToOne(() => User, (user) => user.players1)
-  @JoinColumn({ name: 'user_id' })
-  player1Users: User[];
+  @JoinColumn({ name: 'player1_user_id' })
+  player1User: User;
 
   @ManyToOne(() => User, (user) => user.players2)
-  @JoinColumn({ name: 'user_id' })
-  player2Users: User[];
+  @JoinColumn({ name: 'player2_user_id' })
+  player2User: User;
 
   @ManyToOne(() => User, (user) => user.winners)
-  @JoinColumn({ name: 'user_id' })
-  winners: User[];
+  @JoinColumn({ name: 'winner_user_id' })
+  winner: User;
 
-  @Column({ length: length, nullable: false, default: false, })
+  @Column({ nullable: false, default: false, })
   is_ladder_game: boolean;  
 }

@@ -3,7 +3,7 @@ import { IsDate, IsNotEmpty, IsEnum, IsNumber, IsString, IsBoolean, } from 'clas
 import { DeepPartial } from 'typeorm';
 import { User } from '../../users/user.entity';
 import { PartialType } from '@nestjs/mapped-types';
-import { chat_participant_roles, ChatParticipant } from 'chat_participants/chat_participant.entity';
+import { chat_participant_roles, ChatParticipant } from '../../chat_participants/chat_participant.entity';
 
 export class CreateChatParticipantDto extends PartialType(ChatParticipant){
     @ApiProperty({ description: 'chat participant role' })
@@ -21,14 +21,14 @@ export class CreateChatParticipantDto extends PartialType(ChatParticipant){
     @IsNotEmpty()
     entrance_time: Date;
     
-    @ApiProperty({ description: 'user_id' })
-    @IsNotEmpty()
-    @IsNumber()
-    user_id: DeepPartial<User>;
+    // @ApiProperty({ description: 'user_id' })
+    // @IsNotEmpty()
+    // @IsNumber()
+    // user_id: DeepPartial<User>;
 
-    @ApiProperty({ description: 'chat_room_id' })
-    @IsNotEmpty()
-    @IsNumber()
-    chat_room_id: DeepPartial<User>;
+    // @ApiProperty({ description: 'chat_room_id' })
+    // @IsNotEmpty()
+    // @IsNumber()
+    // chat_room_id: DeepPartial<User>;
 
 }

@@ -1,14 +1,20 @@
-import { Entity, ManyToOne, JoinColumn} from 'typeorm';
+import { Entity, ManyToOne, JoinColumn, PrimaryColumn} from 'typeorm';
 import { User } from '../users/user.entity';
 
 @Entity('FRIENDS')
 export class Friend {
 
+  @PrimaryColumn()
+  person1_user_id: number;
+
+  @PrimaryColumn()
+  person2_user_id: number;
+
   @ManyToOne(() => User, (user) => user.friends1)
-  @JoinColumn({ name: 'user_id' })
-  person1Users: User[];
+  @JoinColumn({ name: 'person1_user_id' })
+  person1User: User;
 
   @ManyToOne(() => User, (user) => user.friends2)
-  @JoinColumn({ name: 'user_id' })
-  person2Users: User[];
+  @JoinColumn({ name: 'person2_user_id' })
+  person2User: User;
 }

@@ -2,9 +2,9 @@ import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { Achievement } from '../achievements/achievement.entity';
 import { ChatMessage } from '../chat_messages/chat_message.entity';
 import { Friend } from '../friends/friend.entity';
-import { Blocked } from 'blockeds/blocked.entity';
-import { Game } from 'games/game.entity';
-import { ChatParticipant } from 'chat_participants/chat_participant.entity';
+import { Blocked } from '../blockeds/blocked.entity';
+import { Game } from '../games/game.entity';
+import { ChatParticipant } from '../chat_participants/chat_participant.entity';
 
 export enum user_status {
 	Offline = "offline",
@@ -48,35 +48,33 @@ export class User {
   user_status: user_status;
 
   // Relationships
-  @OneToMany((type) => Achievement, achievement => achievement.users, {
-    cascade: true,
-  })
+  @OneToMany(() => Achievement, achievement => achievement.user,)
   achievements: Achievement[];
 
-  @OneToMany(() => Blocked, blocked => blocked.users)
+  @OneToMany(() => Blocked, blocked => blocked.user)
   blockedUsers: Blocked[];
 
-  @OneToMany(() => Blocked, blocked => blocked.blockedUsers)
+  @OneToMany(() => Blocked, blocked => blocked.blockedUser)
   users: Blocked[];
 
-  @OneToMany(() => ChatMessage, message => message.users)
+  @OneToMany(() => ChatMessage, message => message.user)
   chatMessages: ChatMessage[];
 
-  @OneToMany(() => ChatParticipant, participant => participant.users)
+  @OneToMany(() => ChatParticipant, participant => participant.user)
   chatParticipants: ChatParticipant[];
 
-  @OneToMany(() => Friend, friend => friend.person1Users)
+  @OneToMany(() => Friend, friend => friend.person1User)
   friends1: Friend[];
 
-  @OneToMany(() => Friend, friend => friend.person2Users)
+  @OneToMany(() => Friend, friend => friend.person2User)
   friends2: Friend[];
 
-  @OneToMany(() => Game, game => game.player1Users)
+  @OneToMany(() => Game, game => game.player1User)
   players1: Game[];
 
-  @OneToMany(() => Game, game => game.player2Users)
+  @OneToMany(() => Game, game => game.player2User)
   players2: Game[];
 
-  @OneToMany(() => Game, game => game.player2Users)
+  @OneToMany(() => Game, game => game.player2User)
   winners: Game[];
 }

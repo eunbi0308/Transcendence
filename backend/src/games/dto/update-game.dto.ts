@@ -1,9 +1,5 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { CreateGameDto } from './create-game.dto';
-import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber } from 'class-validator';
-import { DeepPartial } from 'typeorm';
-import { User } from 'users/user.entity';
 
 export class UpdateGameDto extends PartialType(CreateGameDto) {
     // @ApiProperty({ description: 'person1 users' })

@@ -9,4 +9,4 @@ import { ChatMessage } from './chat_message.entity';
   providers: [ChatMessagesService],
   controllers: [ChatMessagesController],
 })
-export class AchievementsModule {}
+export class ChatMessagesModule {}

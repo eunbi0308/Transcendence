@@ -7,6 +7,11 @@ import { UsersModule } from './users/users.module';
 import { AchievementsModule } from './achievements/achievements.module';
 import { ChatMessagesModule } from './chat_messages/chat_messages.module';
 import { Controller } from '@nestjs/common';
+import { BlockedsModule } from './blockeds/blockeds.module';
+import { ChatParticipantsModule } from './chat_participants/chat_participants.module';
+import { ChatRoomsModule } from './chat_rooms/chat_rooms.module';
+import { FriendsModule } from './friends/friends.module';
+import { GamesModule } from './games/games.module';
 
 @Module({
   imports: [
@@ -24,7 +29,12 @@ import { Controller } from '@nestjs/common';
     }),
     UsersModule,
     AchievementsModule,
+    BlockedsModule,
     ChatMessagesModule,
+    ChatParticipantsModule,
+    ChatRoomsModule,
+    FriendsModule,
+    GamesModule
   ],
   controllers: [AppController],
   providers: [AppService],

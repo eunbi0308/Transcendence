@@ -29,8 +29,8 @@ export class BlockedsService {
     const blockedData =
         await this.blockedsRepository.find({ 
           where: [
-            { blockedUsers: { id }},
-            { users: { id }}
+            { blockedUser: { id }},
+            { user: { id }}
           ]
         });
     if (!blockedData)

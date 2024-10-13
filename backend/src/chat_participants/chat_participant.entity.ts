@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn} from 'typeorm';
+import { Entity, Column, PrimaryColumn, ManyToOne, JoinColumn,} from 'typeorm';
 import { User } from '../users/user.entity';
 import { ChatRoom } from '../chat_rooms/chat_room.entity';
 
@@ -12,7 +12,7 @@ export enum chat_participant_roles {
 export class ChatParticipant {
   @Column({
     type: 'enum',
-    nullable: false,
+    enum: chat_participant_roles,
     default: 'guest',
   })
   chat_pariticipant_role: chat_participant_roles
@@ -25,12 +25,18 @@ export class ChatParticipant {
 
   @Column({ type: 'timestamp with time zone', default: () => 'CURRENT_TIMESTAMP' })
   entrance_time: Date;
+
+  @PrimaryColumn()
+  user_id: number;
+
+  @PrimaryColumn()
+  chat_room_id: number;
   
   @ManyToOne(() => User, (user) => user.chatParticipants)
   @JoinColumn({ name: 'user_id' })
-  users: User;
+  user: User;
   
   @ManyToOne(() => ChatRoom, (chatRoom) => chatRoom.chatParticipants)
   @JoinColumn({ name: 'chat_room_id' })
-  chatRooms: ChatRoom;
+  chatRoom: ChatRoom;
 }

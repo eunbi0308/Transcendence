@@ -41,7 +41,7 @@ export class AchievementsService {
   async findByUserId(userId: number): Promise<Achievement[]> {
     const userData =
         await this.achievementsRepository.find({ 
-          where: { users: { id: userId }},
+          where: { user: { id: userId }},
          });
     if (!userData)
         throw new HttpException(
