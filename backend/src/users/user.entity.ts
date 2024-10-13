@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn, Binary } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, Binary, OneToMany, ManyToMany } from 'typeorm';
+import { Chat } from './../chats/chat.entity'
 
 export enum user_status {
 	Offline = "offline",
@@ -41,4 +42,6 @@ export class User {
   })
   user_status: user_status;
 
+  @OneToMany(() => Chat, (chat) => chat.user)
+  chat: Chat[];
 }

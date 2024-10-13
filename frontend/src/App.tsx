@@ -1,24 +1,39 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import FetchComponent from './FetchComponent.tsx';
 import PostComponent from './PostComponent.tsx';
+import { handlePost, fetchSingle } from './utils/Utils.tsx';
 
 const App: React.FC = () => {
   const [items, setItems] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState<string>('');
   const [response, setResponse] = useState<string[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [fetchedMessage, setFetchedMessage] = useState<string>('');
+  const [idInput, setIdInput] = useState<string>('');
+  const [id, setId] = useState<string>('');
   const apiUrl = 'http://localhost:3000/chats/hallo';
-
+  
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
   };
+  
+  const changeIdInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setIdInput(event.target.value);
+    // setId(idInput);
+  }
 
+  const changeId = () => {
+    setId(idInput);
+    
+  };
   const addItem = () => {
-    if (inputValue.trim() !== '') {
-      setItems([...items, inputValue]);
-      addResponse();
-      setInputValue('');
-    }
+    handlePost(inputValue, setResponse, setError);
+    setInputValue('');
+    // if (inputValue.trim() !== '') {
+    //   setItems([...items, inputValue]);
+    //   addResponse();
+    // }
   };
 
   const addResponse = () => {
@@ -26,6 +41,13 @@ const App: React.FC = () => {
       setResponse([...response, inputValue]);
     }
   }
+  useEffect(() => {
+    const fetchMessage = async () => {
+      const message = await fetchSingle(id);
+      setFetchedMessage(message);
+    };
+    fetchMessage();
+  }, [id]);
 
   return (
     <div className="App">
@@ -65,6 +87,9 @@ const App: React.FC = () => {
       <button onClick={addItem}>Add Item</button> {/* Step 4 */}
       </div>
       <FetchComponent url={apiUrl} />
+        <p>{fetchedMessage}</p>
+        <input type="text" value={idInput} onChange={changeIdInput} placeholder='which id?'/>
+          <button onClick={changeId}></button>
 
     </div>
   );
