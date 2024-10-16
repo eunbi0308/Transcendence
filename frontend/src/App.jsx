@@ -1,11 +1,15 @@
-import './App.css';
+import React from 'react';
+import PostMessage from './PostMessage.tsx';
 
-function App() {
-  return (
-    <div className="App">
+const App = () => {
+    const apiUrl = 'http://localhost:3000/chatMessages';
 
-    </div>
-  );
-}
+    return (
+        <div>
+            <h1>Send a Message to the Server</h1>
+            <PostMessage url={apiUrl} userId={0} chatRoomId={0} /> {}
+        </div>
+    );
+};
 
 export default App;

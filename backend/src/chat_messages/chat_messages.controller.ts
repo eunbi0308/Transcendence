@@ -14,11 +14,12 @@ import {
   @Controller('chatMessages')
   export class ChatMessagesController {
     constructor(private readonly chatMessagesService: ChatMessagesService) {}
-  
+    
     @Post()
     async create(
         @Body() createChatMessageDto: CreateChatMessageDto,
     ) {
+        console.log("messages recived");
         try {
             await this.chatMessagesService.create(
                 createChatMessageDto,
