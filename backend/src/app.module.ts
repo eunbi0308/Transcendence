@@ -12,6 +12,8 @@ import { ChatParticipantsModule } from './chat_participants/chat_participants.mo
 import { ChatRoomsModule } from './chat_rooms/chat_rooms.module';
 import { FriendsModule } from './friends/friends.module';
 import { GamesModule } from './games/games.module';
+import { PassportModule } from '@nestjs/passport';
+import { FortyTwoAuthModule } from './auth/42-auth.module';
 
 @Module({
   imports: [
@@ -34,7 +36,10 @@ import { GamesModule } from './games/games.module';
     ChatParticipantsModule,
     ChatRoomsModule,
     FriendsModule,
-    GamesModule
+    GamesModule,
+    // PassportModule.register({
+    //   session: false }),
+    //   FortyTwoAuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
