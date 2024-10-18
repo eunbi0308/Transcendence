@@ -1,29 +1,20 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsDate, IsNotEmpty, IsNumber, IsString, } from 'class-validator';
-import { DeepPartial } from 'typeorm';
-import { User } from '../../users/user.entity';
-import { PartialType } from '@nestjs/mapped-types';
-import { ChatMessage } from '../../chat_messages/chat_message.entity';
+import { IsNotEmpty, IsString } from 'class-validator';
 
-export class CreateChatMessageDto extends PartialType(ChatMessage){
-    @ApiProperty({ description: 'content' })
+export class CreateChatMessageDto {
+    @ApiProperty({ description: 'Content of the message' })
     @IsNotEmpty()
     @IsString()
     content: string;
-    
-    @ApiProperty({ description: 'sent_time' })
-    @IsDate()
+
+    @ApiProperty({ description: 'Time when the message was sent' })
     @IsNotEmpty()
-    sent_time: Date;
-    
-    // @ApiProperty({ description: 'user_id' })
-    // @IsNotEmpty()
-    // @IsNumber()
-    // user_id: DeepPartial<User>;
+    @IsString() // Change this to IsString
+    sent_time: string; // Change this to string
 
-    // @ApiProperty({ description: 'chat_room_id' })
-    // @IsNotEmpty()
-    // @IsNumber()
-    // chat_room_id: DeepPartial<User>;
+    @ApiProperty({ description: 'ID of the user sending the message' })
+    user_id: number;
 
+    @ApiProperty({ description: 'ID of the chat room where the message is sent' })
+    chat_room_id: number;
 }

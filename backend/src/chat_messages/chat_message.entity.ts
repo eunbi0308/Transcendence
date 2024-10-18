@@ -15,7 +15,7 @@ export class ChatMessage {
 
   @PrimaryColumn()
   chat_room_id: number;
-  
+
   @ManyToOne(() => User, (user) => user.chatMessages)
   @JoinColumn({ name: 'user_id' })
   user: User;

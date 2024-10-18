@@ -11,35 +11,39 @@ export class ChatMessagesService {
     private readonly chatMessagesRepository: Repository<ChatMessage>,
   ) {}
 
-  async create(
-    createChatMessageDto: CreateChatMessageDto,
-    ): Promise<ChatMessage> {
-    const chatMessageData =
-      await this.chatMessagesRepository.create(
-        createChatMessageDto,
-      );
-    return this.chatMessagesRepository.save(chatMessageData);
+  async create(createChatMessageDto: CreateChatMessageDto): Promise<ChatMessage> {
+    // Create a new ChatMessage instance from the DTO
+    const chatMessageData = this.chatMessagesRepository.create({
+      ...createChatMessageDto,
+      sent_time: new Date(createChatMessageDto.sent_time), // Convert sent_time string to Date object
+    });
+
+    // Save the new chat message to the database
+    return await this.chatMessagesRepository.save(chatMessageData);
   }
 
   async findAll(): Promise<ChatMessage[]> {
     return await this.chatMessagesRepository.find();
   }
 
-  async findByChatRoomId(id: number): Promise<ChatMessage[]> {
-    const chatRoomData =
-        await this.chatMessagesRepository.find({
-          where: { chatRoom: { id } },
-        });
-    if (!chatRoomData)
-      throw new HttpException(
-        'ChatMessage Not Found',
-        404,
-      );
+  async findByChatRoomId(chatRoomId: number): Promise<ChatMessage[]> {
+    const chatRoomData = await this.chatMessagesRepository.find({
+      where: { chatRoom: { id: chatRoomId } },
+    });
+
+    // If no messages are found, throw a 404 exception
+    if (!chatRoomData.length) {
+      throw new HttpException('ChatMessage Not Found', 404);
+    }
+    
     return chatRoomData;
   }
 
-  async remove(chat_room_id: number): Promise<ChatMessage[]> {
-    const existingChatMessage = await this.findByChatRoomId( chat_room_id );
-    return await this.chatMessagesRepository.remove(existingChatMessage,);
+  async remove(chatRoomId: number): Promise<ChatMessage[]> {
+    // Find all messages in the specified chat room
+    const existingChatMessages = await this.findByChatRoomId(chatRoomId);
+
+    // Remove the messages from the database
+    return await this.chatMessagesRepository.remove(existingChatMessages);
   }
 }
