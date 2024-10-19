@@ -1,13 +1,21 @@
 import React from 'react';
 import PostMessage from './PostMessage.tsx';
+import PostChatRoom from './PostChatRoom.tsx'
+import PostUser from './PostUser.tsx'
 
 const App = () => {
-    const apiUrl = 'http://localhost:3000/chatMessages';
+    const urlMessages = 'http://localhost:3000/chatMessages';
+    const urlChatRoom = 'http://localhost:3000/chatroom';
+    const urlUser = 'http://localhost:3000/users';
 
     return (
         <div>
-            <h1>Send a Message to the Server</h1>
-            <PostMessage url={apiUrl} userId={0} chatRoomId={0} /> {}
+            <h1>Post a ChatRoom to the server</h1>
+            <PostChatRoom url={urlChatRoom} type={"public"}/>
+            <h1>Post a Message to the Server</h1>
+            <PostMessage url={urlMessages} userId={1} chatRoomId={1} /> {}
+            <h1>Post a User to the server</h1>
+            <PostUser url={urlUser}/>
         </div>
     );
 };

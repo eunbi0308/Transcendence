@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryColumn, ManyToOne, JoinColumn} from 'typeorm';
+import { Entity, Column, PrimaryColumn, ManyToOne, JoinColumn, CreateDateColumn} from 'typeorm';
 import { User } from '../users/user.entity';
 import { ChatRoom } from '../chat_rooms/chat_room.entity';
 
@@ -7,8 +7,8 @@ export class ChatMessage {
   @Column({ type: 'text', nullable: false, })
   content: string;
   
-  @Column({ type: 'timestamp with time zone', default: () => 'CURRENT_TIMESTAMP' })
-  sent_time: Date;
+  @CreateDateColumn({ type: 'timestamp with time zone', nullable: true, })
+  sent_time: Date;  
 
   @PrimaryColumn()
   user_id: number;

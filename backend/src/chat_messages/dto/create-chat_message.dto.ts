@@ -1,29 +1,26 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsDate, IsNotEmpty, IsNumber, IsString, } from 'class-validator';
-import { DeepPartial } from 'typeorm';
-import { User } from '../../users/user.entity';
+import { IsDate, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import { PartialType } from '@nestjs/mapped-types';
 import { ChatMessage } from '../../chat_messages/chat_message.entity';
 
-export class CreateChatMessageDto extends PartialType(ChatMessage){
-    @ApiProperty({ description: 'content' })
-    @IsNotEmpty()
-    @IsString()
-    content: string;
-    
-    @ApiProperty({ description: 'sent_time' })
-    @IsDate()
-    @IsNotEmpty()
-    sent_time: Date;
-    
-    // @ApiProperty({ description: 'user_id' })
-    // @IsNotEmpty()
-    // @IsNumber()
-    // user_id: DeepPartial<User>;
+export class CreateChatMessageDto extends PartialType(ChatMessage) {
+  @ApiProperty({ description: 'content' })
+  @IsNotEmpty()
+  @IsString()
+  content: string;
 
-    // @ApiProperty({ description: 'chat_room_id' })
-    // @IsNotEmpty()
-    // @IsNumber()
-    // chat_room_id: DeepPartial<User>;
+  @ApiProperty({ description: 'sent_time' })
+//   @IsDate()
+  // You don't need IsNotEmpty if the field can be set to a default value.
+  sent_time: Date;
 
+  @ApiProperty({ description: 'user_id' })
+  @IsNotEmpty()
+  @IsNumber()
+  user_id: number;  // Change this to number
+
+  @ApiProperty({ description: 'chat_room_id' })
+  @IsNotEmpty()
+  @IsNumber()
+  chat_room_id: number;  // Change this to number
 }
