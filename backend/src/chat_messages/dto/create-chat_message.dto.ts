@@ -3,6 +3,10 @@ import { IsDate, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import { PartialType } from '@nestjs/mapped-types';
 import { ChatMessage } from '../../chat_messages/chat_message.entity';
 
+export interface Message {
+  content: string;
+}
+
 export class CreateChatMessageDto extends PartialType(ChatMessage) {
   @ApiProperty({ description: 'content' })
   @IsNotEmpty()

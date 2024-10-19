@@ -1,7 +1,6 @@
 import React from 'react';
-import PostMessage from './PostMessage.tsx';
-import PostChatRoom from './PostChatRoom.tsx'
-import PostUser from './PostUser.tsx'
+import { PostChatRoom, PostUser, PostMessage } from './PostRequest.tsx';
+import Chat from './Chat.tsx';
 
 const App = () => {
     const urlMessages = 'http://localhost:3000/chatMessages';
@@ -16,6 +15,7 @@ const App = () => {
             <PostMessage url={urlMessages} userId={1} chatRoomId={1} /> {}
             <h1>Post a User to the server</h1>
             <PostUser url={urlUser}/>
+            <Chat/>
         </div>
     );
 };
