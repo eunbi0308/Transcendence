@@ -12,8 +12,10 @@ import { ChatParticipantsModule } from './chat_participants/chat_participants.mo
 import { ChatRoomsModule } from './chat_rooms/chat_rooms.module';
 import { FriendsModule } from './friends/friends.module';
 import { GamesModule } from './games/games.module';
-import { PassportModule } from '@nestjs/passport';
-import { FortyTwoAuthModule } from './auth/42-auth.module';
+import { AuthModule } from './auth/auth.module';
+import { AuthUsersModule } from './auth_users/auth_users.module';
+import { AuthController } from './auth/auth.controller';
+import { AuthService } from './auth/auth.service';
 
 @Module({
   imports: [
@@ -37,11 +39,13 @@ import { FortyTwoAuthModule } from './auth/42-auth.module';
     ChatRoomsModule,
     FriendsModule,
     GamesModule,
+    AuthModule,
+    AuthUsersModule,
     // PassportModule.register({
     //   session: false }),
     //   FortyTwoAuthModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [AppController, AuthController],
+  providers: [AppService, AuthService],
 })
 export class AppModule {}

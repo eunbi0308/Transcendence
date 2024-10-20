@@ -1,17 +1,30 @@
-import { Controller, Get, Request, UseGuards } from '@nestjs/common';
-import { FortyTwoAuthGuard } from './42-auth.guard';
+import {
+    Body,
+    Controller,
+    Get,
+    HttpCode,
+    HttpStatus,
+    Post,
+    Request,
+    UseGuards
+  } from '@nestjs/common';
+import { AuthGuard } from './auth.guard';
+import { AuthService } from './auth.service';
 
 @Controller('auth')
 export class AuthController {
-    @UseGuards(FortyTwoAuthGuard)
-    @Get('42login')
-    async login42(@Request() req) {
-        return 'success';
+    constructor(private authService: AuthService) {}
+
+    @HttpCode(HttpStatus.OK)
+    @Post('login')
+    signIn(@Body() signInDto: Record<string, any>) {
+        return this.authService.signIn(signInDto.username, signInDto.password);
     }
 
-    @Get('callback')
-    @UseGuards(FortyTwoAuthGuard)
-    callback() {
-        
+    @UseGuards(AuthGuard)
+    @Get('profile')
+    getProfile(@Request() req) {
+        return req.user;
     }
+
 }
