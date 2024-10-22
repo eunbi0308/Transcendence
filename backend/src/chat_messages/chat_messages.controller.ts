@@ -75,7 +75,7 @@ import {
         }
     }
   
-    @Delete(':id')
+    @Delete(':chatRoomId')
     async remove(@Param('id') id: string) {
         try {
             await this.chatMessagesService.remove(+id);
@@ -90,4 +90,22 @@ import {
             };
         }
     }
+
+
+  @Get('user/:userId')
+  async findAllByUserId(@Param('userId') userId: string){
+      try {
+          const messages = await this.chatMessagesService.findByUserId(+userId); // Convert string to number
+          return {
+              success: true,
+              data: messages,
+              message: 'Messages fetched successfully.',
+          };
+      } catch (error) {
+          return {
+              success: false,
+              message: error.message,
+          };
+      }
   }
+}

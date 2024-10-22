@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-export const PostUser = ({url}) => {
+export const PostUser = ({url, userId}) => {
     const [name, setName] = useState('');
     const [mail, setMail] = useState('');
     const [response, setResponse] = useState(null);

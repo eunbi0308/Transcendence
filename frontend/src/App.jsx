@@ -6,16 +6,21 @@ const App = () => {
     const urlMessages = 'http://localhost:3000/chatMessages';
     const urlChatRoom = 'http://localhost:3000/chatroom';
     const urlUser = 'http://localhost:3000/users';
+    // const user
 
     return (
         <div>
             <h1>Post a ChatRoom to the server</h1>
             <PostChatRoom url={urlChatRoom} type={"public"}/>
-            <h1>Post a Message to the Server</h1>
-            <PostMessage url={urlMessages} userId={1} chatRoomId={1} /> {}
             <h1>Post a User to the server</h1>
             <PostUser url={urlUser}/>
+
             <Chat/>
+
+            <h1>Post a Message from the User</h1>
+            <PostMessage url={urlMessages} userId={1} chatRoomId={1} /> {}
+            <h1>Post a Message from the contact/guest</h1>
+            <PostMessage url={urlMessages} userId={2} chatRoomId={1} /> {}
         </div>
     );
 };

@@ -25,6 +25,12 @@ export class ChatMessagesService {
     return await this.chatMessagesRepository.find();
   }
 
+  async findByUserId(userId: number) {
+    return this.chatMessagesRepository.find({
+        where: { user_id: userId },
+    });
+}
+
   async findByChatRoomId(id: number): Promise<ChatMessage[]> {
     const chatRoomData =
         await this.chatMessagesRepository.find({
