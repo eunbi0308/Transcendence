@@ -9,7 +9,7 @@ interface Message {
     // Add other fields if necessary
 }
 
-const Chat = () => {
+const Chat = ( chatRoomId ) => {
     const url = 'http://localhost:3000/chatMessages';
     const { data: messages, error, loading } = useFetchRequest<Message[]>(url);
     const localId = 1;

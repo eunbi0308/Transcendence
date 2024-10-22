@@ -8,7 +8,8 @@ interface Message {
 
 export const ChatContact = () => {
     const contactId = 2;
-    const url = `http://localhost:3000/chatMessages/user/${contactId}`;
+    const chatRoomId = 1
+    const url = `http://localhost:3000/chatMessages/chatRoom/${chatRoomId}/user/${contactId}`;
     const { data: messages, error, loading } = useFetchRequest<Message[]>(url);
 
     // Check if loading or error

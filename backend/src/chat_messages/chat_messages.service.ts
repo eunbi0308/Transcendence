@@ -44,6 +44,15 @@ export class ChatMessagesService {
     return chatRoomData;
   }
 
+  async findByUserIdAndChatRoomId(userId: number, chatRoomId: number) {
+    return this.chatMessagesRepository.find({
+        where: {
+            user_id: userId,
+            chat_room_id: chatRoomId,
+        },
+    });
+}
+
   async remove(chat_room_id: number): Promise<ChatMessage[]> {
     const existingChatMessage = await this.findByChatRoomId( chat_room_id );
     return await this.chatMessagesRepository.remove(existingChatMessage,);

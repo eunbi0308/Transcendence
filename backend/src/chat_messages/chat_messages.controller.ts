@@ -108,4 +108,28 @@ import {
           };
       }
   }
+
+
+    @Get('chatRoom/:chatRoomId/user/:userId')
+    async findAllByUserAndChatRoom(
+        @Param('chatRoomId') chatRoomId: string,
+        @Param('userId') userId: string,
+    ) {
+        try {
+            const messages = await this.chatMessagesService.findByUserIdAndChatRoomId(
+                +userId,
+                +chatRoomId,
+            );
+            return {
+                success: true,
+                data: messages,
+                message: 'Messages fetched successfully.',
+            };
+        } catch (error) {
+            return {
+                success: false,
+                message: error.message,
+            };
+        }
+    }
 }

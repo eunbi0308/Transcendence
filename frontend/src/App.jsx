@@ -15,7 +15,7 @@ const App = () => {
             <h1>Post a User to the server</h1>
             <PostUser url={urlUser}/>
 
-            <Chat/>
+            <Chat chatRoomId={1}/>
 
             <h1>Post a Message from the User</h1>
             <PostMessage url={urlMessages} userId={1} chatRoomId={1} /> {}
