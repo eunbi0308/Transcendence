@@ -41,7 +41,8 @@ import {
     async findAll() {
         try {
             const data =
-                await this.chatMessagesService.findAll();
+            await this.chatMessagesService.findAll();
+            console.log("Message findAll get request");
             return {
                 success: true,
                 data,

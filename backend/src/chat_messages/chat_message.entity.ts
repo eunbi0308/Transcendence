@@ -1,9 +1,12 @@
-import { Entity, Column, PrimaryColumn, ManyToOne, JoinColumn, CreateDateColumn} from 'typeorm';
+import { Entity, Column, PrimaryColumn, ManyToOne, JoinColumn, CreateDateColumn, PrimaryGeneratedColumn} from 'typeorm';
 import { User } from '../users/user.entity';
 import { ChatRoom } from '../chat_rooms/chat_room.entity';
 
 @Entity('CHAT_MESSAGE')
 export class ChatMessage {
+  @PrimaryGeneratedColumn()
+  id: number;
+
   @Column({ type: 'text', nullable: false, })
   content: string;
   
