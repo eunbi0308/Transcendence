@@ -16,16 +16,20 @@ import { AuthModule } from './auth/auth.module';
 import { AuthUsersModule } from './auth_users/auth_users.module';
 import { AuthController } from './auth/auth.controller';
 import { AuthService } from './auth/auth.service';
+import { PassportModule } from '@nestjs/passport';
 
 @Module({
   imports: [
+    PassportModule.register({
+      session: false,
+    }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'postgres',
       port: 5432,
-      username: 'user',
-      password: 'user123',
-      database: 'postgres',
+      username: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_DATABASE_NAME,
       entities: [],
       autoLoadEntities: true,
       synchronize: true,
@@ -41,11 +45,11 @@ import { AuthService } from './auth/auth.service';
     GamesModule,
     AuthModule,
     AuthUsersModule,
-    // PassportModule.register({
-    //   session: false }),
-    //   FortyTwoAuthModule,
   ],
   controllers: [AppController, AuthController],
-  providers: [AppService, AuthService],
+  providers: [
+    AppService,
+    AuthService
+  ],
 })
 export class AppModule {}
