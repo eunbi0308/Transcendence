@@ -10,6 +10,7 @@ import {
   } from '@nestjs/common';
   import { CreateChatMessageDto } from './dto/create-chat_message.dto';
   import { ChatMessagesService } from './chat_messages.service';
+  import { ChatMessage } from './chat_message.entity'
   
   @Controller('chatMessages')
   export class ChatMessagesController {
@@ -41,7 +42,7 @@ import {
     async findAll() {
         try {
             const data =
-            await this.chatMessagesService.findAll();
+            await this.chatMessagesService.findAllAndSortByTime();
             console.log("Message findAll get request");
             return {
                 success: true,
@@ -131,5 +132,10 @@ import {
                 message: error.message,
             };
         }
+    }
+
+    @Get('sorted')
+    async findAllMessages(): Promise<ChatMessage[]> {
+      return this.chatMessagesService.findAllAndSortByTime();
     }
 }

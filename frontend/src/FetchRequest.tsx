@@ -11,13 +11,12 @@ export const useFetchRequest = <T,>(url: string): UseFetchRequestResponse<T> => 
     const [data, setData] = useState<T | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
-
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true); // Set loading to true before fetching
             try {
                 const response = await axios.get(url);
-                console.log("Fetched data:", response.data);
+                console.log(url + " Fetched data:", response.data);
                 setData(response.data.data);
             } catch (err: any) {
                 setError(err.message);
