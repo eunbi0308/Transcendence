@@ -6,9 +6,7 @@ interface Message {
     content: string;
 }
 
-export const ChatContact = () => {
-    const contactId = 2;
-    const chatRoomId = 1
+export const ChatContact = ( chatRoomId) => {
     const url = `http://localhost:3000/chatMessages`;
     const { data: messages, error, loading } = useFetchRequest<Message[]>(url);
 
@@ -16,7 +14,7 @@ export const ChatContact = () => {
     if (error) return <p>Error: {error}</p>;
 
     return (
-            <div className='chatContact'>
+            <div>
                 <ul>
                     {/* Ensure messages is an array before mapping */}
                     {Array.isArray(messages) ? (

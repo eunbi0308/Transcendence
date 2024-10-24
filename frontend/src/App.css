@@ -1,18 +1,23 @@
-.App {
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.chatBox {
   max-width: fit-content;
   margin-left: auto;
   margin-right: auto;
   border-style: solid;
   border-width: 1mm;
   border-color: black;
-  padding-left: 40mm;
-  padding-right: 40mm;
+
 }
 
 .chatContainer {
   display: flex;
   justify-content: space-between;
-  flex: 80% 20% 30%;
+  /* flex: 80% 20% 30%; */
   margin-top: 20px;
   max-height: 700px;
   overflow-y: auto;
@@ -24,23 +29,8 @@
   
 }
 
-.chatUser ul, .chatContact ul {
+/* .chatUser {
   list-style-type: none;
-  padding: 0; 
-  margin: 0; 
-}
-
-.chatUser li {
-  margin-bottom: 10px;
-  text-align: left;
-}
-
-.chatContact li {
-  margin-bottom: 10px;
-  text-align: right;
-}
-
-.chatUser li {
   align-self: flex-start;
   background-color: brown;
   padding: 10px;
@@ -49,11 +39,36 @@
   max-width: 60%;
 }
 
-.chatContact li {
+.chatContact {
+  list-style-type: none;
   align-self: flex-end;
   background-color: #f1f1f1;
   padding: 10px;
   border-radius: 10px;
   margin-bottom: 10px;
+  max-width: 60%;
+} */
+
+.chatMessages {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.chatUser {
+  list-style-type: none;
+  align-self: flex-start;
+  background-color: lightblue;
+  padding: 10px;
+  border-radius: 10px;
+  max-width: 60%;
+}
+
+.chatContact {
+  align-self: flex-end;
+  list-style-type: none;
+  background-color: lightgreen;
+  padding: 10px;
+  border-radius: 10px;
   max-width: 60%;
 }

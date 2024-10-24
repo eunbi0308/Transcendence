@@ -3,6 +3,7 @@ import './App.css';
 import { useFetchRequest } from './FetchRequest.tsx';
 import { ChatUser } from './ChatUser.tsx'
 import { ChatContact } from './ChatContact.tsx';
+import { ChatMessages } from './ChatMessages.tsx';
 
 interface Message {
     content: string;
@@ -18,10 +19,9 @@ const Chat = ( chatRoomId ) => {
     if (error) return <p>Error: {error}</p>;
 
     return (
-        <div className='App'>
+        <div className='chatBox'>
         <div className='chatContainer'>
-            <ChatUser />
-            <ChatContact/>
+            <ChatMessages/>
         </div>
         </div>
 
