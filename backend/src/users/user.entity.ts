@@ -18,6 +18,9 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column()
+  email: string;
+
   @Column({ type: "bytea" })
   avatar: Buffer;
 

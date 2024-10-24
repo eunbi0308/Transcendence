@@ -1,7 +1,8 @@
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { compare } from 'bcrypt';
-import { AuthUsersService } from '../auth_users/auth_users.service';
+import { UsersService } from '../users/users.service';
+import { CreateUserDto } from '../users/dto/create-user.dto';
 import { AuthJwtPayload } from './types/auth-jwtPayload';
 // import refreshJwtConfig from './config/refresh-jwt.config';
 import { ConfigType } from '@nestjs/config';
@@ -11,12 +12,12 @@ import { CurrentUser } from './types/current-user';
 
 @Injectable()
 export class AuthService {
-//   constructor(
-//     private userService: AuthUsersService,
-//     private jwtService: JwtService,
-//     @Inject(refreshJwtConfig.KEY)
-//     private refreshTokenConfig: ConfigType<typeof refreshJwtConfig>,
-//   ) {}
+  constructor(
+    private userService: UsersService,
+    private jwtService: JwtService,
+    @Inject(refreshJwtConfig.KEY)
+    private refreshTokenConfig: ConfigType<typeof refreshJwtConfig>,
+  ) {}
 
 //   async validateUser(email: string, password: string) {
 //     const user = await this.userService.findByEmail(email);
@@ -90,9 +91,9 @@ export class AuthService {
 //     return currentUser;
 //   }
 
-//   async validateGoogleUser(googleUser: CreateUserDto) {
-//     const user = await this.userService.findByEmail(googleUser.email);
-//     if (user) return user;
-//     return await this.userService.create(googleUser);
-//   }
+  async validateFortyTwoUser(ftUser: CreateUserDto) {
+    const user = await this.userService.findByEmail(ftUser.email);
+    if (user) return user;
+    return await this.userService.create(ftUser);
+  }
 }
