@@ -13,13 +13,20 @@ import { ChatRoomsModule } from './chat_rooms/chat_rooms.module';
 import { FriendsModule } from './friends/friends.module';
 import { GamesModule } from './games/games.module';
 import { AuthModule } from './auth/auth.module';
-import { AuthUsersModule } from './auth_users/auth_users.module';
 import { AuthController } from './auth/auth.controller';
 import { AuthService } from './auth/auth.service';
 import { PassportModule } from '@nestjs/passport';
+import { UsersService } from './users/users.service';
+import { JwtService } from '@nestjs/jwt';
+import refreshJwtConfig from './auth/config/refresh-jwt.config';
+import { ConfigModule } from '@nestjs/config';
+
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      load: [refreshJwtConfig],
+    }),
     PassportModule.register({
       session: false,
     }),
@@ -44,12 +51,12 @@ import { PassportModule } from '@nestjs/passport';
     FriendsModule,
     GamesModule,
     AuthModule,
-    AuthUsersModule,
   ],
   controllers: [AppController, AuthController],
   providers: [
     AppService,
-    AuthService
+    AuthService,
+    JwtService,
   ],
 })
 export class AppModule {}

@@ -14,6 +14,11 @@ export class CreateUserDto extends PartialType(User)  {
     @IsString()
     nickname: string;
 
+    @ApiProperty({ description: 'User 42 email' })
+    @IsNotEmpty()
+    @IsString()
+    email: string;
+
     @ApiProperty({ description: 'Second authentication check' })
     @IsNotEmpty()
     @IsBoolean()

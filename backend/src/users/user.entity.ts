@@ -18,7 +18,7 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ nullable: false, })
   email: string;
 
   @Column({ type: "bytea" })
@@ -35,6 +35,9 @@ export class User {
 
   @Column({ nullable: false, })
   second_auth_email: string;
+
+  @Column({ nullable: true })
+  hashedRefreshToken: string;
 
   @Column({
 			type: "int",
