@@ -30,6 +30,8 @@ services:
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
+      - ./secrets:/usr/src/app/secrets
+
     working_dir: /usr/src/app
     ports:
       # - ${SERVER_PORT}:${SERVER_PORT}
