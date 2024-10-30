@@ -115,32 +115,36 @@ export const PostChatRoom = ({ url, type }) => {
     );
 }
 
+
+
+export const handleSubmitMessages = async (url, message, userId, chatRoomId) => {
+    try {
+        const res = await axios.post(url, {
+            content: message,
+            user_id: userId,
+            chat_room_id: chatRoomId,
+        });
+        return res.data;
+    } catch (error) {
+        console.error('Error:', error);
+        return { error: error.response ? error.response.data : 'Failed to send message' };
+    }
+};
+
 export const PostMessage = ({ url, userId, chatRoomId }) => {
     const [message, setMessage] = useState('');
     const [response, setResponse] = useState(null);
 
-    const handleSubmit = async (e) => {
+    const handleSubmitForm = async (e) => {
         e.preventDefault();
-
-        try {
-            const res = await axios.post(url, {
-                content: message, // This maps to the 'content' field in your entity
-                user_id: userId,  // Make sure to pass the user ID
-                chat_room_id: chatRoomId // Make sure to pass the chat room ID
-            });
-
-            setResponse(res.data);
-        } catch (error) {
-            console.error('Error:', error);
-            setResponse({ error: error.response ? error.response.data : 'Failed to send message' });
-        }
-
+        const res = await handleSubmitMessages(url, message, userId, chatRoomId);
+        setResponse(res);
         setMessage('');
     };
 
     return (
         <div>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmitForm}>
                 <input
                     type="text"
                     value={message}

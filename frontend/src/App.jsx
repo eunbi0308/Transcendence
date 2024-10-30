@@ -27,7 +27,7 @@ const App = () => {
             <PostUser url={urlUser}/>
 
             <Chat chatRoomId={1}/>
-            <WebSocketChat socket={socket1}/>
+            {/* <WebSocketChat socket={socket1}/> */}
             <h1>Post a Message from the User</h1>
             <PostMessage url={urlMessages} userId={1} chatRoomId={1} /> {}
             <h1>Post a Message from the contact/guest</h1>
