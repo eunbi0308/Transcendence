@@ -8,7 +8,7 @@ async function bootstrap() {
     new ValidationPipe({ whitelist: true }),
   );
   app.enableCors({
-    origin: '*', // Replace with your frontend origin for production
+    origin: '*',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
 });
   await app.listen(3000);

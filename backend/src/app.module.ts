@@ -12,6 +12,7 @@ import { ChatParticipantsModule } from './chat_participants/chat_participants.mo
 import { ChatRoomsModule } from './chat_rooms/chat_rooms.module';
 import { FriendsModule } from './friends/friends.module';
 import { GamesModule } from './games/games.module';
+import { QueueModule } from './queue/queue.module';
 
 @Module({
   imports: [
@@ -34,7 +35,8 @@ import { GamesModule } from './games/games.module';
     ChatParticipantsModule,
     ChatRoomsModule,
     FriendsModule,
-    GamesModule
+    GamesModule,
+    QueueModule,
   ],
   controllers: [AppController],
   providers: [AppService],
