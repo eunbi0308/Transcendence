@@ -1,6 +1,6 @@
 import React from 'react';
-import './App.css';
-import { useFetchRequest } from './FetchRequest.tsx';
+import './css/App.css';
+import { useFetchRequest} from './FetchRequest.tsx';
 
 interface Message {
     content: string;

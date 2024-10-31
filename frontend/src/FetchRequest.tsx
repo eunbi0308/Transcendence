@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-interface UseFetchRequestResponse<T> {
+interface fetchRequestResponse<T> {
     data: T | null;
     error: string | null;
     loading: boolean;
 }
 
-export const useFetchRequest = <T,>(url: string): UseFetchRequestResponse<T> => {
+export const useFetchRequest= <T,>(url: string): fetchRequestResponse<T> => {
     const [data, setData] = useState<T | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
