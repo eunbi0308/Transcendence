@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
-import { useFetchRequest} from './FetchRequest.tsx';
-import { handleSubmitMessages } from './PostRequest.tsx';
-import ChatRoomSingleton from "./ChatRoomSingleton.ts"
+import { useFetchRequest} from '../utils/FetchRequest.tsx';
+import { handleSubmitMessages } from '../utils/PostRequest.tsx';
 
 interface oldMessage {
   content: string;
@@ -12,8 +11,9 @@ const addStyle = ( userId: number ) => {
   return (userId == 1 ? 'chatUser' : 'chatContact');
 }
 
-export const Chat = ({ socket }) => {
-  const url = `http://localhost:3000/chatMessages`;
+export const Chat = ({ socket, id }) => {
+  const url = `http://localhost:3000/chatMessages/${id}`;
+  console.log('chat werkt');
   const { data: fetchedMessages, error, loading } = useFetchRequest<oldMessage[]>(url);
     const [messages, setMessages] = useState<oldMessage[]>(fetchedMessages || []); 
     const [input, setInput] = useState('');

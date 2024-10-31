@@ -1,10 +1,10 @@
 import React from 'react';
-import Chat from './ChatContainer.tsx';
-import { WebSocketChat } from './Chat.tsx';
+import Chat from './chat/ChatContainer.tsx';
+import { WebSocketChat } from './chat/Chat.tsx';
 import io from 'socket.io-client';
-import { PostMessage, PostUser } from './PostRequest.tsx';
-import ChatContainer from './ChatContainer.tsx';
-import { ChatRoomContainer } from './ChatRoomContainer.tsx';
+import { PostMessage, PostUser } from './utils/PostRequest.tsx';
+import ChatContainer from './chat/ChatContainer.tsx';
+import { ChatRoomContainer } from './chatroom/ChatRoomContainer.tsx';
 
 const App = () => {
     const urlMessages = 'http://localhost:3000/chatMessages';
@@ -32,7 +32,6 @@ const App = () => {
             <h1>Post a User to the server</h1>
             <PostUser url={urlUser}/>
 
-            <ChatContainer/>
         </div>
     );
 };
