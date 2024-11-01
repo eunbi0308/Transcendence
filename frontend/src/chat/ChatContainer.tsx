@@ -4,7 +4,7 @@ import { useFetchRequest} from '../utils/FetchRequest.tsx';
 import { Chat } from './Chat.tsx';
 import io from 'socket.io-client';
 
-const ChatContainer = ({ chatRoomId }) => {
+const ChatContainer = ({ chatRoomId, userId }) => {
     // const chatRoomId = localStorage.getItem('chatRoomId');
     const socket = io('ws://localhost:3000', {
         reconnectionAttempts: 5,
@@ -15,7 +15,7 @@ const ChatContainer = ({ chatRoomId }) => {
     return (
         <div className='chatBox'>
         <div className='chatContainer'>
-            <Chat socket={socket} id={chatRoomId}/>
+            <Chat socket={socket} userId={userId} id={chatRoomId}/>
         </div>
         </div>
 

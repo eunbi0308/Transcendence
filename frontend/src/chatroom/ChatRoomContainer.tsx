@@ -3,7 +3,7 @@ import { PostChatRoom } from "../utils/PostRequest.tsx";
 import { ChatRoomList } from "./ChatRoomList.tsx";
 import ChatContainer from "../chat/ChatContainer.tsx";
 
-export const ChatRoomContainer = () => {
+export const ChatRoomContainer = ( userId ) => {
     const [chatRoomId, setChatRoomId] = useState(() => {
         const savedId = localStorage.getItem('chatRoomId');
         return savedId ? JSON.parse(savedId) : null; // or a default value
@@ -25,7 +25,7 @@ export const ChatRoomContainer = () => {
     return (
         <div className="chatRoomBox">
             <ChatRoomList chatRoomId={chatRoomId} onChatRoomChange={handleChatRoomChange} />
-            <ChatContainer chatRoomId={chatRoomId} />
+            <ChatContainer chatRoomId={chatRoomId} userId={userId}/>
             <PostChatRoom url={'http://localhost:3000/chatroom'} type={'public'} />
         </div>
     );

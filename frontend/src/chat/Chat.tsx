@@ -11,7 +11,7 @@ const addStyle = ( userId: number ) => {
   return (userId == 1 ? 'chatUser' : 'chatContact');
 }
 
-export const Chat = ({ socket, id }) => {
+export const Chat = ({ socket, id, userId }) => {
   const url = `http://localhost:3000/chatMessages/${id}`;
   console.log('chat werkt');
   const { data: fetchedMessages, error, loading } = useFetchRequest<oldMessage[]>(url);
@@ -41,10 +41,10 @@ export const Chat = ({ socket, id }) => {
 
     const handleSendMessage = () => {
       if (input.trim()) {
-        const newMessage = { content: input, user_id: 1 };
+        const newMessage = { content: input, user_id: userId };
         socket.emit('sendMessage', newMessage);
         setMessages((prevMessages) => [...prevMessages, newMessage]);
-        handleSubmitMessages('http://localhost:3000/chatMessages', input, 1, id);
+        handleSubmitMessages('http://localhost:3000/chatMessages', input, userId, id);
         console.log("added");
         setInput('');
       }
