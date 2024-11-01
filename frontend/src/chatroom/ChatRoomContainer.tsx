@@ -9,7 +9,6 @@ export const ChatRoomContainer = () => {
         return savedId ? JSON.parse(savedId) : null; // or a default value
     });
 
-    // Update local storage whenever chatRoomId changes
     useEffect(() => {
         if (chatRoomId !== null) {
             localStorage.setItem('chatRoomId', JSON.stringify(chatRoomId));
@@ -17,13 +16,16 @@ export const ChatRoomContainer = () => {
     }, [chatRoomId]);
 
     const handleChatRoomChange = (newId: number) => {
+        localStorage.setItem('chatRoomId', JSON.stringify(newId));
         setChatRoomId(newId);
-        console.log(chatRoomId);
+        console.log("Chat room ID changed to:", newId);
     };
+    
+    // console.log()
     return (
         <div className="chatRoomBox">
             <ChatRoomList chatRoomId={chatRoomId} onChatRoomChange={handleChatRoomChange} />
-            <ChatContainer/>
+            <ChatContainer chatRoomId={chatRoomId} />
             <PostChatRoom url={'http://localhost:3000/chatroom'} type={'public'} />
         </div>
     );

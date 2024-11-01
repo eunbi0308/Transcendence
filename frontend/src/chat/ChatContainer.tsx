@@ -4,8 +4,8 @@ import { useFetchRequest} from '../utils/FetchRequest.tsx';
 import { Chat } from './Chat.tsx';
 import io from 'socket.io-client';
 
-const ChatContainer = () => {
-    const chatRoomId = localStorage.getItem('chatRoomId');
+const ChatContainer = ({ chatRoomId }) => {
+    // const chatRoomId = localStorage.getItem('chatRoomId');
     const socket = io('ws://localhost:3000', {
         reconnectionAttempts: 5,
         // reconnectionDelay: 1000,

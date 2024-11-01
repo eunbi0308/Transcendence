@@ -41,10 +41,10 @@ export const Chat = ({ socket, id }) => {
 
     const handleSendMessage = () => {
       if (input.trim()) {
-        const newMessage = { content: input, user_id: 2 };
+        const newMessage = { content: input, user_id: 1 };
         socket.emit('sendMessage', newMessage);
         setMessages((prevMessages) => [...prevMessages, newMessage]);
-        handleSubmitMessages('http://localhost:3000/chatMessages', input, 2, 1);
+        handleSubmitMessages('http://localhost:3000/chatMessages', input, 1, id);
         console.log("added");
         setInput('');
       }
