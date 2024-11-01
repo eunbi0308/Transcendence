@@ -41,10 +41,10 @@ export const Chat = ({ socket, id, userId }) => {
 
     const handleSendMessage = () => {
       if (input.trim()) {
-        const newMessage = { content: input, user_id: userId };
+        const newMessage = { content: input, user_id: userId.userId };
         socket.emit('sendMessage', newMessage);
         setMessages((prevMessages) => [...prevMessages, newMessage]);
-        handleSubmitMessages('http://localhost:3000/chatMessages', input, userId, id);
+        handleSubmitMessages('http://localhost:3000/chatMessages', input, userId.userId, id);
         console.log("added");
         setInput('');
       }
@@ -71,13 +71,15 @@ export const Chat = ({ socket, id, userId }) => {
                   <p>No messages found.</p>
               )}
           </ul>
-          <input
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder="Type a message"
-          />
-          <button onClick={handleSendMessage}>Send</button>
+          <div className='formMessages'>
+            <input
+              type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="Type a message"
+              />
+            <button onClick={handleSendMessage}>Send</button>
+            </div>
       </div>
     );
   };

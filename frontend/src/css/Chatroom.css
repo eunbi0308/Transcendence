@@ -5,7 +5,7 @@
     background-color: grey;
     padding: 30px;
     border-radius: 10px;
-    max-width: 60%;
+    width: 100%;
 }
 
 .rooms
@@ -13,4 +13,9 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
+}
+
+.chatRoomBox
+{
+    display: flex;
 }

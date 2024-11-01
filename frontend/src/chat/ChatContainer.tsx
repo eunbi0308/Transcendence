@@ -1,5 +1,5 @@
 import React from 'react';
-import '../css/App.css';
+import '../css/ChatBox.css';
 import { useFetchRequest} from '../utils/FetchRequest.tsx';
 import { Chat } from './Chat.tsx';
 import io from 'socket.io-client';

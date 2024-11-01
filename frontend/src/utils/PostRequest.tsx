@@ -84,6 +84,7 @@ export const PostChatRoom = ({ url, type }) => {
 
     return (
         <div>
+            <p>Add Chatroom</p>
             <form onSubmit={handleSubmit}>
                 {/* Input for Name */}
                 <input 

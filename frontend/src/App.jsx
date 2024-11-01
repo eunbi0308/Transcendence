@@ -12,12 +12,12 @@ const App = () => {
     const urlUser = 'http://localhost:3000/users';
     const [localUserId, setLocalUserId] = useState(() => {
         const savedValue = localStorage.getItem("userId");
-        return savedValue ? JSON.parse(savedValue) : 2;
+        return savedValue ? JSON.parse(savedValue) : 1;
     })
 
     useEffect(() => {
         localStorage.setItem('userId', JSON.stringify(localUserId));
-        setLocalUserId(2);
+        setLocalUserId(1);
     }, [localUserId]);
 
     const socket1 = io('ws://localhost:3000', {
