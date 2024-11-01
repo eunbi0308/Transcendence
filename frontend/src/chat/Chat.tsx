@@ -34,6 +34,12 @@ export const Chat = ({ socket, id, userId }) => {
         console.error('WebSocket connection error:', error);
       });
 
+      const handleReceiveMessage = (message) => {
+        console.log("!!!!!!!!!!!!");
+        setMessages((prevMessages) => [...prevMessages, message]);
+    };
+
+    socket.on('receiveMessage', handleReceiveMessage); 
       return () => {
         socket.off('receiveMessage');
       };
@@ -43,7 +49,7 @@ export const Chat = ({ socket, id, userId }) => {
       if (input.trim()) {
         const newMessage = { content: input, user_id: userId.userId };
         socket.emit('sendMessage', newMessage);
-        setMessages((prevMessages) => [...prevMessages, newMessage]);
+        // setMessages((prevMessages) => [...prevMessages, newMessage]);
         handleSubmitMessages('http://localhost:3000/chatMessages', input, userId.userId, id);
         console.log("added");
         setInput('');
