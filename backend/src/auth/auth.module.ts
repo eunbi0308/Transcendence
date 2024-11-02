@@ -17,33 +17,28 @@ import jwtConfig from './config/jwt.config';
 import refreshJwtConfig from './config/refresh-jwt.config';
 import { JwtAuthGuard } from './guards/jwt-auth/jwt-auth.guard';
 import { RolesGuard } from './guards/roles/roles.guard';
+import { PassportModule } from '@nestjs/passport';
+import {HttpModule} from "@nestjs/axios";
+import {UsersModule} from "../users/users.module";
+import {ConfigService} from "./config/config.service";
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([User]),
-    AuthUsersModule,
-    JwtModule.registerAsync(jwtConfig.asProvider()),
-    ConfigModule.forFeature(jwtConfig),
     ConfigModule.forFeature(FortyTwoOauthConfig),
-    ConfigModule.forFeature(refreshJwtConfig),
+    PassportModule.register({ defaultStrategy: 'ft' }),
+    HttpModule,
+    UsersModule,
+    ConfigModule,
   ],
-  controllers: [AuthController],
+  controllers: [
+      AuthController,
+  ],
   providers: [
-    {
-      provide: APP_GUARD,
-      useClass: FortyTwoAuthGuard,
-    },
-    AuthService,
-    AuthUsersService,
-    FortyTwoStrategy,
-    {
-      provide: APP_GUARD,
-      useClass: JwtAuthGuard,
-    },
-    {
-      provide: APP_GUARD,
-      useClass: RolesGuard,
-    },
+      AuthService,
+      ConfigService,
+      FortyTwoStrategy,
+      FortyTwoAuthGuard
   ],
   exports: [AuthService],
 })
