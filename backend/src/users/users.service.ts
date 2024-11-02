@@ -1,15 +1,21 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import {HttpException, Inject, Injectable} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './user.entity';
+import { JwtService } from '@nestjs/jwt';
+import JwtConfig from "../auth/config/jwt.config";
+import {ConfigType} from "@nestjs/config";
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User)
     private readonly usersRepository: Repository<User>,
+    private jwt: JwtService,
+    @Inject(JwtConfig.KEY)
+    private jwtConfig: ConfigType<typeof JwtConfig>,
   ) {}
 
   async create(
@@ -55,4 +61,14 @@ export class UsersService {
     const existingUser = await this.findOne(id);
     return await this.usersRepository.remove(existingUser,);
   }
+
+  async signToken(id: number): Promise<string> {
+    const payload = { sub: id };
+    const token = await this.jwt.signAsync(payload, {
+      expiresIn: this.jwtConfig.signOptions.expiresIn,
+      secret: this.jwtConfig.secret,
+    });
+    return token;
+  }
+
 }

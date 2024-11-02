@@ -1,55 +1,32 @@
-import { Controller,
-          Get,
-          HttpCode,
-          HttpStatus,
-          Post,
-          Req,
-          Request,
-          Res,
-          UseGuards
- } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { AuthGuard } from '@nestjs/passport';
-import { LocalAuthGuard } from './guards/local-auth/local-auth.guard';
-import { RefreshAuthGuard } from './guards/refresh-auth/refresh-auth.guard';
-import { JwtAuthGuard } from './guards/jwt-auth/jwt-auth.guard';
-import { Public } from './decorators/public.decorator';
+import {
+    Controller,
+    Get, HttpStatus,
+    Req,
+    Res,
+    UseGuards
+} from '@nestjs/common';
+import { Request, Response as ExpressResponse } from 'express';
 import { FortyTwoAuthGuard } from './guards/ft-auth/ft-auth.guard';
+import { UsersService } from "../users/users.service";
+import { ConfigService } from "./config/config.service";
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
-  @Public()
-  @HttpCode(HttpStatus.OK)
-  @UseGuards(LocalAuthGuard)
-  @Post('login')
-  async login(@Request() req) {
-    // return this.authService.login(req.user.id);
-  }
+    constructor(
+        private readonly usersService: UsersService,
+        private readonly configservice: ConfigService
+    ) {}
 
-  @UseGuards(RefreshAuthGuard)
-  @Post('refresh')
-  refreshToken(@Req() req) {
-    // return this.authService.refreshToken(req.user.id);
-  }
+    @Get('42/login')
+    @UseGuards(FortyTwoAuthGuard)
+    fortyTwoLogin(@Req() req: Request) {}
 
-  @UseGuards(JwtAuthGuard)
-  @Post('signout')
-  signOut(@Req() req) {
-    // this.authService.signOut(req.user.id);
-  }
-
-  @Public()
-  @UseGuards(FortyTwoAuthGuard)
-  @Get('42/login')
-  fortyTwoLogin() {}
-
-  @Public()
-  @UseGuards(FortyTwoAuthGuard)
-  @Get('42/callback')
-  fortyTwoCallback() {}
-//   async fortyTwoCallback(@Req() req, @Res() res) {
-//     const response = await this.authService.login(req.user.id);
-//     res.redirect(`http://localhost:3000?token=${response.accessToken}`);
-//   }
+    @Get('42/callback')
+    @UseGuards(FortyTwoAuthGuard)
+    async fortyTwoCallback(@Req() req: Request, @Res() res) {
+        const cookie = this.usersService.signToken(req.user['id']);
+        req.res.cookie('jwt', cookie, { path: '/', httpOnly: true });
+        console.log(res.accessToken);
+        req.res.redirect('https://localhost:3000');
+    }
 }
