@@ -28,7 +28,6 @@ export class FortyTwoStrategy extends PassportStrategy(Strategy, 'ft') {
         if (user == null) {
             user = new User();
             user.id = profile.id;
-
             user.avatar = profile._json.image.link;
             user.user_status = user_status.Offline;
             user.is_second_auth_done = false;
