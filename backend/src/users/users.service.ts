@@ -35,11 +35,6 @@ export class UsersService {
   async findOne(id: number): Promise<User> {
     const userData =
         await this.usersRepository.findOneBy({ id });
-    if (!userData)
-        throw new HttpException(
-            'User Not Found',
-            404,
-        );
         return userData;
   }
 

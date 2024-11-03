@@ -11,7 +11,6 @@ import { ChatRoomsModule } from './chat_rooms/chat_rooms.module';
 import { FriendsModule } from './friends/friends.module';
 import { GamesModule } from './games/games.module';
 import { AuthModule } from './auth/auth.module';
-import { AuthUsersModule } from './auth_users/auth_users.module';
 import { AuthController } from './auth/auth.controller';
 import { AuthService } from './auth/auth.service';
 import { PassportModule } from '@nestjs/passport';
@@ -45,7 +44,6 @@ import {ConfigService} from "./auth/config/config.service";
     FriendsModule,
     GamesModule,
     AuthModule,
-    AuthUsersModule,
   ],
   controllers: [AppController, AuthController],
   providers: [
