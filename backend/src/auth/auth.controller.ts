@@ -28,6 +28,6 @@ export class AuthController {
         const cookie = this.usersService.signToken(req.user['id']);
         req.res.cookie('jwt', cookie, { path: '/', httpOnly: true });
         console.log(res.accessToken);
-        req.res.redirect('https://localhost:3000');
+        req.res.redirect('http://localhost:3001');
     }
 }
