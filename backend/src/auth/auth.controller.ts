@@ -17,6 +17,7 @@ export class AuthController {
         private readonly configservice: ConfigService
     ) {}
 
+    // https://localhost:3000/auth/42/login
     @Get('42/login')
     @UseGuards(FortyTwoAuthGuard)
     fortyTwoLogin(@Req() req: Request) {}
