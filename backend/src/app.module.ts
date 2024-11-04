@@ -16,6 +16,7 @@ import { AuthService } from './auth/auth.service';
 import { PassportModule } from '@nestjs/passport';
 import { ConfigModule } from "./auth/config/config.module";
 import {ConfigService} from "./auth/config/config.service";
+import { QueueModule } from './queue/queue.module';
 
 @Module({
   imports: [
@@ -43,13 +44,10 @@ import {ConfigService} from "./auth/config/config.service";
     ChatRoomsModule,
     FriendsModule,
     GamesModule,
+    QueueModule,,
     AuthModule,
   ],
-  controllers: [AppController, AuthController],
-  providers: [
-    AppService,
-    ConfigService,
-    AuthService
-  ],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}
