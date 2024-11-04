@@ -7,22 +7,23 @@ import { Game } from '../../games/game.entity';
 
 
 export class CreateGameDto extends PartialType(Game) {
-    // @ApiProperty({ description: 'user_id' })
-    // @IsNotEmpty()
-    // @IsNumber()
-    // player1_user_id: DeepPartial<User>;
 
-    // @ApiProperty({ description: 'user_id' })
-    // @IsNotEmpty()
-    // @IsNumber()
-    // player2_user_id: DeepPartial<User>;
+    @ApiProperty({ description: 'Player 1 user ID' })
+    @IsNotEmpty()
+    @IsNumber()
+    player1_user_id: number;
 
-    // @ApiProperty({ description: 'user_id' })
-    // @IsNotEmpty()
-    // @IsNumber()
-    // winner_user_id: DeepPartial<User>
+    @ApiProperty({ description: 'Player 2 user ID' })
+    @IsNotEmpty()
+    @IsNumber()
+    player2_user_id: number;
 
-    @ApiProperty({ description: 'is_ladder_game' })
+    @ApiProperty({ description: 'Winner user ID' })
+    @IsNotEmpty()
+    @IsNumber()
+    winner_user_id: number;
+
+    @ApiProperty({ description: 'Is it a ladder game?' })
     @IsBoolean()
     is_ladder_game: boolean;
 

@@ -1,8 +1,13 @@
-import { Entity, ManyToOne, JoinColumn, Column, PrimaryColumn} from 'typeorm';
+import { Entity, ManyToOne, JoinColumn, Column, PrimaryColumn, PrimaryGeneratedColumn} from 'typeorm';
+import { IsOptional, IsDate, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+
 import { User } from '../users/user.entity';
 
 @Entity('GAME')
 export class Game {
+
+  @PrimaryGeneratedColumn()
+  gameId: number;
 
   @PrimaryColumn()
   player1_user_id: number;
