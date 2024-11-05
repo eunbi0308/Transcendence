@@ -15,26 +15,26 @@ interface ChatRoom {
 }
 
 interface ChatRoomListProps {
-    chatRoomId: number | null;
-    onChatRoomChange: (newId: number) => void;
+    chatRoom?: ChatRoom | null;
+    onChatRoomChange: (chatRoom: ChatRoom) => void;
 }
 
-export const ChatRoomList: React.FC<ChatRoomListProps> = ({ chatRoomId, onChatRoomChange }) => {
+
+export const ChatRoomList: React.FC<ChatRoomListProps> = ({ onChatRoomChange }) => {
     const url = 'http://localhost:3000/chatroom';
     const { data: chatRooms, error, loading } = useFetchRequest<ChatRoom[]>(url);
 
-    const changeChatRoom = (newId: number) => {
-        onChatRoomChange(newId);
-        console.log("Chat Room Changed to ID:", newId);
+    const changeChatRoom = (chatRoom: ChatRoom) => {
+        onChatRoomChange(chatRoom);
+        console.log("Chat Room Changed to ID:", chatRoom);
     };
 
-    console.log("Current Chat Room ID:", chatRoomId);
     return (
         <div>
             <ul className="rooms">
                 {Array.isArray(chatRooms) ? (
                     chatRooms.map((chatroom, index) => (
-                        <div key={index} className="node" onClick={() => changeChatRoom(chatroom.id)}>
+                        <div key={index} className="node" onClick={() => changeChatRoom(chatroom)}>
                             <li>{chatroom.title}</li>
                             <li>{chatroom.chat_room_type}</li>
                         </div>

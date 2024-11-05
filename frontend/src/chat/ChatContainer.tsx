@@ -6,17 +6,16 @@ import io from 'socket.io-client';
 
 const ChatContainer = ({ chatRoomId, userId }) => {
     // const chatRoomId = localStorage.getItem('chatRoomId');
-    const socket = io('ws://localhost:3000', {
-        reconnectionAttempts: 5,
-        // reconnectionDelay: 1000,
-        transports: ['websocket'], // Force WebSocket transport
-      });
+const socket = io('localhost:3000/ws', {
+  reconnectionAttempts: 5,
+  transports: ['websocket'],
+});
       console.log('werkt in container');
     return (
         <div className='chatBox'>
-        <div className='chatContainer'>
-            <Chat socket={socket} userId={userId} id={chatRoomId}/>
-        </div>
+            <div className='chatContainer'>
+                <Chat socket={socket} id={chatRoomId} userId={userId}/>
+            </div>
         </div>
 
     );

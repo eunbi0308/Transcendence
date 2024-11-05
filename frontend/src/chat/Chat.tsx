@@ -12,13 +12,12 @@ const addStyle = ( userId: number ) => {
 }
 
 export const Chat = ({ socket, id, userId }) => {
-  const url = `http://localhost:3000/chatMessages/${id}`;
-  console.log('chat werkt');
+  const url = `http://localhost:3000/chatMessages/${id.id}`;
   const { data: fetchedMessages, error, loading } = useFetchRequest<oldMessage[]>(url);
     const [messages, setMessages] = useState<oldMessage[]>(fetchedMessages || []); 
     const [input, setInput] = useState('');
-    
-    // console.log(chatRoomId);
+
+
     useEffect(() => {
       if (fetchedMessages) {
         setMessages(fetchedMessages);
@@ -26,26 +25,44 @@ export const Chat = ({ socket, id, userId }) => {
     }, [fetchedMessages]);
     
     useEffect(() => {
+      console.log("regesterid");
       socket.on('connect', () => {
         console.log('WebSocket connected');
       });
-
-      socket.on('connect_error', (error) => {
-        console.error('WebSocket connection error:', error);
+    
+      socket.on("connect_error", (err) => {
+        console.log(err.message);
+      
+        console.log(err.description);
+      
+        console.log(err.context);
+        console.log(id.title);
       });
-
-      return () => {
-        socket.off('receiveMessage');
+    
+      socket.emit('joinRoom', id.title);
+    
+      const handleReceiveMessage = (message) => {
+        console.log("Received message:", message);
+        // setMessages((prevMessages) => [...prevMessages, message]);
       };
-    }, []);
-
+    
+      socket.on('receiveMessage', handleReceiveMessage);
+    
+      return () => {
+        // socket.emit('leaveRoom', id.title);
+        // socket.off('receiveMessage', handleReceiveMessage);
+      };
+    }, [id.title]);
+    console.log('dexe');
+    console.log(id.title);
     const handleSendMessage = () => {
       if (input.trim()) {
-        const newMessage = { content: input, user_id: userId.userId };
+        const newMessage = { content: input, user_id: userId.userId, roomTitle: id.title };
         socket.emit('sendMessage', newMessage);
         setMessages((prevMessages) => [...prevMessages, newMessage]);
-        handleSubmitMessages('http://localhost:3000/chatMessages', input, userId.userId, id);
-        console.log("added");
+        console.log(input);
+        handleSubmitMessages('http://localhost:3000/chatMessages', input, userId.userId, id.id);
+        console.log(id);
         setInput('');
       }
     };
