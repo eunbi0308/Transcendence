@@ -1,41 +1,51 @@
 services:
   frontend:
     container_name: frontend
-    image: frontend
     build:
+      context: ./frontend
       dockerfile: Dockerfile
-      context: "./frontend"
-    depends_on:
-      - nestjs
     networks:
       - my_network
     volumes:
       - /frontend/node_modules
       - ./frontend:/app
     ports:
-      - "3001:3000"
-    command: sh -c "npm ci && npm run start"
-
+      - "3001:3000"  # This is for local development
+    command: sh -c "until nc -z nestjs 3000; do echo 'Waiting for nestjs...'; sleep 2; done; npm ci && npm run start"
+  
   nestjs:
     container_name: nestjs
-    image: nestjs
     build:
+      context: ./backend
       dockerfile: Dockerfile
-      context: "./backend"
-    env_file:
-      - .env
     networks:
       - my_network
+    env_file:
+      - .env
     volumes:
-      - .:/usr/src/app
+      - ./backend:/app
+       - .:/usr/src/app
       - /usr/src/app/node_modules
       - ./secrets:/usr/src/app/secrets
     working_dir: /usr/src/app
     ports:
       - "3000:3000"
-    command: sh -c "cd ./backend && npm ci && npm run start:dev"
+    command: sh -c "until nc -z postgres 5432; do echo 'Waiting for postgres...'; sleep 2; done; npm install && npm run start:dev"      - postgres
+
+  nginx:
+    container_name: nginx
+    image: nginx:alpine
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - "8080:80"  # Expose Nginx on port 8080
+    networks:
+      - my_network
     depends_on:
-      - postgres
+      - frontend
+      - nestjs
+    command: sh -c "./wait-for-it.sh frontend:3001 -- ./wait-for-it.sh nestjs:3000 -- nginx -g 'daemon off;'"
+
 
   postgres:
     container_name: postgres
@@ -43,7 +53,7 @@ services:
     networks:
       - my_network
     volumes:
-      - pg-data:/var/lib/postgresql/data
+      - transcendence-1_pg-data:/var/lib/postgresql/data
     env_file:
       - .env
     environment:
@@ -54,12 +64,19 @@ services:
     ports:
       - "5432:5432"
     restart: always
-    
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 30s
+      retries: 3
+      start_period: 10s
+      timeout: 10s
+
+
   pgadmin:
     container_name: pgadmin
     image: dpage/pgadmin4:latest
-    networks:
-      - my_network
+    # networks:
+    #   - network
     environment:
       - PGADMIN_DEFAULT_EMAIL=${PGADMIN_MAIL}
       - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PW}
@@ -67,9 +84,9 @@ services:
       - "5050:80"
     restart: always
 
+volumes:
+  transcendence-1_pg-data: 
+
 networks:
   my_network:
     driver: bridge
-
-volumes:
-  pg-data:
