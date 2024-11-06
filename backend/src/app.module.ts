@@ -11,11 +11,9 @@ import { ChatRoomsModule } from './chat_rooms/chat_rooms.module';
 import { FriendsModule } from './friends/friends.module';
 import { GamesModule } from './games/games.module';
 import { AuthModule } from './auth/auth.module';
-import { AuthController } from './auth/auth.controller';
-import { AuthService } from './auth/auth.service';
 import { PassportModule } from '@nestjs/passport';
-import { ConfigModule } from "./auth/config/config.module";
-import {ConfigService} from "./auth/config/config.service";
+import { ConfigModule } from './auth/config/config.module';
+import { ConfigService } from './auth/config/config.service';
 import { QueueModule } from './queue/queue.module';
 
 @Module({
@@ -44,7 +42,7 @@ import { QueueModule } from './queue/queue.module';
     ChatRoomsModule,
     FriendsModule,
     GamesModule,
-    QueueModule,,
+    QueueModule,
     AuthModule,
   ],
   controllers: [AppController],
