@@ -6,7 +6,7 @@ import ChatContainer from "../chat/ChatContainer.tsx";
 export const ChatRoomContainer = ( userId ) => {
     const [chatRoomId, setChatRoomId] = useState(() => {
         const savedId = localStorage.getItem('chatRoomId');
-        return savedId ? JSON.parse(savedId) : null; // or a default value
+        return savedId ? JSON.parse(savedId) : null;
     });
 
     useEffect(() => {
