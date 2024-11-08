@@ -27,7 +27,7 @@ export const ChatRoomContainer = ( userId ) => {
             <ChatRoomList chatRoomId={chatRoomId} onChatRoomChange={handleChatRoomChange} />
             <ChatContainer chatRoomId={chatRoomId} userId={userId}/>
             
-            <PostChatRoom url={'http://localhost:3000/chatroom'} type={'public'} />
+            <PostChatRoom url={'http://localhost:3000/chatroom'}/>
         </div>
     );
-};
+}; 

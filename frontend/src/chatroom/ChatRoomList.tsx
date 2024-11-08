@@ -1,6 +1,8 @@
 import React from "react";
 import '../css/Chatroom.css';
 import { useFetchRequest } from "../utils/FetchRequest.tsx";
+import { useState } from "react";
+import { PasswordPrompt } from "./PasswordPrompt.tsx";
 
 enum chat_room_types {
     Public = "public",
@@ -22,8 +24,15 @@ interface ChatRoomListProps {
 export const ChatRoomList: React.FC<ChatRoomListProps> = ({ chatRoomId, onChatRoomChange }) => {
     const url = 'http://localhost:3000/chatroom';
     const { data: chatRooms, error, loading } = useFetchRequest<ChatRoom[]>(url);
+    const [askPassword, setAskPassword] = useState<Boolean>(false);
+    let selectedChatRoom: ChatRoom | null = null;
 
     const changeChatRoom = (newId: number) => {
+        selectedChatRoom = chatRooms?.find((chatRoom) => chatRoom.id === newId) ?? null;
+        if (selectedChatRoom?.chat_room_type === chat_room_types.Protected) {
+            setAskPassword(true);
+        }
+    
         onChatRoomChange(newId);
         console.log("Chat Room Changed to ID:", newId);
     };
@@ -43,6 +52,11 @@ export const ChatRoomList: React.FC<ChatRoomListProps> = ({ chatRoomId, onChatRo
                     <p>No chatRooms found.</p>
                 )}
             </ul>
+            {/* {askPassword && (
+                <PasswordPrompt onSubmit={handlePasswordSubmit} />
+            )
+
+            } */}
         </div>
     );
 };
