@@ -50,6 +50,7 @@ export const Chat = ({ socket, id, userId }) => {
         const newMessage = { content: input, user_id: userId.userId };
         socket.emit('sendMessage', newMessage);
         // setMessages((prevMessages) => [...prevMessages, newMessage]);
+        console.log(userId.userId, id);
         handleSubmitMessages('http://localhost:3000/chatMessages', input, userId.userId, id);
         console.log("added");
         setInput('');

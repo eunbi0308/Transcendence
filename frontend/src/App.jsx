@@ -20,14 +20,6 @@ const App = () => {
         setLocalUserId(1);
     }, [localUserId]);
 
-    const socket1 = io('ws://localhost:3000', {
-        reconnectionAttempts: 5,
-        // reconnectionDelay: 1000,
-        transports: ['websocket'],
-      });
-    //   const chatRoomId = ChatRoomSingleton.getInstance();
-    console.log('local')
-
 
     console.log(localUserId);
 
