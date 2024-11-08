@@ -55,10 +55,12 @@ export const PostUser = ({url, userId}) => {
 };
 
 
-export const PostChatRoom = ({ url, type }) => {
+
+export const PostChatRoom = ({ url}) => {
     const [name, setName] = useState('');
     const [password, setPassword] = useState('');
     const [response, setResponse] = useState(null);
+    const [type, setType] = useState("");
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -69,6 +71,7 @@ export const PostChatRoom = ({ url, type }) => {
             const res = await axios.post(url, {
                 title: name,
                 password: password,
+                chat_room_type: type,
             });
 
             setResponse(res.data);
@@ -86,23 +89,60 @@ export const PostChatRoom = ({ url, type }) => {
         <div>
             <p>Add Chatroom</p>
             <form onSubmit={handleSubmit}>
-                {/* Input for Name */}
                 <input 
                     type="text"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    placeholder='Add title'
+                    placeholder="Add title"
                     required
                 />
-
-                {/* Input for Password */}
+            
                 <input 
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    placeholder='Add password (optional)'
+                    placeholder="Add password (optional)"
                 />
-
+            
+                <div>
+                    <p>Select chat type:</p>
+                    <div>
+                        <input 
+                            type="radio" 
+                            id="public" 
+                            name="chatType" 
+                            value="public" 
+                            checked={type === 'public'}
+                            onChange={(e) => setType(e.target.value)}
+                        />
+                        <label htmlFor="public">Public</label>
+                    </div>
+                
+                    <div>
+                        <input 
+                            type="radio" 
+                            id="protected" 
+                            name="type" 
+                            value="protected"
+                            checked={type === 'protected'}
+                            onChange={(e) => setType(e.target.value)}
+                        />
+                        <label htmlFor="protected">Protected</label>
+                    </div>
+                
+                    <div>
+                        <input 
+                            type="radio" 
+                            id="private" 
+                            name="type" 
+                            value="private"
+                            checked={type === 'private'}
+                            onChange={(e) => setType(e.target.value)}
+                        />
+                        <label htmlFor="private">Private</label>
+                    </div>
+                </div>
+                
                 <button type="submit">Send chatroom</button>
             </form>
 
