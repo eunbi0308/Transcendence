@@ -35,6 +35,7 @@ const App = () => {
 
             <h1>Post a User to the server</h1>
             <PostUser url={urlUser}/>
+            
 
         </div>
     );
