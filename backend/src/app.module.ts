@@ -16,6 +16,7 @@ import { AuthService } from './auth/auth.service';
 import { PassportModule } from '@nestjs/passport';
 import { ConfigModule } from "./auth/config/config.module";
 import {ConfigService} from "./auth/config/config.service";
+import { ChatModule } from './websockets/chat.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import {ConfigService} from "./auth/config/config.service";
       logging: true,
     }),
     ConfigModule,
+    ChatModule,
     UsersModule,
     AchievementsModule,
     BlockedsModule,

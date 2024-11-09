@@ -15,11 +15,12 @@ export class CreateChatRoomDto {
     password: string;
   
     @ApiProperty({ description: 'Creation date' })
-    @IsNotEmpty()
-    @IsDate()
+    // @IsNotEmpty()
+    // @IsDate()
     creation_date: Date;
 
     @ApiProperty({ description: 'ChatRoom types' })
     @IsEnum(chat_room_types)
+    @IsOptional()
     chat_room_type: chat_room_types;
 }
