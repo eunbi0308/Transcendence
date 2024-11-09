@@ -18,7 +18,7 @@ interface ChatRoom {
 
 interface ChatRoomListProps {
     chatRoomId: number | null;
-    onChatRoomChange: (newId: number) => void;
+    onChatRoomChange: (newChatRoom: ChatRoom | null) => void;
 }
 
 export const ChatRoomList: React.FC<ChatRoomListProps> = ({ chatRoomId, onChatRoomChange }) => {
@@ -28,16 +28,13 @@ export const ChatRoomList: React.FC<ChatRoomListProps> = ({ chatRoomId, onChatRo
     const [selectedChatRoom, setSelectedChatRoom] = useState<ChatRoom | null>(null);
 
     const changeChatRoom = (newId: number) => {
-        // console.log("newId ---> " + newId);
         const chatRoom = chatRooms?.find((room) => room.id === newId) ?? null;
+        
         setSelectedChatRoom(chatRoom);
-        // console.log("Found ChatRoom --> " + chatRoom?.chat_room_type);
-
         if (chatRoom?.chat_room_type === chat_room_types.Protected) {
             setAskPassword(true);
         } else {
-            onChatRoomChange(chatRoom?.id);
-            // console.log("Chat Room Changed to ID:", newId);
+            onChatRoomChange(selectedChatRoom);
         }
     };
 
@@ -53,7 +50,7 @@ export const ChatRoomList: React.FC<ChatRoomListProps> = ({ chatRoomId, onChatRo
         console.log(password + " real password ---> " + selectedChatRoom?.password);
         const isValid = await validatePassword(password);
         if (isValid) {
-            onChatRoomChange(selectedChatRoom?.id);
+            onChatRoomChange(selectedChatRoom);
             console.log("Chat Room Changed to ID:", selectedChatRoom?.id);
         } else {
             console.log("Wrong password");

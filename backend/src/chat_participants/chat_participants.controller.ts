@@ -36,6 +36,12 @@ import {
         }
     }
 
+    @Post(':chatRoomId/join/:userId')
+    async addParticipantToChatroom(@Param('chatRoomId') chatRoomId: number, @Param('userId') userId: number)
+    {
+        return this.chatParticipantsService.addParticipantToChatRoom(chatRoomId, userId);
+    }
+
     @Get()
     async findAll() {
         try {
