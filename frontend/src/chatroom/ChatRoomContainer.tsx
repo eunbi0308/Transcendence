@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { PostChatRoom } from "../utils/PostRequest.tsx";
-import { ChatRoomList } from "./ChatRoomList.tsx";
-import ChatContainer from "../chat/ChatContainer.tsx";
+import { PostChatRoom } from "../utils/PostRequest";
+import { ChatRoomList } from "./ChatRoomList";
+import ChatContainer from "../chat/ChatContainer";
 
 export const ChatRoomContainer = ( userId ) => {
     const [chatRoomId, setChatRoomId] = useState(() => {

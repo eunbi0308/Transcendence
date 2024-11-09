@@ -1,8 +1,8 @@
 import React from "react";
 import '../css/Chatroom.css';
-import { useFetchRequest } from "../utils/FetchRequest.tsx";
+import { useFetchRequest } from "../utils/FetchRequest";
 import { useState } from "react";
-import { PasswordPrompt } from "./PasswordPrompt.tsx";
+import { PasswordPrompt } from "./PasswordPrompt";
 
 enum chat_room_types {
     Public = "public",
