@@ -10,15 +10,13 @@ const App = () => {
     const [gameStarted, setGameStarted] = useState(false);
     const urlUser = 'http://localhost:3000/users';
 
-    // Function to be passed to MatchMaking to update gameStarted
     const startGame = () => setGameStarted(true);
     const endGame = () => setGameStarted(false);
 
     return (
         <div>
             {!gameStarted && <PostUser url={urlUser} />}
-
-            {/* Conditionally render MatchMaking or Game based on gameStarted */}
+            
             {gameStarted ? <Game /> : <MatchMaking startGame={startGame} />}
         </div>
     );

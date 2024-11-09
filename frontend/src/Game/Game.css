@@ -6,7 +6,7 @@
 /*   By: rfinneru <rfinneru@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/10/08 17:09:47 by rfinneru      #+#    #+#                 */
-/*   Updated: 2024/10/25 15:21:25 by rfinneru      ########   odam.nl         */
+/*   Updated: 2024/11/09 12:45:58 by rfinneru      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,11 @@
     font-weight: 400;
     font-style: normal;
     font-size: 6vh;
+    user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
 }
 
 #conceded 
@@ -96,4 +101,9 @@
     font-weight: 400;
     font-style: normal;
     font-size: 6vh;
+    user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
 }

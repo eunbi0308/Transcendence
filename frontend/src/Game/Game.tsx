@@ -119,8 +119,8 @@ const Game: React.FC = () => {
             <div id="line"></div>
             <div id="player2" ref={player2Ref}></div>
             <div id="ball" ref={ballRef}></div>
-            <div id="scored">{scored}</div>
-            <div id="conceded">{conceded}</div>
+            <div draggable="false" id="scored">{scored}</div>
+            <div draggable="false" id="conceded">{conceded}</div>
         </div>
     );
 };
