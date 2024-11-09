@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { useFetchRequest} from '../utils/FetchRequest.tsx';
-import { handleSubmitMessages } from '../utils/PostRequest.tsx';
+import { useFetchRequest} from '../utils/FetchRequest';
+import { handleSubmitMessages } from '../utils/PostRequest';
 
 interface oldMessage {
   content: string;
