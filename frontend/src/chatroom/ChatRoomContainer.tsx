@@ -21,7 +21,6 @@ export const ChatRoomContainer = ( userId ) => {
         console.log("Chat room ID changed to:", newId);
     };
     
-    // console.log()
     return (
         <div className="chatRoomBox">
             <ChatRoomList chatRoomId={chatRoomId} onChatRoomChange={handleChatRoomChange} />
