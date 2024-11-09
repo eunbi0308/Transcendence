@@ -24,6 +24,7 @@ export const PostUser = ({url, userId}) => {
     }
     return(
         <div>
+            <h1>Post user to the database</h1>
             <form onSubmit={handleSubmit}>
                 {}
                 <input

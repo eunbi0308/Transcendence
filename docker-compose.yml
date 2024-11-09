@@ -15,6 +15,8 @@ services:
     ports:
       - "3001:3000"
     command: sh -c "npm ci && npm run start"
+    environment:
+      - WDS_SOCKET_PORT=0
 
   nestjs:
     # user: ${UID}
@@ -37,6 +39,8 @@ services:
     command: sh -c "cd ./backend && npm ci && npm run start:dev"
     depends_on:
       - postgres
+    environment:
+      - WDS_SOCKET_PORT=0
     
 
   postgres:
@@ -66,9 +70,12 @@ services:
     environment:
       - PGADMIN_DEFAULT_EMAIL=${PGADMIN_MAIL}
       - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PW}
+      - WDS_SOCKET_PORT=0
+
     ports:
       - "5050:80"
     restart: always
+
 
     # volumes:
     #   - pgdata:/var/lib/postgresql/data

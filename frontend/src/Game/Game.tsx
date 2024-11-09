@@ -1,5 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { io } from 'socket.io-client';
 import './Game.css';
+
+const socket = io('http://localhost:3001');
 
 const Game: React.FC = () => {
     const [scored, setScored] = useState(0);
@@ -8,28 +11,48 @@ const Game: React.FC = () => {
     const player1Ref = useRef<HTMLDivElement | null>(null);
     const player2Ref = useRef<HTMLDivElement | null>(null);
     const tableRef = useRef<HTMLDivElement | null>(null);
-
     const speedXRef = useRef(1.5);
     const speedYRef = useRef(1.5);
     const ballXRef = useRef(0);
     const ballYRef = useRef(0);
-
+    const player1YRef = useRef(0);
+    
     useEffect(() => {
         const ballElement = ballRef.current;
         const tableElement = tableRef.current;
 
         if (ballElement && tableElement) {
-            const ballRect = ballElement.getBoundingClientRect();
-            // const tableRect = tableElement.getBoundingClientRect();
-            ballXRef.current = ballRect.left;
-            ballYRef.current = ballRect.top;
+            resetBallPosition();
 
-            const moveBallInterval = setInterval(moveBall, 1);
+            socket.on('ballMove', (data) => {
+                console.log("ws.on:ballMove");
+                ballXRef.current = data.x;
+                ballYRef.current = data.y;
+                setScored(data.scored);
+                setConceded(data.conceded); 
+                if (ballElement) {
+                    ballElement.style.left = `${ballXRef.current}px`;
+                    ballElement.style.top = `${ballYRef.current}px`;
+                }
+            });
+
+            socket.on('playerMove', (data) => {
+                console.log("ws.on:playerMove");
+                if (data.player === 1 && player1Ref.current) {
+                    player1Ref.current.style.top = `${data.positionY}px`;
+                } else if (data.player === 2 && player2Ref.current) {
+                    player2Ref.current.style.top = `${data.positionY}px`;
+                }
+            });
+
+            const moveBallInterval = setInterval(moveBall, 10);
             document.addEventListener('mousemove', handleMouseMove);
 
             return () => {
                 clearInterval(moveBallInterval);
                 document.removeEventListener('mousemove', handleMouseMove);
+                socket.off('ballMove');
+                socket.off('playerMove');
             };
         }
     }, []);
@@ -37,17 +60,12 @@ const Game: React.FC = () => {
     const handleMouseMove = (event: MouseEvent) => {
         if (player1Ref.current && tableRef.current) {
             const tableRect = tableRef.current.getBoundingClientRect();
-            const newTop = event.pageY - player1Ref.current.offsetHeight / 2;
+            const newTop = event.clientY - player1Ref.current.offsetHeight / 2;
 
             if (newTop >= tableRect.top && newTop + player1Ref.current.offsetHeight <= tableRect.bottom) {
-                player1Ref.current.style.position = 'absolute';
                 player1Ref.current.style.top = `${newTop}px`;
-            } else if (newTop + player1Ref.current.offsetHeight > tableRect.bottom) {
-                player1Ref.current.style.position = 'absolute';
-                player1Ref.current.style.top = `${tableRect.bottom - player1Ref.current.offsetHeight}px`;
-            } else if (newTop < tableRect.top) {
-                player1Ref.current.style.position = 'absolute';
-                player1Ref.current.style.top = `${tableRect.top}px`;
+                player1YRef.current = newTop; // Update the reference
+                socket.emit('playerMove', { player: 1, positionY: newTop });
             }
         }
     };
@@ -55,47 +73,32 @@ const Game: React.FC = () => {
     const moveBall = () => {
         const tableElement = tableRef.current;
         const ballElement = ballRef.current;
-        const player1Element = player1Ref.current;
-        const player2Element = player2Ref.current;
 
-        if (!tableElement || !ballElement || !player1Element || !player2Element) return;
-
-        const tableRect = tableElement.getBoundingClientRect();
-        const player1Rect = player1Element.getBoundingClientRect();
-        const player2Rect = player2Element.getBoundingClientRect();
+        if (!tableElement || !ballElement) return;
 
         ballXRef.current -= speedXRef.current;
         ballYRef.current -= speedYRef.current;
 
-        // Wall collision
+        const tableRect = tableElement.getBoundingClientRect();
+
         if (ballYRef.current <= tableRect.top || ballYRef.current >= tableRect.bottom - ballElement.offsetHeight) {
             speedYRef.current = -speedYRef.current;
         }
 
-        // Paddle collision
-        if (
-            ballXRef.current <= player1Rect.right &&
-            ballYRef.current >= player1Rect.top &&
-            ballYRef.current <= player1Rect.bottom
-        ) {
-            speedXRef.current = -speedXRef.current;
-        }
-        if (
-            ballXRef.current >= player2Rect.left - ballElement.offsetWidth &&
-            ballYRef.current >= player2Rect.top &&
-            ballYRef.current <= player2Rect.bottom
-        ) {
-            speedXRef.current = -speedXRef.current;
+        if (ballXRef.current <= 0) {
+            setConceded((prev) => prev + 1);
+            resetBallPosition();
+        } else if (ballXRef.current >= tableRect.width - ballElement.offsetWidth) {
+            setScored((prev) => prev + 1);
+            resetBallPosition();
         }
 
-        // Scoring
-        if (ballXRef.current <= tableRect.left) {
-            setConceded(prev => prev + 1);
-            resetBallPosition();
-        } else if (ballXRef.current >= tableRect.right - ballElement.offsetWidth) {
-            setScored(prev => prev + 1);
-            resetBallPosition();
-        }
+        socket.emit('ballMove', {
+            x: ballXRef.current,
+            y: ballYRef.current,
+            scored,
+            conceded,
+        });
 
         ballElement.style.left = `${ballXRef.current}px`;
         ballElement.style.top = `${ballYRef.current}px`;
@@ -103,9 +106,8 @@ const Game: React.FC = () => {
 
     const resetBallPosition = () => {
         if (ballRef.current && tableRef.current) {
-            const ballRect = ballRef.current.getBoundingClientRect();
-            ballXRef.current = tableRef.current.clientWidth / 2 - ballRect.width / 2;
-            ballYRef.current = tableRef.current.clientHeight / 2 - ballRect.height / 2;
+            ballXRef.current = tableRef.current.clientWidth / 2 - ballRef.current.offsetWidth / 2;
+            ballYRef.current = tableRef.current.clientHeight / 2 - ballRef.current.offsetHeight / 2;
             speedXRef.current = 1.5;
             speedYRef.current = 1.5;
         }
