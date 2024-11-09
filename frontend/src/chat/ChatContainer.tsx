@@ -14,9 +14,9 @@ const ChatContainer = ({ chatRoomId, userId }) => {
       console.log('werkt in container');
     return (
         <div className='chatBox'>
-        <div className='chatContainer'>
-            <Chat socket={socket} userId={userId} id={chatRoomId}/>
-        </div>
+            <div className='chatContainer'>
+                <Chat socket={socket} userId={userId} id={chatRoomId}/>
+            </div>
         </div>
 
     );
