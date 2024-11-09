@@ -5,6 +5,7 @@ import { Friend } from '../friends/friend.entity';
 import { Blocked } from '../blockeds/blocked.entity';
 import { Game } from '../games/game.entity';
 import { ChatParticipant } from '../chat_participants/chat_participant.entity';
+import { IsOptional } from 'class-validator';
 
 export enum user_status {
 	Offline = "offline",
@@ -18,7 +19,8 @@ export class User {
   @PrimaryColumn()
   id: number;
 
-  @Column({ type: "bytea" })
+  @Column({ type: "bytea", nullable: true })
+  @IsOptional()
   avatar: Buffer;
 
   @Column({ nullable: false })
@@ -38,6 +40,7 @@ export class User {
 			nullable: false,
 			default: 0 
 	})
+  @IsOptional()
   ladder_level: number;
 
   @Column({
@@ -45,6 +48,7 @@ export class User {
 	enum: user_status,
 	default: 'offline',
   })
+  @IsOptional()
   user_status: user_status;
 
   // Relationships

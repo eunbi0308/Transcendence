@@ -13,7 +13,7 @@ import {
   import { ChatRoom } from './chat_room.entity';
   import { ChatRoomsService } from './chat_rooms.service';
   
-  @Controller('users')
+  @Controller('chatroom')
   export class ChatRoomsController {
     constructor(private readonly usersService: ChatRoomsService) {}
   
