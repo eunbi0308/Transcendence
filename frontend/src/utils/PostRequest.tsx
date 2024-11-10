@@ -205,3 +205,20 @@ export const PostMessage = ({ url, userId, chatRoomId }) => {
         </div>
     );
 };
+
+export const handleSubmitParticipant = async (url, userId, chatRoomId) => {
+    try {
+        const res = await axios.post(url, JSON.stringify({
+            user_id: userId,
+            chat_room_id: chatRoomId,
+        }), {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        return res.data;
+    } catch (error) {
+        console.error('Error:', error);
+        return { error: error.response ? error.response.data : 'Failed to send message' };
+    }
+};

@@ -18,7 +18,6 @@ export const Chat = ({ socket, id, userId }) => {
     const [messages, setMessages] = useState<oldMessage[]>(fetchedMessages || []); 
     const [input, setInput] = useState('');
     
-    // console.log(chatRoomId);
     useEffect(() => {
       if (fetchedMessages) {
         setMessages(fetchedMessages);
@@ -49,10 +48,7 @@ export const Chat = ({ socket, id, userId }) => {
       if (input.trim()) {
         const newMessage = { content: input, user_id: userId.userId };
         socket.emit('sendMessage', newMessage);
-        // setMessages((prevMessages) => [...prevMessages, newMessage]);
-        console.log(userId.userId, id);
         handleSubmitMessages('http://localhost:3000/chatMessages', input, userId.userId, id);
-        console.log("added");
         setInput('');
       }
     };
@@ -83,10 +79,11 @@ export const Chat = ({ socket, id, userId }) => {
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
               placeholder="Type a message"
-              />
+            />
             <button onClick={handleSendMessage}>Send</button>
-            </div>
+          </div>
       </div>
     );
   };
