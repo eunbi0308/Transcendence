@@ -15,6 +15,7 @@ import { PassportModule } from '@nestjs/passport';
 import { ConfigModule } from './auth/config/config.module';
 import { ConfigService } from './auth/config/config.service';
 import { QueueModule } from './queue/queue.module';
+import { ChatModule } from './websockets/chat.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { QueueModule } from './queue/queue.module';
       logging: true,
     }),
     ConfigModule,
+    ChatModule,
     UsersModule,
     AchievementsModule,
     BlockedsModule,
