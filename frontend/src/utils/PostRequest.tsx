@@ -208,9 +208,13 @@ export const PostMessage = ({ url, userId, chatRoomId }) => {
 
 export const handleSubmitParticipant = async (url, userId, chatRoomId) => {
     try {
-        const res = await axios.post(url, {
+        const res = await axios.post(url, JSON.stringify({
             user_id: userId,
             chat_room_id: chatRoomId,
+        }), {
+            headers: {
+                'Content-Type': 'application/json',
+            },
         });
         return res.data;
     } catch (error) {

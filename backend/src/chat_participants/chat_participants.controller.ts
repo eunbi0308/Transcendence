@@ -37,7 +37,11 @@ import {
     }
 
     @Post(':chatRoomId/join/:userId')
-    async addParticipantToChatroom(@Param('chatRoomId') chatRoomId: number, @Param('userId') userId: number)
+    async addParticipantToChatroom(
+        @Param('chatRoomId') chatRoomId: number,
+        @Param('userId') userId: number,
+        @Body() body: { user_id: number, chat_room_id: number },
+      )
     {
         return this.chatParticipantsService.addParticipantToChatRoom(chatRoomId, userId);
     }

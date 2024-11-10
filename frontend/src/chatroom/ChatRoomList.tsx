@@ -18,7 +18,7 @@ interface ChatRoom {
 
 interface ChatRoomListProps {
     chatRoomId: number | null;
-    onChatRoomChange: (newChatRoom: ChatRoom | null) => void;
+    onChatRoomChange: (newChatRoom: ChatRoom) => void;
 }
 
 export const ChatRoomList: React.FC<ChatRoomListProps> = ({ chatRoomId, onChatRoomChange }) => {
