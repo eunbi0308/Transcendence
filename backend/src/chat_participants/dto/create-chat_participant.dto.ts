@@ -1,34 +1,36 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsDate, IsNotEmpty, IsEnum, IsNumber, IsString, IsBoolean, } from 'class-validator';
-import { DeepPartial } from 'typeorm';
-import { User } from '../../users/user.entity';
+import { IsDate, IsNotEmpty, IsEnum, IsNumber, IsBoolean, IsOptional } from 'class-validator';
 import { PartialType } from '@nestjs/mapped-types';
 import { chat_participant_roles, ChatParticipant } from '../../chat_participants/chat_participant.entity';
 
-export class CreateChatParticipantDto extends PartialType(ChatParticipant){
-    @ApiProperty({ description: 'chat participant role' })
+export class CreateChatParticipantDto extends PartialType(ChatParticipant) {
+    @ApiProperty({ description: 'Chat participant role' })
+    @IsOptional()
     @IsEnum(chat_participant_roles)
-    chat_pariticipant_role: chat_participant_roles;
+    chat_participant_role?: chat_participant_roles;
 
-    @ApiProperty({ description: 'is banned' })
+    @ApiProperty({ description: 'Is banned' })
+    @IsOptional()
     @IsBoolean()
+    is_banned?: boolean;
 
-    @ApiProperty({ description: 'is muted' })
+    @ApiProperty({ description: 'Is muted' })
+    @IsOptional()
     @IsBoolean()
-    
-    @ApiProperty({ description: 'entrance_time' })
+    is_muted?: boolean;
+
+    @ApiProperty({ description: 'Entrance time' })
+    @IsOptional()
     @IsDate()
+    entrance_time?: Date;
+
+    @ApiProperty({ description: 'User ID' })
     @IsNotEmpty()
-    entrance_time: Date;
-    
-    // @ApiProperty({ description: 'user_id' })
-    // @IsNotEmpty()
-    // @IsNumber()
-    // user_id: DeepPartial<User>;
+    @IsNumber()
+    user_id: number;
 
-    // @ApiProperty({ description: 'chat_room_id' })
-    // @IsNotEmpty()
-    // @IsNumber()
-    // chat_room_id: DeepPartial<User>;
-
+    @ApiProperty({ description: 'Chat room ID' })
+    @IsNotEmpty()
+    @IsNumber()
+    chat_room_id: number;
 }

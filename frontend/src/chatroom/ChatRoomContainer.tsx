@@ -21,11 +21,11 @@ export const ChatRoomContainer = ( userId ) => {
     const [chatRoomId, setChatRoomId] = useState(() => {
         try {
             const savedId = localStorage.getItem('chatRoomId');
-            // If there's no value in localStorage, use a default value (e.g., 0)
+            console.log("savedid -->" + savedId);
             return savedId ? JSON.parse(savedId) : 1;
         } catch (error) {
             console.error('Failed to parse chatRoomId from localStorage:', error);
-            return 0; // Default value
+            return 1; // Default value
         }
     });
 
@@ -36,14 +36,21 @@ export const ChatRoomContainer = ( userId ) => {
     }, [chatRoomId]);
 
     const addParticipant = async (userId : number, chatRoomId : number) => {
-        const res = await handleSubmitParticipant('http://localhost:3000/chatParticipants/${chatRoomId}/join/${userId}',userId, chatRoomId);
+        console.log(userId + chatRoomId);
+        const res = await handleSubmitParticipant(`http://localhost:3000/chatParticipants/${chatRoomId}/join/${userId}`,userId, chatRoomId);
         console.log("deze fout" + res);
     }
 
     const handleChatRoomChange = (newChatRoom: ChatRoom) => {
-        localStorage.setItem('chatRoomId', JSON.stringify(newChatRoom?.id));
-        setChatRoomId(newChatRoom?.id);
-        addParticipant(userId, 1)
+        const temp = newChatRoom?.id;
+        if (temp != null)
+        {
+            localStorage.setItem('chatRoomId', JSON.stringify(newChatRoom.id));
+            setChatRoomId(newChatRoom?.id);
+            addParticipant(userId.userId, chatRoomId);
+        }
+        else 
+            console.log("Failed to change ChatRoom probably null!!");
         console.log("Chat room ID changed to:", newChatRoom?.id);
     };
     
