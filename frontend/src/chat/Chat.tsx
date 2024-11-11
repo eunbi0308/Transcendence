@@ -1,95 +1,94 @@
 import { useEffect, useState } from 'react';
-import { useFetchRequest} from '../utils/FetchRequest';
+import { useFetchRequest } from '../utils/FetchRequest';
 import { handleSubmitMessages } from '../utils/PostRequest';
+import { Socket } from 'socket.io-client';
 
-interface oldMessage {
+interface OldMessage {
   content: string;
   user_id: number;
 }
 
-const addStyle = ( userId: number ) => {
-  return (userId == 1 ? 'chatUser' : 'chatContact');
+interface ChatProps {
+  socket: Socket;
+  id: number;
+  userId: number;
 }
 
-export const Chat = ({ socket, id, userId }) => {
+const addStyle = (userId: number) => {
+  return userId === 1 ? 'chatUser' : 'chatContact';
+};
+
+export const Chat: React.FC<ChatProps> = ({ socket, id, userId }) => {
   const url = `http://localhost:3000/chatMessages/${id}`;
-  console.log('chat werkt');
-  const { data: fetchedMessages, error, loading } = useFetchRequest<oldMessage[]>(url);
-    const [messages, setMessages] = useState<oldMessage[]>(fetchedMessages || []); 
-    const [input, setInput] = useState('');
-    
-    // console.log(chatRoomId);
-    useEffect(() => {
-      if (fetchedMessages) {
-        setMessages(fetchedMessages);
-      }
-    }, [fetchedMessages]);
-    
-    useEffect(() => {
-      socket.on('connect', () => {
-        console.log('WebSocket connected');
-      });
+  const { data: fetchedMessages, error, loading } = useFetchRequest<OldMessage[]>(url);
+  const [messages, setMessages] = useState<OldMessage[]>(fetchedMessages || []);
+  const [input, setInput] = useState('');
 
-      socket.on('connect_error', (error) => {
-        console.error('WebSocket connection error:', error);
-      });
+  useEffect(() => {
+    if (fetchedMessages) {
+      setMessages(fetchedMessages);
+    }
+  }, [fetchedMessages]);
 
-      const handleReceiveMessage = (message) => {
-        console.log("!!!!!!!!!!!!");
-        setMessages((prevMessages) => [...prevMessages, message]);
+  useEffect(() => {
+    socket.on('connect', () => {
+      console.log('WebSocket connected');
+    });
+
+    socket.on('connect_error', (error: Error) => {
+      console.error('WebSocket connection error:', error);
+    });
+
+    const handleReceiveMessage = (message: OldMessage) => {
+      setMessages((prevMessages) => [...prevMessages, message]);
     };
 
-    socket.on('receiveMessage', handleReceiveMessage); 
-      return () => {
-        socket.off('receiveMessage');
-      };
-    }, []);
+    socket.on('receiveMessage', handleReceiveMessage);
 
-    const handleSendMessage = () => {
-      if (input.trim()) {
-        const newMessage = { content: input, user_id: userId.userId };
-        socket.emit('sendMessage', newMessage);
-        // setMessages((prevMessages) => [...prevMessages, newMessage]);
-        console.log(userId.userId, id);
-        handleSubmitMessages('http://localhost:3000/chatMessages', input, userId.userId, id);
-        console.log("added");
-        setInput('');
-      }
+    return () => {
+      socket.off('receiveMessage', handleReceiveMessage);
     };
+  }, [socket]);
 
-    if (loading) {
-      return <div>Loading messages...</div>; // Loading state
+  const handleSendMessage = () => {
+    if (input.trim()) {
+      const newMessage = { content: input, user_id: userId };
+      socket.emit('sendMessage', newMessage);
+      handleSubmitMessages('http://localhost:3000/chatMessages', input, userId, id);
+      setInput('');
     }
-  
-    if (error) {
-      return <div>Error loading messages: {error.message}</div>; // Error handling
-    }
-
-    return (
-      <div>
-          <ul className='chatMessages'>
-              {Array.isArray(messages) ? (
-                  messages.map((message, index) => (
-                      <li key={index} className={addStyle(message.user_id)}>
-                          {message.content}
-                      </li>
-                  ))
-              ) : (
-                  <p>No messages found.</p>
-              )}
-          </ul>
-          <div className='formMessages'>
-            <input
-              type="text"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder="Type a message"
-              />
-            <button onClick={handleSendMessage}>Send</button>
-            </div>
-      </div>
-    );
   };
-  
-  
-  
+
+  if (loading) {
+    return <div>Loading messages...</div>;
+  }
+
+  if (error) {
+    return <div>Error loading messages: {error}</div>;
+  }
+
+  return (
+    <div>
+      <ul className='chatMessages'>
+        {Array.isArray(messages) ? (
+          messages.map((message, index) => (
+            <li key={index} className={addStyle(message.user_id)}>
+              {message.content}
+            </li>
+          ))
+        ) : (
+          <p>No messages found.</p>
+        )}
+      </ul>
+      <div className='formMessages'>
+        <input
+          type="text"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          placeholder="Type a message"
+        />
+        <button onClick={handleSendMessage}>Send</button>
+      </div>
+    </div>
+  );
+};
