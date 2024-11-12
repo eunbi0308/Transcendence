@@ -7,6 +7,7 @@ interface fetchRequestResponse<T> {
     loading: boolean;
 }
 
+
 export const useFetchRequest= <T,>(url: string): fetchRequestResponse<T> => {
     const [data, setData] = useState<T | null>(null);
     const [error, setError] = useState<string | null>(null);

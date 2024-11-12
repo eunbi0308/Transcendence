@@ -17,7 +17,9 @@ interface ChatRoom {
     password: string;
 }
 
-export const ChatRoomContainer = ( userId ) => {
+
+
+export const ChatRoomContainer = ({ userId }: { userId: number }) => {
     const [chatRoomId, setChatRoomId] = useState(() => {
         try {
             const savedId = localStorage.getItem('chatRoomId');
@@ -47,16 +49,16 @@ export const ChatRoomContainer = ( userId ) => {
         {
             localStorage.setItem('chatRoomId', JSON.stringify(newChatRoom.id));
             setChatRoomId(newChatRoom?.id);
-            addParticipant(userId.userId, chatRoomId);
+            addParticipant(userId, chatRoomId);
         }
         else 
             console.log("Failed to change ChatRoom probably null!!");
         console.log("Chat room ID changed to:", newChatRoom?.id);
     };
-    
+    console.log("container --> " + userId);
     return (
         <div className="chatRoomBox">
-            <ChatRoomList chatRoomId={chatRoomId} onChatRoomChange={handleChatRoomChange} />
+            <ChatRoomList chatRoomId={chatRoomId} onChatRoomChange={handleChatRoomChange} userId={userId}/>
             <ChatContainer chatRoomId={chatRoomId} userId={userId}/>
             
             <PostChatRoom url={'http://localhost:3000/chatroom'}/>

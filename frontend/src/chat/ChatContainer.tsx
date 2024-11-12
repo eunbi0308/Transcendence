@@ -15,7 +15,7 @@ const ChatContainer = ({ chatRoomId, userId }) => {
     return (
         <div className='chatBox'>
             <div className='chatContainer'>
-                <Chat socket={socket} userId={userId} id={chatRoomId}/>
+                <Chat socket={socket} id={chatRoomId} userId={userId}/>
             </div>
         </div>
 

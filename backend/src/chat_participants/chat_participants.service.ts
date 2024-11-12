@@ -56,6 +56,21 @@ export class ChatParticipantsService {
         return userData;
   }
 
+  async findByUserIdAndChatRoom(chatRoomId: number, userId: number): Promise<ChatParticipant> {
+    const participant = await this.chatParticipantsRepository.findOne({
+        where: {
+            user: { id: userId },
+            chatRoom: { id: chatRoomId },
+        },
+        relations: ['user', 'chatRoom'],
+    });
+
+    if (!participant) {
+        throw new HttpException('ChatParticipant Not Found', 404);
+    }
+    return participant;
+}
+
   async update(id: number, updateChatParticipantDto: UpdateChatParticipantDto,): Promise<ChatParticipant> {
     const existingChatParticipant = await this.findByUserId(id);
     const chatParticipantData = this.chatParticipantsRepository.merge(
