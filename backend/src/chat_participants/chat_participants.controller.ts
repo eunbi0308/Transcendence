@@ -82,6 +82,31 @@ import {
             };
         }
     }
+
+    @Get(':chatRoomId/find/:userId')
+    async findParticipantChatRoomUserId(
+        @Param('chatRoomId') chatRoomId: number,
+        @Param('userId') userId: number,
+        @Body() body: { user_id: number, chat_room_id: number },
+      )
+    {
+        try {
+            const data = await this.chatParticipantsService.findByUserIdAndChatRoom(
+                +chatRoomId,
+                +userId,
+            );
+            return {
+                success: true,
+                data,
+                message: 'ChatParticipant Fetched Successfully',
+            };
+        } catch (error) {
+            return {
+                success: false,
+                message: error.message,
+            };
+        }
+    }
   
     @Delete(':id')
     async remove(@Param('id') id: string) {

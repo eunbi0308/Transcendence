@@ -16,24 +16,32 @@ interface ChatRoom {
     password: string;
 }
 
+interface Participant {
+    user_id: number;
+}
+
 interface ChatRoomListProps {
     chatRoomId: number | null;
+    userId:  number;
     onChatRoomChange: (newChatRoom: ChatRoom) => void;
 }
 
-export const ChatRoomList: React.FC<ChatRoomListProps> = ({ chatRoomId, onChatRoomChange }) => {
+export const ChatRoomList: React.FC<ChatRoomListProps> = ({ chatRoomId, onChatRoomChange, userId }) => {
+    console.log("List!! --> " + userId);
     const url = 'http://localhost:3000/chatroom';
     const { data: chatRooms, error, loading } = useFetchRequest<ChatRoom[]>(url);
     const [askPassword, setAskPassword] = useState<Boolean>(false);
     const [selectedChatRoom, setSelectedChatRoom] = useState<ChatRoom | null>(null);
-
+    const { data: activeParticipant, error2, loading2 } = useFetchRequest<Participant>(`http://localhost:3000/chatParticipants/${chatRoomId}/find/${userId}`);
+    console.log("deze ");
+    console.log(activeParticipant);
     const changeChatRoom = (newId: number) => {
         const chatRoom = chatRooms?.find((room) => room.id === newId) ?? null;
-        
         setSelectedChatRoom(chatRoom);
-        if (chatRoom?.chat_room_type === chat_room_types.Protected) {
+        if (chatRoom?.chat_room_type === chat_room_types.Protected && activeParticipant == null) {
             setAskPassword(true);
         } else {
+            // setAskPassword(false);
             onChatRoomChange(selectedChatRoom);
         }
     };

@@ -12,8 +12,9 @@ const App = () => {
     const urlUser = 'http://localhost:3000/users';
     const [localUserId, setLocalUserId] = useState(() => {
         const savedValue = localStorage.getItem("userId");
-        return savedValue ? JSON.parse(savedValue) : 1;
-    })
+        return savedValue !== null ? JSON.parse(savedValue) : 1;
+    });
+    
 
     useEffect(() => {
         localStorage.setItem('userId', JSON.stringify(localUserId));
@@ -21,10 +22,10 @@ const App = () => {
     }, [localUserId]);
 
 
-    console.log(localUserId);
+    console.log("app --> " + localUserId);
 
     // const user
-
+    console.log("App " + localUserId);
     return (
         <div>
             <ChatRoomContainer userId={localUserId}/>
