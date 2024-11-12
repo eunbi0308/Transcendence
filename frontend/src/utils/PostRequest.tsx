@@ -159,6 +159,7 @@ export const PostChatRoom = ({ url}) => {
 
 
 export const handleSubmitMessages = async (url, message, userId, chatRoomId) => {
+    console.log(chatRoomId);
     try {
         const res = await axios.post(url, {
             content: message,

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useFetchRequest} from '../utils/FetchRequest.tsx';
 import { handleSubmitMessages } from '../utils/PostRequest.tsx';
+import { ChatNode } from './ChatNode.tsx';
 
 interface oldMessage {
   content: string;
@@ -13,8 +14,9 @@ const addStyle = ( userId: number ) => {
 
 export const Chat = ({ socket, id, userId }) => {
   const url = `http://localhost:3000/chatMessages/${id}`;
-  console.log('chat werkt');
+  console.log('chat werkt MET  ' + userId);
   const { data: fetchedMessages, error, loading } = useFetchRequest<oldMessage[]>(url);
+ 
     const [messages, setMessages] = useState<oldMessage[]>(fetchedMessages || []); 
     const [input, setInput] = useState('');
     
@@ -66,9 +68,9 @@ export const Chat = ({ socket, id, userId }) => {
           <ul className='chatMessages'>
               {Array.isArray(messages) ? (
                   messages.map((message, index) => (
-                      <li key={index} className={addStyle(message.user_id)}>
-                          {message.content}
-                      </li>
+                    <div key={index} className={addStyle(message.user_id)}>
+                      <ChatNode key={index} message={message}/>
+                    </div>
                   ))
               ) : (
                   <p>No messages found.</p>
@@ -87,6 +89,3 @@ export const Chat = ({ socket, id, userId }) => {
       </div>
     );
   };
-  
-  
-  
