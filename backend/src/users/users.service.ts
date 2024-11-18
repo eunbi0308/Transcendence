@@ -66,4 +66,25 @@ export class UsersService {
     return token;
   }
 
+  async checkToken(id: number): Promise<string> {
+    const payload = { sub: id };
+    const token = await this.jwt.signAsync(payload, {
+      expiresIn: this.jwtConfig.signOptions.expiresIn,
+      secret: this.jwtConfig.checkSecret,
+    });
+    return token;
+  }
+
+  async getUserIdFromCookie(token: string): Promise<number> {
+    console.log('token ' + token);
+    console.log('get user id');
+    try {
+      const payload = await this.jwt.verifyAsync(token);
+      console.log('payload ' + payload);
+      return payload.sub;
+    } catch (error) {
+      throw new HttpException('Invalid Token', 401);
+    }
+  }
+
 }

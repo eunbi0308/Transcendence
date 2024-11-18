@@ -3,7 +3,7 @@ import logo from './logo.svg';
 import { Route, Routes } from 'react-router-dom';
 import Home from "./pages/Home";
 import Login from "./pages/login/index";
-import Register from "./pages/Register";
+import UpdateUser from "./pages/updateUser";
 // import './App.css';
 
 function App() {
@@ -11,7 +11,7 @@ function App() {
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
+      <Route path="/update" element={<UpdateUser />} />
     </Routes>
   );
 }

@@ -62,7 +62,7 @@ export const Chat = ({ socket, id, userId }) => {
     }
   
     if (error) {
-      return <div>Error loading messages: {error.message}</div>; // Error handling
+      return <div>Error loading messages: {error}</div>; // Error handling
     }
 
     return (
