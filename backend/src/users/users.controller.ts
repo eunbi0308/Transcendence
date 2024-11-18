@@ -86,26 +86,24 @@ import {
     @Patch('me')
     async update(@Body() updateUserDto: UpdateUserDto, @Req() req: Request) 
     {
-        console.log('Request: ', req);
-        console.log('signed Cookies: ', req.signedCookies);
         const token = req.signedCookies['jwt'];
-        console.log(token);
-        if (!token) {
-            throw new HttpException('No JWT token found', 401);
-        }
+        // console.log(token);
+        // if (!token) {
+        //     throw new HttpException('No JWT token found', 401);
+        // }
 
-        const decodedToken = this.jwtService.decode(token);
-        if (!decodedToken || typeof decodedToken !== 'object') {
-            throw new HttpException('Invalid JWT token', 401);
-        }
+        // const decodedToken = this.jwtService.decode(token);
+        // if (!decodedToken || typeof decodedToken !== 'object') {
+        //     throw new HttpException('Invalid JWT token', 401);
+        // }
 
-        const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
-        if (decodedToken.exp < currentTime) {
-        throw new HttpException('JWT token has expired', 401);
-        }
+        // const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
+        // if (decodedToken.exp < currentTime) {
+        // throw new HttpException('JWT token has expired', 401);
+        // }
 
         try {
-            const userId = await decodedToken.sub;
+            const userId = await this.usersService.getUserIdFromCookie(token);
 
             console.log("user id: " + userId);
             await this.usersService.update(
