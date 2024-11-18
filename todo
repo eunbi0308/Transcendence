@@ -1,0 +1,42 @@
+Chatrooms aanmaken uitgebreider maken met public private and protected 
+message nodes toevoegen: username, profiel, status en onclick(naar profiel page)
+Chat partipant toevoegen aan Chat
+
+
+later:
+- Kunnen blokken en geen messages van partipant kunnen zien
+- Private implementeren
+
+
+Bugs:
+- Protected  
+
+
+Elke chatroom je joint of creeert voeg je een chat partipant toe 
+Dus alle chat sessie voor een user
+en voor elke chatroom al zijn partipants 
+
+
+- ChatroomList/ChangeChatroom 
+
+
+  onClick(changeChatroom)
+
+  Als een room protected is moet er een prompt komen voor wachtwoord
+
+  change localID
+
+  localUserId == sessie(participation):
+    - niks makenen
+    - Geen password voor protected
+
+  localUserId != sessie(participation):
+    - sessie(participation)
+    - protected password vragen
+
+- PostChatroom
+
+  Public, Protected en Private button
+
+
+  (moet alleen de protected en public chatrooms laten zien)
