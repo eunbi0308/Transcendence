@@ -26,16 +26,6 @@ export default function UpdateUser() {
         });
     }
 
-    // axios.patch('https://localhost:3000/users/me', {
-    //     nickname: nickname,
-    // }, {
-    //     withCredentials: true,
-    // }).then(response => {
-    //     console.log('User updated successfully:', response.data);
-    // }).catch(error => {
-    //     console.error('Failed to update user:', error);
-    // });
-
     return (
         <form onSubmit={(e) => { e.preventDefault(); updateUser(new FormData(e.target as HTMLFormElement)); }}>
             <div>Update Nickname</div>

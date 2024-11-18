@@ -235,6 +235,6 @@ export const handleSubmitParticipant = async (url, userId, chatRoomId) => {
         return res.data;
     } catch (error) {
         console.error('Error:', error);
-        return { error: error.response ? error.response.data : 'Failed to send message' };
+        return { error: error, message: 'Failed to send message' };
     }
 };
