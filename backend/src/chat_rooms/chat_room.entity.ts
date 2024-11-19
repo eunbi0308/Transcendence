@@ -29,7 +29,6 @@ export class ChatRoom {
   })
   chat_room_type: chat_room_types;
 
-  // Relationships
   @OneToMany(() => ChatMessage, chatMessage => chatMessage.chatRoom)
   chatMessages: ChatMessage[];
 

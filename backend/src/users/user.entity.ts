@@ -23,7 +23,7 @@ export class User {
   @IsOptional()
   avatar: Buffer;
 
-  @Column({ nullable: false })
+  @Column({ nullable: true })
   nickname: string;
 
   @Column({ default: false })

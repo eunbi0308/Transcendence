@@ -28,13 +28,13 @@ export class FortyTwoStrategy extends PassportStrategy(Strategy, 'ft') {
         if (user == null) {
             user = new User();
             user.id = profile.id;
-            user.avatar = profile._json.image.link;
+            user.avatar = profile._json.image.link; // TODO: fetch 
             user.user_status = user_status.Offline;
             user.is_second_auth_done = false;
             user.email = profile.emails[0].value;
             user.ladder_level = 0;
             user.second_auth_code = null;
-            user.nickname = profile.username;
+            user.nickname = "";
 
             user = await this.usersService.create(user);
         }
