@@ -18,9 +18,14 @@ const App = () => {
 
     useEffect(() => {
         localStorage.setItem('userId', JSON.stringify(localUserId));
-        setLocalUserId(1);
+        // setLocalUserId(1);
     }, [localUserId]);
 
+    const changeUserId = (e) => {
+        e.preventDefault();
+        const newUserId = e.target.elements.userId.value;
+        setLocalUserId(newUserId);
+    };
 
     console.log("app --> " + localUserId);
 
@@ -37,8 +42,19 @@ const App = () => {
             <h1>Post a User to the server</h1>
             <PostUser url={urlUser}/>
             
-
-        </div>
+            <form onSubmit={changeUserId}>
+                <input
+                    type="text"
+                    name="userId" // Name to identify the input field
+                    value={localUserId}
+                    onChange={(e) => setLocalUserId(e.target.value)} // Update the local state
+                    placeholder="Enter new user ID"
+                    required
+                />
+                <button type="submit">Change User ID</button>
+            </form>
+  
+            </div>
     );
 };
 

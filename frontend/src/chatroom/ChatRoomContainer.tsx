@@ -30,7 +30,6 @@ export const ChatRoomContainer = ({ userId }: { userId: number }) => {
             return 1; // Default value
         }
     });
-
     useEffect(() => {
         if (chatRoomId !== null) {
             localStorage.setItem('chatRoomId', JSON.stringify(chatRoomId));
@@ -40,7 +39,6 @@ export const ChatRoomContainer = ({ userId }: { userId: number }) => {
     const addParticipant = async (userId : number, chatRoomId : number) => {
         console.log(userId + chatRoomId);
         const res = await handleSubmitParticipant(`http://localhost:3000/chatParticipants/${chatRoomId}/join/${userId}`,userId, chatRoomId);
-        console.log("deze fout" + res);
     }
 
     const handleChatRoomChange = (newChatRoom: ChatRoom) => {

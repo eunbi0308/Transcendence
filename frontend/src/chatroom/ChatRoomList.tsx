@@ -8,17 +8,18 @@ enum chat_room_types {
     Protected = "protected",
     Private = "private"
 }
+interface Participant {
+    user_id: number;
+}
 
 interface ChatRoom {
     title: string;
     id: number;
     chat_room_type: chat_room_types;
     password: string;
+    chatParticipants: Participant[];
 }
 
-interface Participant {
-    user_id: number;
-}
 
 interface ChatRoomListProps {
     chatRoomId: number | null;
@@ -27,14 +28,13 @@ interface ChatRoomListProps {
 }
 
 export const ChatRoomList: React.FC<ChatRoomListProps> = ({ chatRoomId, onChatRoomChange, userId }) => {
-    console.log("List!! --> " + userId);
-    const url = 'http://localhost:3000/chatroom';
+    const url = 'http://localhost:3000/chatroom/includeParticipant';
     const { data: chatRooms, error, loading } = useFetchRequest<ChatRoom[]>(url);
     const [askPassword, setAskPassword] = useState<Boolean>(false);
     const [selectedChatRoom, setSelectedChatRoom] = useState<ChatRoom | null>(null);
     const { data: activeParticipant, error2, loading2 } = useFetchRequest<Participant>(`http://localhost:3000/chatParticipants/${chatRoomId}/find/${userId}`);
-    console.log("deze ");
-    console.log(activeParticipant);
+
+
     const changeChatRoom = (newId: number) => {
         const chatRoom = chatRooms?.find((room) => room.id === newId) ?? null;
         setSelectedChatRoom(chatRoom);
@@ -65,15 +65,39 @@ export const ChatRoomList: React.FC<ChatRoomListProps> = ({ chatRoomId, onChatRo
         }
         setAskPassword(false);
     };
-
+    const filterChatRooms = chatRooms?.filter((room) => {
+        console.log("Processing Room:", room, userId + " userId");
+        
+        if (room.chat_room_type !== chat_room_types.Private) {
+            console.log(`Including non-private room: ${room.title}`);
+            return true;
+        }
+    
+        // console.log(`Checking participants for private room: ${room.title}`);
+        console.log("asdf" , room.chatParticipants);
+        const isActive = room.chatParticipants?.some((chatParticipants) => {
+            console.error("Participant user_id:", chatParticipants.user_id);
+            console.error("Current userId:", userId);
+            return chatParticipants.user_id.toString() === userId;
+        });
+    
+        console.log(
+            `Private room: ${room.title}, Active Participant: ${isActive}`
+        );
+    
+        return isActive;
+    });
+    
+    
+    console.log(filterChatRooms);
     return (
         <div>
             <div className="PromptContainer">
                 {askPassword && <PasswordPrompt onSubmit={handlePasswordSubmit} />}
             </div>
             <ul className="rooms">
-                {Array.isArray(chatRooms) ? (
-                    chatRooms.map((chatroom, index) => (
+                {Array.isArray(filterChatRooms) ? (
+                    filterChatRooms.map((chatroom, index) => (
                         <div key={index} className="node" onClick={() => changeChatRoom(chatroom.id)}>
                             <li>{chatroom.title}</li>
                             <li>{chatroom.chat_room_type}</li>
