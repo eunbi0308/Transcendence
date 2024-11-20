@@ -53,7 +53,7 @@ export const ChatRoomList: React.FC<ChatRoomListProps> = ({ chatRoomId, onChatRo
             // setAskPassword(false);
             onChatRoomChange(selectedChatRoom);
         }
-    };
+    }; 
 
     const validatePassword = async (password: string): Promise<boolean> => {
         return new Promise((resolve) => {
