@@ -5,7 +5,8 @@ import { ChatParticipant } from '../chat_participants/chat_participant.entity';
 export enum chat_room_types {
 	Public = "public",
 	Protected = "protected",
-	Private = "private"
+	Private = "private",
+  Dm = "Dm"
 }
 
 @Entity('CHAT_ROOM')

@@ -11,11 +11,10 @@ const ChatContainer = ({ chatRoomId, userId }) => {
         // reconnectionDelay: 1000,
         transports: ['websocket'], // Force WebSocket transport
       });
-      console.log('werkt in container');
     return (
         <div className='chatBox'>
             <div className='chatContainer'>
-                <Chat socket={socket} id={chatRoomId} userId={userId}/>
+                <Chat socket={socket} chatRoomId={chatRoomId} userId={userId}/>
             </div>
         </div>
 

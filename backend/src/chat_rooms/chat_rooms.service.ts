@@ -4,6 +4,14 @@ import { Repository } from 'typeorm';
 import { CreateChatRoomDto } from './dto/create-chat_room.dto';
 import { UpdateChatRoomDto } from './dto/update-chat_room.dto';
 import { ChatRoom } from './chat_room.entity';
+import { In } from 'typeorm';
+
+export enum chat_room_types {
+	Public = "public",
+	Protected = "protected",
+	Private = "private",
+  Dm = "Dm"
+}
 
 @Injectable()
 export class ChatRoomsService {
@@ -24,6 +32,20 @@ export class ChatRoomsService {
 
   async findAll(): Promise<ChatRoom[]> {
     return await this.chatRoomsRepository.find();
+  }
+
+  async findAllincludeParticipant(): Promise<ChatRoom[]> {
+    return await this.chatRoomsRepository.find({
+      relations: ['chatParticipants'],
+    });
+  }
+
+  async findAllWithoutPrivate(): Promise<ChatRoom[]> {
+    return await this.chatRoomsRepository.find({
+      where: {
+        chat_room_type: In(['public', 'protected']),
+       },
+    });
   }
 
   async findOne(id: number): Promise<ChatRoom> {

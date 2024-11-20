@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useFetchRequest} from '../utils/FetchRequest.tsx';
+import { useFetchRequest, useFetchRequestDep} from '../utils/FetchRequest.tsx';
 import { handleSubmitMessages } from '../utils/PostRequest.tsx';
 import { ChatNode } from './ChatNode.tsx';
 
@@ -8,17 +8,23 @@ interface oldMessage {
   user_id: number;
 }
 
+interface Participants {
+  user_id : number | null;
+  chat_room_id : number | null;
+}
+
 const addStyle = ( userId: number ) => {
   return (userId == 1 ? 'chatUser' : 'chatContact');
 }
 
-export const Chat = ({ socket, id, userId }) => {
-  const url = `http://localhost:3000/chatMessages/${id}`;
-  console.log('chat werkt MET  ' + userId);
+export const Chat = ({ socket, chatRoomId, userId }) => {
+  const url = `http://localhost:3000/chatMessages/${chatRoomId}`;
   const { data: fetchedMessages, error, loading } = useFetchRequest<oldMessage[]>(url);
-    const [messages, setMessages] = useState<oldMessage[]>(fetchedMessages || []); 
-    const [input, setInput] = useState('');
-    
+  const { data: activeParticipants, error2, loading2 } = useFetchRequest<Participants[]>(`http://localhost:3000/chatParticipants/${chatRoomId}/find/`)
+  const [messages, setMessages] = useState<oldMessage[]>(fetchedMessages || []); 
+  const [input, setInput] = useState('');
+
+    console.log("Active Participants:", activeParticipants);
     useEffect(() => {
       if (fetchedMessages) {
         setMessages(fetchedMessages);
@@ -49,7 +55,8 @@ export const Chat = ({ socket, id, userId }) => {
       if (input.trim()) {
         const newMessage = { content: input, user_id: userId.userId };
         socket.emit('sendMessage', newMessage);
-        handleSubmitMessages('http://localhost:3000/chatMessages', input, userId.userId, id);
+        console.log("debug" + userId);
+        handleSubmitMessages('http://localhost:3000/chatMessages', input, userId, chatRoomId);
         setInput('');
       }
     };
@@ -67,8 +74,8 @@ export const Chat = ({ socket, id, userId }) => {
           <ul className='chatMessages'>
               {Array.isArray(messages) ? (
                   messages.map((message, index) => (
-                    <div key={index} className={addStyle(message.user_id)}>
-                      <ChatNode key={index} message={message}/>
+                    <div key={index} className={addStyle(userId)}>
+                      <ChatNode key={index} message={message} user={activeParticipants?.filter((participant) => participant.user_id == userId)} loading={loading2}/>
                     </div>
                   ))
               ) : (
