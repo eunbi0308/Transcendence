@@ -32,13 +32,22 @@ export const ChatRoomList: React.FC<ChatRoomListProps> = ({ chatRoomId, onChatRo
     const { data: chatRooms, error, loading } = useFetchRequest<ChatRoom[]>(url);
     const [askPassword, setAskPassword] = useState<Boolean>(false);
     const [selectedChatRoom, setSelectedChatRoom] = useState<ChatRoom | null>(null);
-    const { data: activeParticipant, error2, loading2 } = useFetchRequest<Participant>(`http://localhost:3000/chatParticipants/${chatRoomId}/find/${userId}`);
+    // const { data: activeParticipant, error2, loading2 } = useFetchRequest<Participant>(`http://localhost:3000/chatParticipants/${chatRoomId}/find/${userId}`);
 
 
+    const CheckIfActive = (chatParticipants: Participant[] | undefined): boolean => {
+        return chatParticipants?.some((participant) => {
+            console.error("Participant user_id:", participant.user_id);
+            console.error("Current userId:", userId);
+            return participant.user_id.toString() === userId.toString();
+        }) ?? false; // Default to `false` if `chatParticipants` is undefined or empty
+    };
+    
+    
     const changeChatRoom = (newId: number) => {
         const chatRoom = chatRooms?.find((room) => room.id === newId) ?? null;
         setSelectedChatRoom(chatRoom);
-        if (chatRoom?.chat_room_type === chat_room_types.Protected && activeParticipant == null) {
+        if (chatRoom?.chat_room_type === chat_room_types.Protected && CheckIfActive(chatRoom.chatParticipants) == false) {
             setAskPassword(true);
         } else {
             // setAskPassword(false);
@@ -75,11 +84,7 @@ export const ChatRoomList: React.FC<ChatRoomListProps> = ({ chatRoomId, onChatRo
     
         // console.log(`Checking participants for private room: ${room.title}`);
         console.log("asdf" , room.chatParticipants);
-        const isActive = room.chatParticipants?.some((chatParticipants) => {
-            console.error("Participant user_id:", chatParticipants.user_id);
-            console.error("Current userId:", userId);
-            return chatParticipants.user_id.toString() === userId;
-        });
+        const isActive : boolean = CheckIfActive(room.chatParticipants);
     
         console.log(
             `Private room: ${room.title}, Active Participant: ${isActive}`
