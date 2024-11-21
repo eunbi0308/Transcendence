@@ -2,8 +2,11 @@ import React from "react";
 import ReactDOM from "react-dom";
 import Cookies from "universal-cookie";
 import axios from "axios";
+import { useState } from "react";
 
 export default function UpdateUser() {
+    const [enabledTwoFactor, setEnabledTwoFactor] = React.useState(false);
+
     function updateUser(formData: FormData) {
         const nickname = formData.get("nickname");
         
@@ -13,7 +16,10 @@ export default function UpdateUser() {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ nickname: nickname }),
+            body: JSON.stringify({ 
+                nickname: nickname,
+                enable_two_factor: enabledTwoFactor
+            }),
         }).then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -30,12 +36,12 @@ export default function UpdateUser() {
         <form onSubmit={(e) => { e.preventDefault(); updateUser(new FormData(e.target as HTMLFormElement)); }}>
             <div>Update Nickname</div>
             <input name="nickname" />
-            {/* <div>
+            <div>
                 <label>
-                    <input type="checkbox" checked={twoFactorAuth} />
-                    Delete avatar
+                    <input type="checkbox" checked={enabledTwoFactor} onChange={(e) => setEnabledTwoFactor(e.target.checked)} />
+                    Enable Two Factor Authentication
                 </label>
-            </div> */}
+            </div>
             <button type="submit">Update</button>
         </form>
         
