@@ -17,7 +17,7 @@ export const useFetchRequest= <T,>(url: string): fetchRequestResponse<T> => {
             setLoading(true); // Set loading to true before fetching
             try {
                 const response = await axios.get(url);
-                console.log(url + " Fetched data:", response.data);
+                // console.log(url + " Fetched data:", response.data);
                 setData(response.data.data);
             } catch (err: any) {
                 setError(err.message);
@@ -41,7 +41,7 @@ export const useFetchRequestDep= <T,>(url: string, deps: any[]): fetchRequestRes
             setLoading(true); // Set loading to true before fetching
             try {
                 const response = await axios.get(url);
-                console.log(url + " Fetched data:", response.data);
+                // console.log(url + " Fetched data:", response.data);
                 setData(response.data.data);
             } catch (err: any) {
                 setError(err.message);
