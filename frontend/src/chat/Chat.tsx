@@ -24,7 +24,6 @@ export const Chat = ({ socket, chatRoomId, userId }) => {
   const [messages, setMessages] = useState<oldMessage[]>(fetchedMessages || []); 
   const [input, setInput] = useState('');
 
-    console.log("Active Participants:", activeParticipants);
     useEffect(() => {
       if (fetchedMessages) {
         setMessages(fetchedMessages);
@@ -55,7 +54,6 @@ export const Chat = ({ socket, chatRoomId, userId }) => {
       if (input.trim()) {
         const newMessage = { content: input, user_id: userId.userId };
         socket.emit('sendMessage', newMessage);
-        console.log("debug" + userId);
         handleSubmitMessages('http://localhost:3000/chatMessages', input, userId, chatRoomId);
         setInput('');
       }

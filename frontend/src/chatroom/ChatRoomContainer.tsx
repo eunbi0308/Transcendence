@@ -3,6 +3,8 @@ import { PostChatRoom } from "../utils/PostRequest.tsx";
 import { ChatRoomList } from "./ChatRoomList.tsx";
 import ChatContainer from "../chat/ChatContainer.tsx";
 import { handleSubmitParticipant } from "../utils/PostRequest.tsx"
+import { useFetchRequest, useFetchRequestDep } from "../utils/FetchRequest.tsx";
+
 
 enum chat_room_types {
     Public = "public",
@@ -10,20 +12,27 @@ enum chat_room_types {
     Private = "private"
 }
 
+interface Participant {
+    user_id: number;
+}
+
 interface ChatRoom {
     title: string;
     id: number;
     chat_room_type: chat_room_types;
     password: string;
+    chatParticipants: Participant[];
 }
 
 
 
 export const ChatRoomContainer = ({ userId }: { userId: number }) => {
+    const [askPassword, setAskPassword] = useState<boolean>(false);
+    const url = 'http://localhost:3000/chatroom/includeParticipant';
+    const { data: chatRooms, error, loading } = useFetchRequest<ChatRoom[]>(url);
     const [chatRoomId, setChatRoomId] = useState(() => {
         try {
             const savedId = localStorage.getItem('chatRoomId');
-            console.log("savedid -->" + savedId);
             return savedId ? JSON.parse(savedId) : 1;
         } catch (error) {
             console.error('Failed to parse chatRoomId from localStorage:', error);
@@ -36,27 +45,32 @@ export const ChatRoomContainer = ({ userId }: { userId: number }) => {
         }
     }, [chatRoomId]);
 
+    useEffect(() => {
+        console.log("askPassword state changed:", askPassword);
+    }, [askPassword]);
+
     const addParticipant = async (userId : number, chatRoomId : number) => {
-        console.log(userId + chatRoomId);
+        console.log("participant wordt geadded aan de chatRoom" + userId + chatRoomId);
         const res = await handleSubmitParticipant(`http://localhost:3000/chatParticipants/${chatRoomId}/join/${userId}`,userId, chatRoomId);
     }
 
     const handleChatRoomChange = (newChatRoom: ChatRoom) => {
         const temp = newChatRoom?.id;
-        if (temp != null)
+        console.log("handleChatRoomChange", newChatRoom);
+        if (newChatRoom != null)
         {
             localStorage.setItem('chatRoomId', JSON.stringify(newChatRoom.id));
             setChatRoomId(newChatRoom?.id);
-            addParticipant(userId, chatRoomId);
+            console.log("addParticipant");
+            addParticipant(userId, newChatRoom.id);
         }
         else 
             console.log("Failed to change ChatRoom probably null!!");
         console.log("Chat room ID changed to:", newChatRoom?.id);
     };
-    console.log("container --> " + userId);
     return (
         <div className="chatRoomBox">
-            <ChatRoomList chatRoomId={chatRoomId} onChatRoomChange={handleChatRoomChange} userId={userId}/>
+            <ChatRoomList  chatRooms={chatRooms} chatRoomId={chatRoomId} userId={userId} onChatRoomChange={handleChatRoomChange} askPassword={askPassword} setAskPassword={setAskPassword}/>
             <ChatContainer chatRoomId={chatRoomId} userId={userId}/>
             
             <PostChatRoom url={'http://localhost:3000/chatroom'}/>

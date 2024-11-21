@@ -27,10 +27,6 @@ const App = () => {
         setLocalUserId(newUserId);
     };
 
-    console.log("app --> " + localUserId);
-
-    // const user
-    console.log("App " + localUserId);
     return (
         <div>
             <ChatRoomContainer userId={localUserId}/>
