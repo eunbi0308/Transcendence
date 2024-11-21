@@ -14,6 +14,13 @@ export class CreateUserDto extends PartialType(User)  {
     @IsString()
     nickname: string;
 
+    @ApiProperty({ description: 'enable two factor authentication' })
+    @IsOptional()
+    // @IsNotEmpty() // for test do not forget to have isnotempty when going further
+    @IsBoolean()
+    enable_two_factor: boolean;
+  
+
     @ApiProperty({ description: 'Second authentication check' })
     @IsOptional()
     // @IsNotEmpty() // for test do not forget to have isnotempty when going further
