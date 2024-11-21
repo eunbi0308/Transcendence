@@ -30,6 +30,12 @@ export default function UpdateUser() {
         <form onSubmit={(e) => { e.preventDefault(); updateUser(new FormData(e.target as HTMLFormElement)); }}>
             <div>Update Nickname</div>
             <input name="nickname" />
+            {/* <div>
+                <label>
+                    <input type="checkbox" checked={twoFactorAuth} />
+                    Delete avatar
+                </label>
+            </div> */}
             <button type="submit">Update</button>
         </form>
         

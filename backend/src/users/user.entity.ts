@@ -27,6 +27,9 @@ export class User {
   nickname: string;
 
   @Column({ default: false })
+  enable_two_factor: boolean;
+
+  @Column({ default: false })
   is_second_auth_done: boolean;
 
   @Column({ type: "smallint", nullable: true })
