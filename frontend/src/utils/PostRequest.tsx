@@ -1,6 +1,13 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
+
+export enum chat_participant_roles {
+    Owner = "owner",
+    Admin = "admin",
+    Guest = "guest"
+  }
+
 export const PostUser = ({url, userId}) => {
     const [name, setName] = useState('');
     const [mail, setMail] = useState('');
@@ -56,11 +63,15 @@ export const PostUser = ({url, userId}) => {
 
 
 
-export const PostChatRoom = ({ url}) => {
+export const PostChatRoom = ({ url, userId, role}) => {
     const [name, setName] = useState('');
     const [password, setPassword] = useState('');
     const [response, setResponse] = useState(null);
     const [type, setType] = useState("");
+
+    const addOwnerToChatRoom = () => {
+        
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -72,6 +83,8 @@ export const PostChatRoom = ({ url}) => {
                 title: name,
                 password: password,
                 chat_room_type: type,
+                user_id: userId,
+                role: role,
             });
 
             setResponse(res.data);
@@ -83,6 +96,7 @@ export const PostChatRoom = ({ url}) => {
         // Clear the inputs after submission
         setName('');
         setPassword('');
+        addOwnerToChatRoom();
     };
 
     return (

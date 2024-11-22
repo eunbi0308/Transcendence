@@ -25,6 +25,11 @@ interface ChatRoom {
 }
 
 
+enum chat_participant_roles {
+    Owner = "owner",
+    Admin = "admin",
+    Guest = "guest"
+  }
 
 export const ChatRoomContainer = ({ userId }: { userId: number }) => {
     const [askPassword, setAskPassword] = useState<boolean>(false);
@@ -73,7 +78,7 @@ export const ChatRoomContainer = ({ userId }: { userId: number }) => {
             <ChatRoomList  chatRooms={chatRooms} chatRoomId={chatRoomId} userId={userId} onChatRoomChange={handleChatRoomChange} askPassword={askPassword} setAskPassword={setAskPassword}/>
             <ChatContainer chatRoomId={chatRoomId} userId={userId}/>
             <JoinPrivate chatRoom={chatRooms} onChatRoomChange={handleChatRoomChange}/>
-            <PostChatRoom url={'http://localhost:3000/chatroom'}/>
+            <PostChatRoom url={'http://localhost:3000/chatroom'} userId={userId} role={chat_participant_roles.Owner}/>
         </div>
     );
 }; 
