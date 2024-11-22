@@ -32,7 +32,7 @@ export const useFetchRequest= <T,>(url: string): fetchRequestResponse<T> => {
     return { data, error, loading };
 };
 
-export const useFetchRequestDep= <T,>(url: string, deps: any[]): fetchRequestResponse<T> => {
+export const useFetchRequestDep= <T,>(url: string, deps: any): fetchRequestResponse<T> => {
     const [data, setData] = useState<T | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);

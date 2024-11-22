@@ -15,15 +15,10 @@ to do
     - uit chatroom als je admin bent of owner 
   - mute
    - Geen berichten meer zien van gemuten
-- private
-  - Extra form maken voor een private chat te joinen
-  - Fetchen van chatRoomList zonder private
 - Dm
   - Is extra type in de chatroom entity
   - Zonder joinen
 - Invites
-  - Private room
-    Invite door chat in chatgroup of dm
   - Game sessie
      Invite door chat in chatgroup of dm
 
@@ -55,12 +50,29 @@ Joinen via "Join Private"
 Niet kunnen zien maar wel als er een active sessie is
 
 
+Enkele ChatRoom dingen:
+
+- Roles in ChatRoom
+  - Owner
+    - Eerste Admin
+  - Admin
+    - Gemaakte Admin door Owner
+  - Guest
+    - Niks
+- Blokkeren, kick en mute
+  - Block: 
+  - Kick:
+    - uit chatroom als je admin bent of owner 
+  - mute
+   - Geen berichten meer zien van gemuten
+  
+Totaal ChatRoom dingen:
+  - Dm toevoegen
 
 
-
-
-
-
+Tussen delen in dingen:
+  - Profiel zien door profiel te klikken
+  - Game sessies 
 
 
 

@@ -4,7 +4,7 @@ import { ChatRoomList } from "./ChatRoomList.tsx";
 import ChatContainer from "../chat/ChatContainer.tsx";
 import { handleSubmitParticipant } from "../utils/PostRequest.tsx"
 import { useFetchRequest, useFetchRequestDep } from "../utils/FetchRequest.tsx";
-
+import { JoinPrivate } from "./JoinPrivate.tsx";
 
 enum chat_room_types {
     Public = "public",
@@ -72,7 +72,7 @@ export const ChatRoomContainer = ({ userId }: { userId: number }) => {
         <div className="chatRoomBox">
             <ChatRoomList  chatRooms={chatRooms} chatRoomId={chatRoomId} userId={userId} onChatRoomChange={handleChatRoomChange} askPassword={askPassword} setAskPassword={setAskPassword}/>
             <ChatContainer chatRoomId={chatRoomId} userId={userId}/>
-            
+            <JoinPrivate chatRoom={chatRooms} onChatRoomChange={handleChatRoomChange}/>
             <PostChatRoom url={'http://localhost:3000/chatroom'}/>
         </div>
     );
