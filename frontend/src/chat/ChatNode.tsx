@@ -19,10 +19,12 @@ export const ChatNode = ({
   message,
   user,
   loading,
+  userId,
 }: {
   message: oldMessage;
   user: Participants[];
   loading: boolean;
+  userId: number;
 }) => {
   if (loading) {
     return <li>Loading user data...</li>;

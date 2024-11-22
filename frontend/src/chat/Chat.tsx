@@ -13,8 +13,9 @@ interface Participants {
   chat_room_id : number | null;
 }
 
-const addStyle = ( userId: number ) => {
-  return (userId == 1 ? 'chatUser' : 'chatContact');
+const addStyle = ( value : boolean ) => {
+
+  return (value == true ? 'chatUser' : 'chatContact');
 }
 
 export const Chat = ({ socket, chatRoomId, userId }) => {
@@ -72,8 +73,8 @@ export const Chat = ({ socket, chatRoomId, userId }) => {
           <ul className='chatMessages'>
               {Array.isArray(messages) ? (
                   messages.map((message, index) => (
-                    <div key={index} className={addStyle(userId)}>
-                      <ChatNode key={index} message={message} user={activeParticipants?.filter((participant) => participant.user_id == userId)} loading={loading2}/>
+                    <div key={index} className={addStyle(message.user_id?.toString() === userId.toString())}>
+                        <ChatNode key={index} message={message} user={activeParticipants?.filter((participant) => participant.user_id == message.user_id)} loading={loading2} userId={userId}/>
                     </div>
                   ))
               ) : (
