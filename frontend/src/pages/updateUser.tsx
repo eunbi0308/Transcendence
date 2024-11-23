@@ -6,9 +6,13 @@ import { useState } from "react";
 
 export default function UpdateUser() {
     const [enabledTwoFactor, setEnabledTwoFactor] = React.useState(false);
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
     function updateUser(formData: FormData) {
         const nickname = formData.get("nickname");
+
+        if (!selectedFile)
+            console.error("No file selected");
         
         fetch(`https://localhost:3000/users/me`, {
             method: 'PATCH',
@@ -18,7 +22,8 @@ export default function UpdateUser() {
             },
             body: JSON.stringify({ 
                 nickname: nickname,
-                enable_two_factor: enabledTwoFactor
+                enable_two_factor: enabledTwoFactor,
+                // avatar: selectedFile,
             }),
         }).then(response => {
             if (!response.ok) {
@@ -36,11 +41,17 @@ export default function UpdateUser() {
         <form onSubmit={(e) => { e.preventDefault(); updateUser(new FormData(e.target as HTMLFormElement)); }}>
             <div>Update Nickname</div>
             <input name="nickname" />
+            <br />
             <div>
                 <label>
                     <input type="checkbox" checked={enabledTwoFactor} onChange={(e) => setEnabledTwoFactor(e.target.checked)} />
                     Enable Two Factor Authentication
                 </label>
+            </div>
+            <br />
+            <div>
+                <label htmlFor="avatar">Upload Avatar</label>
+                <input type="file" id="avatar" name="avatar" onChange={(e) => setSelectedFile(e.target.files ? e.target.files[0] : null)} />
             </div>
             <button type="submit">Update</button>
         </form>
