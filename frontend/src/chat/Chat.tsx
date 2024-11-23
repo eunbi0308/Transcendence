@@ -1,16 +1,39 @@
 import { useEffect, useState } from 'react';
-import { useFetchRequest, useFetchRequestDep} from '../utils/FetchRequest.tsx';
+import { useFetchRequest, useFetchRequestDep, useFetchRequestMount} from '../utils/FetchRequest.tsx';
 import { handleSubmitMessages } from '../utils/PostRequest.tsx';
 import { ChatNode } from './ChatNode.tsx';
+import React from 'react';
+import { KickUser, PromoteUser, MuteUser, BlockUser } from './ChatActions.tsx';
 
 interface oldMessage {
   content: string;
   user_id: number;
 }
 
+enum chat_participant_roles {
+  Owner = "owner",
+  Admin = "admin",
+  Guest = "guest"
+}
+
 interface Participants {
   user_id : number | null;
   chat_room_id : number | null;
+  chat_participant_role : chat_participant_roles
+}
+
+enum chat_room_types {
+  Public = "public",
+  Protected = "protected",
+  Private = "private"
+}
+
+interface ChatRoom {
+  title: string;
+  id: number;
+  chat_room_type: chat_room_types;
+  password: string;
+  chatParticipants: Participants[];
 }
 
 const addStyle = ( value : boolean ) => {
@@ -21,10 +44,19 @@ const addStyle = ( value : boolean ) => {
 export const Chat = ({ socket, chatRoomId, userId }) => {
   const url = `http://localhost:3000/chatMessages/${chatRoomId}`;
   const { data: fetchedMessages, error, loading } = useFetchRequest<oldMessage[]>(url);
-  const { data: activeParticipants, error2, loading2 } = useFetchRequest<Participants[]>(`http://localhost:3000/chatParticipants/${chatRoomId}/find/`)
+  const { data: activeParticipants, error2, loading2 } = useFetchRequestMount<Participants[]>(`http://localhost:3000/chatParticipants/${chatRoomId}/find/`)
+  const localParticipant = activeParticipants?.find((participant) => participant.user_id?.toString() == userId.toString());
   const [messages, setMessages] = useState<oldMessage[]>(fetchedMessages || []); 
   const [input, setInput] = useState('');
+  const [selectedMessage, setSelectedMessage] = useState<{
+    userId: number;
+    x: number;
+    y: number;
+  } | null>(null);
 
+
+    console.log(localParticipant);
+    console.log(userId)
     useEffect(() => {
       if (fetchedMessages) {
         setMessages(fetchedMessages);
@@ -59,22 +91,57 @@ export const Chat = ({ socket, chatRoomId, userId }) => {
         setInput('');
       }
     };
+    useEffect(() => {
+      window.addEventListener('click', handleOutsideClick);
+      return () => {
+        window.removeEventListener('click', handleOutsideClick);
+      };
+    }, []);
+
+    const handleMessageClick = (e: React.MouseEvent, user_id: number) => {
+      e.stopPropagation();
+      setSelectedMessage({
+        userId: user_id,
+        x: e.clientX,
+        y: e.clientY,
+      });
+    };
+  
+    const handleOutsideClick = () => {
+      setSelectedMessage(null);
+    };
+  
+    const handleAction = (action: string, id: number) => {
+      if (action == 'Kick')
+        KickUser(chatRoomId, id);
+      else if (action == 'Promote')
+        PromoteUser(userId);
+      // else if (action == 'Mute')
+      //   MuteUser(userId);
+      // else if (action == 'Block')
+      //   BlockUser(userId);
+        
+      console.log(`${action} user with ID: ${id}`);
+      setSelectedMessage(null);
+    };
 
     if (loading) {
-      return <div>Loading messages...</div>; // Loading state
+      return <div>Loading messages...</div>;
     }
   
     if (error) {
-      return <div>Error loading messages: {error.message}</div>; // Error handling
+      return <div>Error loading messages: {error.message}</div>;
     }
+  
 
     return (
       <div>
           <ul className='chatMessages'>
               {Array.isArray(messages) ? (
                   messages.map((message, index) => (
-                    <div key={index} className={addStyle(message.user_id?.toString() === userId.toString())}>
+                    <div key={index} className={addStyle(message.user_id?.toString() === userId.toString())} onClick={(e) => handleMessageClick(e, message.user_id)}>
                         <ChatNode key={index} message={message} user={activeParticipants?.filter((participant) => participant.user_id == message.user_id)} loading={loading2} userId={userId}/>
+                          
                     </div>
                   ))
               ) : (
@@ -91,7 +158,29 @@ export const Chat = ({ socket, chatRoomId, userId }) => {
             />
             <button onClick={handleSendMessage}>Send</button>
           </div>
-      </div>
+
+          {selectedMessage && (
+        <div
+          className="messagePrompt"
+          style={{
+            position: 'absolute',
+            top: selectedMessage.y,
+            left: selectedMessage.x,
+            background: 'white',
+            border: '1px solid black',
+            padding: '10px',
+            zIndex: 1000,
+          }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <p>Actions for User {selectedMessage.userId}:</p>
+          {localParticipant?.chat_participant_role == (chat_participant_roles.Owner || chat_participant_roles.Admin)  && <button onClick={() => handleAction('Kick', selectedMessage.userId)}>Kick</button>}
+          {localParticipant?.chat_participant_role == (chat_participant_roles.Owner || chat_participant_roles.Admin) && <button onClick={() => handleAction('Promote', selectedMessage.userId)}>Promote</button>}
+          {localParticipant?.chat_participant_role == (chat_participant_roles.Owner || chat_participant_roles.Admin) && <button onClick={() => handleAction('Mute', selectedMessage.userId)}>Mute</button>}
+          <button onClick={() => handleAction('Block', selectedMessage.userId)}>Block</button>
+        </div>
+      )}
+    </div>
     );
   };
   

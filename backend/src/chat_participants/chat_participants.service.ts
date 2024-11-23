@@ -99,9 +99,11 @@ export class ChatParticipantsService {
     );
   }
 
-  async remove(chat_room_id: number): Promise<ChatParticipant[]> {
-    const existingChatParticipant = await this.findByChatRoomId( chat_room_id );
-    return await this.chatParticipantsRepository.remove(existingChatParticipant,);
+  async remove(chat_room_id: number, user_id: number): Promise<ChatParticipant[]> {
+    const existingChatParticipants = await this.chatParticipantsRepository.find({
+      where: { chat_room_id, user_id },
+    });
+    return await this.chatParticipantsRepository.remove(existingChatParticipants,);
   }
 
   async addParticipantToChatRoom(chatRoomId: number, userId: number) {
