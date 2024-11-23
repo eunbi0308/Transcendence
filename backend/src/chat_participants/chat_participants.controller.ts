@@ -131,10 +131,15 @@ import {
         }
     }
   
-    @Delete(':id')
-    async remove(@Param('id') id: string) {
+    @Delete(':chatRoomId/delete/:id')   
+    async remove(@Param('id') userId: string
+    ,@Param('chatRoomId') chatRoomId: string
+) {
         try {
-            await this.chatParticipantsService.remove(+id);
+            await this.chatParticipantsService.remove(
+                +chatRoomId,
+                +userId
+            );
             return {
                 success: true,
                 message: 'ChatParticipant Deleted Successfully',
