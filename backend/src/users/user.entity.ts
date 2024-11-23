@@ -19,7 +19,7 @@ export class User {
   @PrimaryColumn()
   id: number;
 
-  @Column({ type: "bytea", nullable: true })
+  @Column({ type: "bytea", nullable: false })
   @IsOptional()
   avatar: Buffer;
 
