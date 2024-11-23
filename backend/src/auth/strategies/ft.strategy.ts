@@ -25,6 +25,7 @@ export class FortyTwoStrategy extends PassportStrategy(Strategy, 'ft') {
 
     async validate(accessToken: string, refreshToken: string, profile: Profile, cb: any) {
         let user = await this.usersService.findOne(profile.id);
+
         if (user == null) {
             user = new User();
             user.id = profile.id;
