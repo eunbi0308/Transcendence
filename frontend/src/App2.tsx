@@ -4,6 +4,7 @@ import { Route, Routes } from 'react-router-dom';
 import Home from "./pages/Home";
 import Login from "./pages/login/index";
 import UpdateUser from "./pages/updateUser";
+import Profile from './pages/user/Profile';
 // import './App.css';
 
 function App2() {
@@ -12,6 +13,7 @@ function App2() {
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route path="/update" element={<UpdateUser />} />
+      <Route path="/profile/:userId" element={<Profile />} />
     </Routes>
   );
 }
