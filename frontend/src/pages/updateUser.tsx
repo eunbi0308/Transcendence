@@ -1,6 +1,5 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import Cookies from "universal-cookie";
 import axios from "axios";
 import { useState } from "react";
 
