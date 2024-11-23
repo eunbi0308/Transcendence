@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import defaultAvatar from "../../img/cute_dog.jpeg";
 
 interface User {
     nickname: string;
@@ -42,7 +43,7 @@ export default function Profile() {
         <div>
             <h1>Profile</h1>
             <div>
-                <img src={user.avatar} alt="User Avatar" style={{ width: '100px', height: '100px', borderRadius: '50%' }} />
+                <img src={user.avatar || defaultAvatar } alt="User Avatar" style={{ width: '100px', height: '140px', borderRadius: '10%' }} />
             </div>
             <div>
                 <h2>{user.nickname}</h2>

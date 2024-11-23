@@ -65,7 +65,7 @@ import {
     }
   
     @Get(':id')
-    async findOne(@Param('id') id: string) {
+    async findOne(@Param('id') id: number) {
         try {
             const data = await this.usersService.findOne(
                 +id,
