@@ -8,6 +8,8 @@ import {
     ParseIntPipe,
     Delete,
     HttpException,
+	NotFoundException,
+	InternalServerErrorException,
     Req
   } from '@nestjs/common';
   import { Request } from 'express';
@@ -70,16 +72,12 @@ import {
             const data = await this.usersService.findOne(
                 +id,
             );
-            return {
-                success: true,
-                data,
-                message: 'User Fetched Successfully',
-            };
+			if (data === undefined) {
+				throw new NotFoundException('User not found');
+			}
+            return data;
         } catch (error) {
-            return {
-                success: false,
-                message: error.message,
-            };
+			throw new InternalServerErrorException(error.message);
         }
     }
 
