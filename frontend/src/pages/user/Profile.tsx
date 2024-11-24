@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import defaultAvatar from "../../img/cute_dog.jpeg";
 
 interface User {
     nickname: string;
@@ -33,7 +32,7 @@ export default function Profile() {
             return response.json();
         })
         .then(data => {
-            setUser(data);
+            setUser({ nickname: data.nickname, avatar: data.avatar });
 			console.log('User id:', id); // Log the entire user object
             console.log('User data:', data); // Log the entire user object
             console.log('User avatar:', data.avatar); // Log the user avatar value
@@ -51,12 +50,12 @@ export default function Profile() {
     if (!user) {
         return <div>Loading...</div>;
     }
-
+	
     return (
         <div>
             <h1>Profile</h1>
             <div>
-                <img src={user.avatar || defaultAvatar } alt="User Avatar" style={{ width: '100px', height: '140px', borderRadius: '10%' }} />
+                <img src={ `data:image/jpeg;base64, ${user.avatar}` } alt="User Avatar" style={{ width: '100px', height: '140px', borderRadius: '10%' }} />
             </div>
             <div>
                 <h2>{user.nickname || 'undefined'}</h2>

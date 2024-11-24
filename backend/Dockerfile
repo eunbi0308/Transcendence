@@ -13,6 +13,9 @@ RUN npm install
 # Copy app source code
 COPY . .
 
+# Copy image files
+COPY img ./dist/img
+
 # Expose the port the app runs on
 EXPOSE 3000
 
