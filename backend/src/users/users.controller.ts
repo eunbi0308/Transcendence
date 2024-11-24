@@ -75,7 +75,11 @@ import {
 			if (data === undefined) {
 				throw new NotFoundException('User not found');
 			}
-            return data;
+
+            return {
+				...data, //uppack data
+				avatar: data.avatar.toString('base64'), //override avatar with base64 encoded string instead of buffer
+			}
         } catch (error) {
 			throw new InternalServerErrorException(error.message);
         }
