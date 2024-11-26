@@ -54,12 +54,11 @@ export const Chat = ({ socket, chatRoomId, userId }) => {
     y: number;
   } | null>(null);
 
-
-    console.log(localParticipant);
-    console.log(userId)
-    useEffect(() => {
-      if (fetchedMessages) {
-        setMessages(fetchedMessages);
+  console.log(localParticipant);
+  console.log(userId)
+  useEffect(() => {
+    if (fetchedMessages) {
+      setMessages(fetchedMessages);
       }
     }, [fetchedMessages]);
     
@@ -75,14 +74,14 @@ export const Chat = ({ socket, chatRoomId, userId }) => {
       const handleReceiveMessage = (message) => {
         console.log("!!!!!!!!!!!!");
         setMessages((prevMessages) => [...prevMessages, message]);
-    };
-
-    socket.on('receiveMessage', handleReceiveMessage); 
+      };
+      
+      socket.on('receiveMessage', handleReceiveMessage); 
       return () => {
         socket.off('receiveMessage');
       };
     }, []);
-
+    
     const handleSendMessage = () => {
       if (input.trim()) {
         const newMessage = { content: input, user_id: userId.userId };
@@ -97,7 +96,7 @@ export const Chat = ({ socket, chatRoomId, userId }) => {
         window.removeEventListener('click', handleOutsideClick);
       };
     }, []);
-
+    
     const handleMessageClick = (e: React.MouseEvent, user_id: number) => {
       e.stopPropagation();
       setSelectedMessage({
@@ -106,7 +105,7 @@ export const Chat = ({ socket, chatRoomId, userId }) => {
         y: e.clientY,
       });
     };
-  
+    
     const handleOutsideClick = () => {
       setSelectedMessage(null);
     };
@@ -115,12 +114,12 @@ export const Chat = ({ socket, chatRoomId, userId }) => {
       if (action == 'Kick')
         KickUser(chatRoomId, id);
       else if (action == 'Promote')
-        PromoteUser(userId);
+        PromoteUser(chatRoomId, id);
       // else if (action == 'Mute')
       //   MuteUser(userId);
       // else if (action == 'Block')
       //   BlockUser(userId);
-        
+      
       console.log(`${action} user with ID: ${id}`);
       setSelectedMessage(null);
     };
@@ -128,12 +127,14 @@ export const Chat = ({ socket, chatRoomId, userId }) => {
     if (loading) {
       return <div>Loading messages...</div>;
     }
-  
+
     if (error) {
       return <div>Error loading messages: {error.message}</div>;
     }
-  
-
+    
+    // if (!chatRoomId)
+    //     return <p>fout</p>;
+    console.log("local participant -> " , localParticipant);
     return (
       <div>
           <ul className='chatMessages'>
@@ -174,9 +175,9 @@ export const Chat = ({ socket, chatRoomId, userId }) => {
           onClick={(e) => e.stopPropagation()}
         >
           <p>Actions for User {selectedMessage.userId}:</p>
-          {localParticipant?.chat_participant_role == (chat_participant_roles.Owner || chat_participant_roles.Admin)  && <button onClick={() => handleAction('Kick', selectedMessage.userId)}>Kick</button>}
-          {localParticipant?.chat_participant_role == (chat_participant_roles.Owner || chat_participant_roles.Admin) && <button onClick={() => handleAction('Promote', selectedMessage.userId)}>Promote</button>}
-          {localParticipant?.chat_participant_role == (chat_participant_roles.Owner || chat_participant_roles.Admin) && <button onClick={() => handleAction('Mute', selectedMessage.userId)}>Mute</button>}
+          {((localParticipant?.chat_participant_role == chat_participant_roles.Owner) || (localParticipant?.chat_participant_role == chat_participant_roles.Admin)) && <button onClick={() => handleAction('Kick', selectedMessage.userId)}>Kick</button>}
+          {((localParticipant?.chat_participant_role == chat_participant_roles.Owner) || (localParticipant?.chat_participant_role == chat_participant_roles.Admin)) && <button onClick={() => handleAction('Promote', selectedMessage.userId)}>Promote</button>}
+          {((localParticipant?.chat_participant_role == chat_participant_roles.Owner) || (localParticipant?.chat_participant_role == chat_participant_roles.Admin)) && <button onClick={() => handleAction('Mute', selectedMessage.userId)}>Mute</button>}
           <button onClick={() => handleAction('Block', selectedMessage.userId)}>Block</button>
         </div>
       )}

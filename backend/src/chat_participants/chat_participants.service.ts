@@ -88,16 +88,19 @@ export class ChatParticipantsService {
 //   return participant;
 // }
 
-  async update(id: number, updateChatParticipantDto: UpdateChatParticipantDto,): Promise<ChatParticipant> {
-    const existingChatParticipant = await this.findByUserId(id);
-    const chatParticipantData = this.chatParticipantsRepository.merge(
-        existingChatParticipant,
-        updateChatParticipantDto,
-    );
-    return await this.chatParticipantsRepository.save(
-        chatParticipantData,
-    );
-  }
+async update(
+  chatRoomId: number,
+  id: number,
+  updateDto: UpdateChatParticipantDto,
+): Promise<ChatParticipant> {
+  const existingChatParticipant = await this.findByUserIdAndChatRoom(chatRoomId, id);
+
+  // Directly update the properties of the found entity
+  Object.assign(existingChatParticipant, updateDto);
+
+  // Save the updated entity
+  return await this.chatParticipantsRepository.save(existingChatParticipant);
+}
 
   async remove(chat_room_id: number, user_id: number): Promise<ChatParticipant[]> {
     const existingChatParticipants = await this.chatParticipantsRepository.find({

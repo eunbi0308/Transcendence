@@ -86,7 +86,7 @@ User not found is meestal geen gemaakte chatRoom
 volgende keer doen 24 of 25 nov
 
 - Rerender als er een room wordt aangemaakt ook iets maken voor als er geen valid chatroomId is 
-- Update voor chatParticipant hier mee de ChatAction maken
+- Update voor chatParticipant hier mee de ChatAction maken\
 
 Volgende week 
  - ChatRoom ook kunnen editten voor nieuwe wachtwoord maken
@@ -102,7 +102,11 @@ Volgende week
 
 
 
+26 nov
 
+roles op chatRoomList node
+mute en block
+userId fixen (loopt achter)
 
 
 

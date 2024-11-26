@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import '../css/Chatroom.css';
 import { useFetchRequest, useFetchRequestDep } from "../utils/FetchRequest.tsx";
 import { PasswordPrompt } from "./PasswordPrompt.tsx";
+import { OnlineDot } from "./OnlineDot.tsx"
 
 enum chat_room_types {
     Public = "public",
@@ -34,15 +35,18 @@ export const ChatRoomList: React.FC<ChatRoomListProps> = ({chatRooms ,  chatRoom
     // const url = 'http://localhost:3000/chatroom/includeParticipant';
     // const { data: chatRooms, error, loading } = useFetchRequest<ChatRoom[]>(url);
     const [selectedChatRoom, setSelectedChatRoom] = useState<ChatRoom | null>(null);
-    const [newIdScope, setNewIdScope] = useState<number | null>(null);  // Use state to store the newIdScope
-
-
+    const [newIdScope, setNewIdScope] = useState<number | null>(null);
+    console.log(userId, chatRooms);
+    const [activeRooms, setActiveRooms] = useState<ChatRoom[]>(
+        chatRooms?.filter((room) => room.chatParticipants.some((participant) => participant.user_id.toString() === userId.toString())) || []
+    );
+      console.log("activeRoom --> ", activeRooms);
     const CheckIfActive = (chatParticipants: Participant[] | undefined): boolean => {
         return chatParticipants?.some((participant) => {
             console.error("Participant user_id:", participant.user_id);
             console.error("Current userId:", userId);
             return participant.user_id.toString() === userId.toString();
-        }) ?? false; // Default to `false` if `chatParticipants` is undefined or empty
+        }) ?? false;
     };
 
     const changeChatRoom = (newId: number) => {
@@ -100,8 +104,13 @@ export const ChatRoomList: React.FC<ChatRoomListProps> = ({chatRooms ,  chatRoom
                 {Array.isArray(filterChatRooms) ? (
                     filterChatRooms.map((chatroom, index) => (
                         <div key={index} className="node" onClick={() => changeChatRoom(chatroom.id)}>
+                           {/* <div style={{ backgroundColor: CheckIfActive(chatroom.chatParticipants) ? "green" : "red",}}>
+                                {CheckIfActive(chatroom.chatParticipants) && <p>Active</p>}
+                            </div> */}
+                            <OnlineDot status={CheckIfActive(chatroom.chatParticipants)}/>
                             <li>{chatroom.title}</li>
                             <li>{chatroom.chat_room_type}</li>
+
                         </div>
                     ))
                 ) : (
