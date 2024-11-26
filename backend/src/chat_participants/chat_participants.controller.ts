@@ -3,12 +3,14 @@ import {
     Get,
     Post,
     Body,
+    Put,
     Patch,
     Param,
     ParseIntPipe,
     Delete,
   } from '@nestjs/common';
   import { CreateChatParticipantDto } from './dto/create-chat_participant.dto';
+  import { UpdateChatParticipantDto } from './dto/update-chat_participant.dto'
   import { ChatParticipantsService } from './chat_participants.service';
   
   @Controller('chatParticipants')
@@ -129,6 +131,12 @@ import {
                 message: error.message,
             };
         }
+    }
+
+    @Put(':chatRoomId/update/:id')
+    async updateParticipant(@Param('chatRoomId') chatRoomId: number, @Param('id') id: number, @Body() updateDto :  UpdateChatParticipantDto)
+    {
+        return await this.chatParticipantsService.update(chatRoomId, id, updateDto);
     }
   
     @Delete(':chatRoomId/delete/:id')   

@@ -68,6 +68,7 @@ export const PostChatRoom = ({ url, userId, role}) => {
     const [password, setPassword] = useState('');
     const [response, setResponse] = useState(null);
     const [type, setType] = useState("");
+    const [refetch, setRefetch] = useState<boolean>(false);
 
     const addOwnerToChatRoom = () => {
         
@@ -97,6 +98,7 @@ export const PostChatRoom = ({ url, userId, role}) => {
         setName('');
         setPassword('');
         addOwnerToChatRoom();
+        setRefetch(true);
     };
 
     return (
