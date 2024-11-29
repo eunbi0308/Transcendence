@@ -6,6 +6,8 @@ interface User {
     avatar: string;
     email: string;
     enable_two_factor: boolean;
+    ladder_level: number;
+    user_status: string;
 }
 
 export default function Profile() {
@@ -38,7 +40,9 @@ export default function Profile() {
                 nickname: data.nickname, 
                 avatar: data.avatar, 
                 email: data.email, 
-                enable_two_factor: data.enable_two_factor 
+                enable_two_factor: data.enable_two_factor,
+                ladder_level: data.ladder_level,
+                user_status: data.user_status,
             });
 			console.log('User id:', id); // Log the entire user object
             console.log('User data:', data); // Log the entire user object
@@ -61,11 +65,13 @@ export default function Profile() {
     return (
         <div>
             <h1>Profile</h1>
+        <p>Status: {user.user_status}</p>
             <div>
                 <img src={ `data:image/jpeg;base64, ${user.avatar}` } alt="User Avatar" style={{ width: '100px', height: '140px', borderRadius: '10%' }} />
             </div>
             <div>
                 <h2>{user.nickname || 'undefined'}</h2>
+                <h3>Level: {user.ladder_level}</h3>
             </div>
             <div>
                 <p>Email: {user.email || 'undefined'}</p>
