@@ -4,6 +4,8 @@ import { useParams } from "react-router-dom";
 interface User {
     nickname: string;
     avatar: string;
+    email: string;
+    enable_two_factor: boolean;
 }
 
 export default function Profile() {
@@ -32,7 +34,12 @@ export default function Profile() {
             return response.json();
         })
         .then(data => {
-            setUser({ nickname: data.nickname, avatar: data.avatar });
+            setUser({ 
+                nickname: data.nickname, 
+                avatar: data.avatar, 
+                email: data.email, 
+                enable_two_factor: data.enable_two_factor 
+            });
 			console.log('User id:', id); // Log the entire user object
             console.log('User data:', data); // Log the entire user object
             console.log('User avatar:', data.avatar); // Log the user avatar value
@@ -59,6 +66,10 @@ export default function Profile() {
             </div>
             <div>
                 <h2>{user.nickname || 'undefined'}</h2>
+            </div>
+            <div>
+                <p>Email: {user.email || 'undefined'}</p>
+                <p>Two factor Authentication: {user.enable_two_factor ? 'Enabled' : 'Disabled'}</p>
             </div>
         </div>
     );
