@@ -10,7 +10,9 @@ import {
     HttpException,
 	NotFoundException,
 	InternalServerErrorException,
-    Req
+    Req,
+    UseInterceptors,
+    UploadedFile
   } from '@nestjs/common';
   import { Request } from 'express';
   import { CreateUserDto } from './dto/create-user.dto';
@@ -19,6 +21,7 @@ import {
   import { UsersService } from './users.service';
   import Cookies from 'universal-cookie';
   import { JwtService } from '@nestjs/jwt';
+import { FileInterceptor } from '@nestjs/platform-express';
   
   @Controller('users')
   export class UsersController {
@@ -86,7 +89,8 @@ import {
     }
 
     @Patch('me')
-    async update(@Body() updateUserDto: UpdateUserDto, @Req() req: Request) 
+    @UseInterceptors(FileInterceptor('avatar'))
+    async update(@UploadedFile() avatar, @Body() updateUserDto: UpdateUserDto, @Req() req: Request) 
     {
         const token = req.signedCookies['jwt'];
         // console.log(token);
@@ -106,11 +110,13 @@ import {
 
         try {
             const userId = await this.usersService.getUserIdFromCookie(token);
-
             console.log("user id: " + userId);
             await this.usersService.update(
                 userId,
-                updateUserDto,
+                {
+                    ...updateUserDto,
+                    avatar: avatar.buffer,
+                }
             );
             return {
                 success: true,

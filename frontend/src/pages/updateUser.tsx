@@ -7,23 +7,32 @@ export default function UpdateUser() {
     const [enabledTwoFactor, setEnabledTwoFactor] = React.useState(false);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
-    function updateUser(formData: FormData) {
+    async function updateUser(formData: FormData) {
         const nickname = formData.get("nickname");
 
         if (!selectedFile)
-            console.error("No file selected");
-        
+            alert("No file selected");
+        if (!nickname)
+            alert("No nickname entered");
+
+        var fd = new FormData();
+        fd.append("avatar", selectedFile);
+        fd.append("enable_two_factor", enabledTwoFactor.toString());
+        fd.append("nickname", nickname);
+
         fetch(`https://localhost:3000/users/me`, {
             method: 'PATCH',
             credentials: 'include',
+            body: fd,
+            /*
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({ 
                 nickname: nickname,
                 enable_two_factor: enabledTwoFactor,
-                // avatar: selectedFile,
-            }),
+                avatar: await fileToBase64(selectedFile),
+            }),*/
         }).then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
