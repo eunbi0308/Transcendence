@@ -26,7 +26,7 @@ export class FortyTwoStrategy extends PassportStrategy(Strategy, 'ft') {
             callbackURL: fortyTwoConfiguration.callbackURL,
         });
 
-		console.log("Exists: " + fs.existsSync(path.join(__dirname, '../../../img/cute_dog.jpeg')));
+		// console.log("Exists: " + fs.existsSync(path.join(__dirname, '../../../img/cute_dog.jpeg')));
 		this.defaultAvatar = fs.readFileSync(path.join(__dirname, '../../../img/cute_dog.jpeg'));
     }
 
