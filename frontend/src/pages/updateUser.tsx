@@ -24,15 +24,6 @@ export default function UpdateUser() {
             method: 'PATCH',
             credentials: 'include',
             body: fd,
-            /*
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ 
-                nickname: nickname,
-                enable_two_factor: enabledTwoFactor,
-                avatar: await fileToBase64(selectedFile),
-            }),*/
         }).then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -47,20 +38,20 @@ export default function UpdateUser() {
 
     return (
         <form onSubmit={(e) => { e.preventDefault(); updateUser(new FormData(e.target as HTMLFormElement)); }}>
+            <h1>Update user profile</h1>
             <div>Update Nickname</div>
-            <input name="nickname" />
-            <br />
+            <input name="nickname" /><br />
             <div>
+            <br />
                 <label>
                     <input type="checkbox" checked={enabledTwoFactor} onChange={(e) => setEnabledTwoFactor(e.target.checked)} />
                     Enable Two Factor Authentication
                 </label>
-            </div>
-            <br />
+            </div><br />
             <div>
-                <label htmlFor="avatar">Upload Avatar</label>
+                <label htmlFor="avatar">Upload Avatar</label><br />
                 <input type="file" id="avatar" name="avatar" onChange={(e) => setSelectedFile(e.target.files ? e.target.files[0] : null)} />
-            </div>
+            </div><br />
             <button type="submit">Update</button>
         </form>
         
