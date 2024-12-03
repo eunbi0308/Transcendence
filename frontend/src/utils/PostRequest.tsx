@@ -11,7 +11,7 @@ export enum chat_participant_roles {
 export const PostUser = ({url, userId}) => {
     const [name, setName] = useState('');
     const [mail, setMail] = useState('');
-    const [response, setResponse] = useState(null);
+    const [response, setResponse] = useState<{ data?: any; error?: any } | null>(null);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -24,7 +24,15 @@ export const PostUser = ({url, userId}) => {
         }
         catch (error) {
             console.error('Error:', error);
-            setResponse({ error: error.response ? error.response.data : 'Failed to send message' });
+            if (axios.isAxiosError(error)) {
+                setResponse({ error: error.response ? error.response.data : 'Failed to send message' });
+            } else {
+                setResponse({ error: 'Failed to send message' });
+            }            if (axios.isAxiosError(error)) {
+                setResponse({ error: error.response ? error.response.data : 'Failed to send message' });
+            } else {
+                setResponse({ error: 'Failed to send message' });
+            }
         }
         setName('');
         setMail('');
@@ -66,7 +74,7 @@ export const PostUser = ({url, userId}) => {
 export const PostChatRoom = ({ url, userId, role}) => {
     const [name, setName] = useState('');
     const [password, setPassword] = useState('');
-    const [response, setResponse] = useState(null);
+    const [response, setResponse] = useState<{ data?: any; error?: any } | null>(null);
     const [type, setType] = useState("");
     const [refetch, setRefetch] = useState<boolean>(false);
 
@@ -91,7 +99,11 @@ export const PostChatRoom = ({ url, userId, role}) => {
             setResponse(res.data);
         } catch (error) {
             console.error('Error:', error);
-            setResponse({ error: error.response ? error.response.data : 'Failed to send message' });
+            if (axios.isAxiosError(error)) {
+                setResponse({ error: error.response ? error.response.data : 'Failed to send message' });
+            } else {
+                setResponse({ error: 'Failed to send message' });
+            }
         }
 
         // Clear the inputs after submission
@@ -184,7 +196,11 @@ export const handleSubmitMessages = async (url, message, userId, chatRoomId) => 
         return res.data;
     } catch (error) {
         console.error('Error:', error);
-        return { error: error.response ? error.response.data : 'Failed to send message' };
+        if (axios.isAxiosError(error)) {
+            return { error: error.response ? error.response.data : 'Failed to send message' };
+        } else {
+            return { error: 'Failed to send message' };
+        }
     }
 };
 
@@ -235,6 +251,6 @@ export const handleSubmitParticipant = async (url, userId, chatRoomId) => {
         return res.data;
     } catch (error) {
         console.error('Error:', error);
-        return { error: error.response ? error.response.data : 'Failed to send message' };
+        return { error: error, message: 'Failed to send message' };
     }
 };

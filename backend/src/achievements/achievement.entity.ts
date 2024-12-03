@@ -9,7 +9,7 @@ export class Achievement {
   @PrimaryColumn()
   user_id: number;
 
-  @ManyToOne((type) => User, (user) => user.achievements)
+  @ManyToOne(() => User, (user) => user.achievements)
   @JoinColumn({ name: 'user_id' })
   user: User;
 }

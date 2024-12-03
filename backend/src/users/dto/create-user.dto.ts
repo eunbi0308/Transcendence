@@ -25,10 +25,10 @@ export class CreateUserDto extends PartialType(User)  {
     @IsNumber()
     second_auth_code: number;
   
-    @ApiProperty({ description: 'Second authentication email' })
+    @ApiProperty({ description: 'email address' })
     @IsNotEmpty()
     @IsEmail()
-    second_auth_email: string;
+    email: string;
   
     @ApiProperty({ description: 'Ladder level' })
     @IsOptional()
