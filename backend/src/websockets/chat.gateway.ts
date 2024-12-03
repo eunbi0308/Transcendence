@@ -11,7 +11,7 @@ import { Server } from 'socket.io';
 @WebSocketGateway({
   cors: {
     origin: '*',
-    methods: ['GET', 'POST'],
+    methods: ['GET', 'POST', 'OPTIONS', 'FETCH'],
   },
 })
 export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {

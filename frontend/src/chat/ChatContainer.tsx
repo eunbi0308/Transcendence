@@ -1,7 +1,7 @@
 import React from 'react';
 import '../css/ChatBox.css';
 import { useFetchRequest} from '../utils/FetchRequest.tsx';
-import { Chat } from './Chat.tsx';
+import { ChatBox } from './ChatBox.tsx';
 import io from 'socket.io-client';
 
 const ChatContainer = ({ chatRoomId, userId }) => {
@@ -14,7 +14,7 @@ const ChatContainer = ({ chatRoomId, userId }) => {
     return (
         <div className='chatBox'>
             <div className='chatContainer'>
-                <Chat socket={socket} chatRoomId={chatRoomId} userId={userId}/>
+                <ChatBox socket={socket} chatRoomId={chatRoomId} userId={userId}/>
             </div>
         </div>
 

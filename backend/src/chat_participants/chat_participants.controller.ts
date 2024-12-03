@@ -65,7 +65,7 @@ import {
             };
         }
     }
-  
+
     @Get(':id')
     async findOne(@Param('id') id: string) {
         try {

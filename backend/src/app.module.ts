@@ -1,4 +1,3 @@
-
 import { Module } from '@nestjs/common';
 import { AppService } from './app.service';
 import { AppController } from './app.controller';
@@ -6,28 +5,36 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './users/users.module';
 import { AchievementsModule } from './achievements/achievements.module';
 import { ChatMessagesModule } from './chat_messages/chat_messages.module';
-import { Controller } from '@nestjs/common';
 import { BlockedsModule } from './blockeds/blockeds.module';
 import { ChatParticipantsModule } from './chat_participants/chat_participants.module';
 import { ChatRoomsModule } from './chat_rooms/chat_rooms.module';
 import { FriendsModule } from './friends/friends.module';
 import { GamesModule } from './games/games.module';
+import { AuthModule } from './auth/auth.module';
+import { PassportModule } from '@nestjs/passport';
+import { ConfigModule } from './auth/config/config.module';
+import { ConfigService } from './auth/config/config.service';
+import { QueueModule } from './queue/queue.module';
 import { ChatModule } from './websockets/chat.module';
 
 @Module({
   imports: [
+    PassportModule.register({
+      session: false,
+    }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'postgres',
       port: 5432,
-      username: 'user',
-      password: 'user123',
-      database: 'postgres',
+      username: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_DATABASE_NAME,
       entities: [],
       autoLoadEntities: true,
       synchronize: true,
       logging: true,
     }),
+    ConfigModule,
     ChatModule,
     UsersModule,
     AchievementsModule,
@@ -36,7 +43,9 @@ import { ChatModule } from './websockets/chat.module';
     ChatParticipantsModule,
     ChatRoomsModule,
     FriendsModule,
-    GamesModule
+    GamesModule,
+    QueueModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

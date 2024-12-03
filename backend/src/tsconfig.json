@@ -12,7 +12,10 @@
       "outDir": "./dist",
       "baseUrl": "./",
       "incremental": true,
-      "skipLibCheck": true
+      "skipLibCheck": true,
+      "paths": {
+        "request": ["node_modules/request"]
+      }
     },
     "include": ["**/*"]
 }

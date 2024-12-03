@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import {Entity, Column, OneToMany, PrimaryColumn} from 'typeorm';
 import { Achievement } from '../achievements/achievement.entity';
 import { ChatMessage } from '../chat_messages/chat_message.entity';
 import { Friend } from '../friends/friend.entity';
@@ -16,14 +16,14 @@ export enum user_status {
 
 @Entity('USER')
 export class User {
-  @PrimaryGeneratedColumn()
+  @PrimaryColumn()
   id: number;
 
   @Column({ type: "bytea", nullable: true })
   @IsOptional()
   avatar: Buffer;
 
-  @Column({ nullable: false })
+  @Column({ nullable: true })
   nickname: string;
 
   @Column({ default: false })
@@ -33,7 +33,7 @@ export class User {
   second_auth_code: number;
 
   @Column({ nullable: false, })
-  second_auth_email: string;
+  email: string;
 
   @Column({
 			type: "int",

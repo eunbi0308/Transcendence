@@ -66,7 +66,7 @@ BEGIN;
 --     avatar bytea NOT NULL,
 --     is_second_auth_done boolean NOT NULL DEFAULT false,
 --     second_auth_code smallint,
---     second_auth_email character varying COLLATE pg_catalog."default",
+--     email character varying COLLATE pg_catalog."default",
 --     ladder_level integer NOT NULL DEFAULT 0,
 --     user_status user_status NOT NULL DEFAULT 'offline'::user_status,
 --     user_id serial NOT NULL,
