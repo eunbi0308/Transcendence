@@ -1,6 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import styled from "styled-components";
+import TwoFactorAuth from "./TwoFactorAuth";
 
 const Login = () => {
     return (
