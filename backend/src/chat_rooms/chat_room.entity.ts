@@ -5,7 +5,8 @@ import { ChatParticipant } from '../chat_participants/chat_participant.entity';
 export enum chat_room_types {
 	Public = "public",
 	Protected = "protected",
-	Private = "private"
+	Private = "private",
+  Dm = "Dm"
 }
 
 @Entity('CHAT_ROOM')
@@ -29,7 +30,6 @@ export class ChatRoom {
   })
   chat_room_type: chat_room_types;
 
-  // Relationships
   @OneToMany(() => ChatMessage, chatMessage => chatMessage.chatRoom)
   chatMessages: ChatMessage[];
 

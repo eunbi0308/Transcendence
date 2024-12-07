@@ -7,15 +7,23 @@ import {
     Param,
     ParseIntPipe,
     Delete,
+    HttpException,
+    Req
   } from '@nestjs/common';
+  import { Request } from 'express';
   import { CreateUserDto } from './dto/create-user.dto';
   import { UpdateUserDto } from './dto/update-user.dto';
   import { User } from './user.entity';
   import { UsersService } from './users.service';
+  import Cookies from 'universal-cookie';
+  import { JwtService } from '@nestjs/jwt';
   
   @Controller('users')
   export class UsersController {
-    constructor(private readonly usersService: UsersService) {}
+    constructor(
+        private readonly usersService: UsersService,
+        private readonly jwtService: JwtService,
+    ) {}
   
     @Post()
     async create(
@@ -75,14 +83,31 @@ import {
         }
     }
 
-    @Patch(':id')
-    async update(
-        @Param('id') id: string,
-        @Body() updateUserDto: UpdateUserDto,
-    ) {
+    @Patch('me')
+    async update(@Body() updateUserDto: UpdateUserDto, @Req() req: Request) 
+    {
+        const token = req.signedCookies['jwt'];
+        // console.log(token);
+        // if (!token) {
+        //     throw new HttpException('No JWT token found', 401);
+        // }
+
+        // const decodedToken = this.jwtService.decode(token);
+        // if (!decodedToken || typeof decodedToken !== 'object') {
+        //     throw new HttpException('Invalid JWT token', 401);
+        // }
+
+        // const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
+        // if (decodedToken.exp < currentTime) {
+        // throw new HttpException('JWT token has expired', 401);
+        // }
+
         try {
+            const userId = await this.usersService.getUserIdFromCookie(token);
+
+            console.log("user id: " + userId);
             await this.usersService.update(
-                +id,
+                userId,
                 updateUserDto,
             );
             return {
@@ -112,4 +137,4 @@ import {
             };
         }
     }
-  }
+}

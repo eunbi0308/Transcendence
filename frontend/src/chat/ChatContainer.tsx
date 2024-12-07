@@ -1,7 +1,7 @@
 import React from 'react';
 import '../css/ChatBox.css';
-import { useFetchRequest} from '../utils/FetchRequest';
-import { Chat } from './Chat';
+import { useFetchRequest} from '../utils/FetchRequest.tsx';
+import { ChatBox } from './ChatBox.tsx';
 import io from 'socket.io-client';
 
 const ChatContainer = ({ chatRoomId, userId }) => {
@@ -11,12 +11,11 @@ const ChatContainer = ({ chatRoomId, userId }) => {
         // reconnectionDelay: 1000,
         transports: ['websocket'], // Force WebSocket transport
       });
-      console.log('werkt in container');
     return (
         <div className='chatBox'>
-        <div className='chatContainer'>
-            <Chat socket={socket} userId={userId} id={chatRoomId}/>
-        </div>
+            <div className='chatContainer'>
+                <ChatBox socket={socket} chatRoomId={chatRoomId} userId={userId}/>
+            </div>
         </div>
 
     );
