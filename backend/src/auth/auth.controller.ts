@@ -34,7 +34,7 @@ export class AuthController {
               // req.res.redirect('http://localhost:3001/two-factor');
         }
         const token = await this.usersService.signToken(req.user['id']);
-        req.res.cookie('jwt', token, {path: '/', httpOnly: true, signed: true});
+        req.res.cookie('jwt', token, { httpOnly: true, signed: true});
         if (req.user['nickname'] == null || req.user['nickname'].length == 0)
         { 
             req.res.redirect(`http://localhost:3001/update`);

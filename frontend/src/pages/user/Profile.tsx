@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useFetchRequest } from "../../utils/FetchRequest";
+import axios from 'axios';
 
 interface User {
     nickname: string;
@@ -24,18 +26,14 @@ export default function Profile() {
             return;
         }
         // Fetch user data from the back/end
-        fetch(`https://localhost:3000/users/${userIdNumber}`, {
+        axios({
+            url: `https://localhost:3000/users/${userIdNumber}`,
             method: 'GET',
-            credentials: 'include',
+            withCredentials: true,
         })
-        .then(response => {
-            if (!response.ok) {
-				console.log('Response:', response);
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
+        .then(({
+            data
+        }) => {
             setUser({ 
                 nickname: data.nickname, 
                 avatar: data.avatar, 
@@ -80,3 +78,4 @@ export default function Profile() {
         </div>
     );
 }
+
