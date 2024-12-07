@@ -4,36 +4,22 @@ import axios from "axios";
 import { useState } from "react";
 
 export default function UpdateUser() {
-    const [enabledTwoFactor, setEnabledTwoFactor] = React.useState(false);
-    const [selectedFile, setSelectedFile] = useState<File | null>(null);
-
     async function updateUser(formData: FormData) {
         const nickname = formData.get("nickname");
-
-        if (!selectedFile)
-            alert("No file selected");
-        if (!nickname)
-            alert("No nickname entered");
-
-        var fd = new FormData();
-        fd.append("avatar", selectedFile);
-        fd.append("enable_two_factor", enabledTwoFactor.toString());
-        fd.append("nickname", nickname);
-
-        fetch(`https://localhost:3000/users/me`, {
-            method: 'PATCH',
-            credentials: 'include',
-            body: fd,
-        }).then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        }).then(data => {
-            console.log('User updated successfully:', data);
-        }).catch(error => {
+        
+        try {
+            const response = await axios(
+                {
+                    method: 'patch',
+                    url: 'https://localhost:3000/users/me',
+                    data: { nickname },
+                }
+            )
+            console.log('User updated successfully:', response.data);
+        } catch (error) {
             console.error('Failed to update user:', error);
-        });
+        }
+
     }
 
     return (

@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "target": "es5",
+    "allowImportingTsExtensions": true,
     "lib": [
       "dom",
       "dom.iterable",

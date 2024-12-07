@@ -56,20 +56,57 @@ export class ChatParticipantsService {
         return userData;
   }
 
-  async update(id: number, updateChatParticipantDto: UpdateChatParticipantDto,): Promise<ChatParticipant> {
-    const existingChatParticipant = await this.findByUserId(id);
-    const chatParticipantData = this.chatParticipantsRepository.merge(
-        existingChatParticipant,
-        updateChatParticipantDto,
-    );
-    return await this.chatParticipantsRepository.save(
-        chatParticipantData,
-    );
-  }
 
-  async remove(chat_room_id: number): Promise<ChatParticipant[]> {
-    const existingChatParticipant = await this.findByChatRoomId( chat_room_id );
-    return await this.chatParticipantsRepository.remove(existingChatParticipant,);
+
+  async findByUserIdAndChatRoom(chatRoomId: number, userId: number): Promise<ChatParticipant> {
+    const participant = await this.chatParticipantsRepository.findOne({
+        where: {
+            user: { id: userId },
+            chatRoom: { id: chatRoomId },
+        },
+        relations: ['user', 'chatRoom'],
+    });
+
+    if (!participant) {
+        throw new HttpException('ChatParticipant Not Found', 404);
+    }
+    return participant;
+}
+
+// async findByUserId(chatRoomId: number, userId: number): Promise<ChatParticipant> {
+//   const participant = await this.chatParticipantsRepository.findOne({
+//       where: {
+//           user: { id: userId },
+//           chatRoom: { id: chatRoomId },
+//       },
+//       relations: ['user', 'chatRoom'],
+//   });
+
+//   if (!participant) {
+//       throw new HttpException('ChatParticipant Not Found', 404);
+//   }
+//   return participant;
+// }
+
+async update(
+  chatRoomId: number,
+  id: number,
+  updateDto: UpdateChatParticipantDto,
+): Promise<ChatParticipant> {
+  const existingChatParticipant = await this.findByUserIdAndChatRoom(chatRoomId, id);
+
+  // Directly update the properties of the found entity
+  Object.assign(existingChatParticipant, updateDto);
+
+  // Save the updated entity
+  return await this.chatParticipantsRepository.save(existingChatParticipant);
+}
+
+  async remove(chat_room_id: number, user_id: number): Promise<ChatParticipant[]> {
+    const existingChatParticipants = await this.chatParticipantsRepository.find({
+      where: { chat_room_id, user_id },
+    });
+    return await this.chatParticipantsRepository.remove(existingChatParticipants,);
   }
 
   async addParticipantToChatRoom(chatRoomId: number, userId: number) {

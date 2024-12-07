@@ -15,7 +15,7 @@ export class ChatParticipant {
     enum: chat_participant_roles,
     default: 'guest',
   })
-  chat_pariticipant_role: chat_participant_roles
+  chat_participant_role: chat_participant_roles
 
   @Column({ default: false, })
   is_banned: boolean;

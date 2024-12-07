@@ -3,12 +3,14 @@ import {
     Get,
     Post,
     Body,
+    Put,
     Patch,
     Param,
     ParseIntPipe,
     Delete,
   } from '@nestjs/common';
   import { CreateChatParticipantDto } from './dto/create-chat_participant.dto';
+  import { UpdateChatParticipantDto } from './dto/update-chat_participant.dto'
   import { ChatParticipantsService } from './chat_participants.service';
   
   @Controller('chatParticipants')
@@ -82,11 +84,70 @@ import {
             };
         }
     }
-  
-    @Delete(':id')
-    async remove(@Param('id') id: string) {
+
+    @Get(':chatRoomId/find/:userId')
+    async findParticipantChatRoomUserId(
+        @Param('chatRoomId') chatRoomId: number,
+        @Param('userId') userId: number,
+        @Body() body: { user_id: number, chat_room_id: number },
+      )
+    {
         try {
-            await this.chatParticipantsService.remove(+id);
+            const data = await this.chatParticipantsService.findByUserIdAndChatRoom(
+                +chatRoomId,
+                +userId,
+            );
+            return {
+                success: true,
+                data,
+                message: 'ChatParticipant Fetched Successfully',
+            };
+        } catch (error) {
+            return {
+                success: false,
+                message: error.message,
+            };
+        }
+    }
+
+    @Get(':chatRoomId/find')
+    async findParticipantByChatRoom(
+        @Param('chatRoomId') chatRoomId: number,
+        @Body() body: { user_id: number, chat_room_id: number },
+      )
+    {
+        try {
+            const data = await this.chatParticipantsService.findByChatRoomId(
+                +chatRoomId,
+            );
+            return {
+                success: true,
+                data,
+                message: 'ChatParticipant Fetched Successfully',
+            };
+        } catch (error) {
+            return {
+                success: false,
+                message: error.message,
+            };
+        }
+    }
+
+    @Put(':chatRoomId/update/:id')
+    async updateParticipant(@Param('chatRoomId') chatRoomId: number, @Param('id') id: number, @Body() updateDto :  UpdateChatParticipantDto)
+    {
+        return await this.chatParticipantsService.update(chatRoomId, id, updateDto);
+    }
+  
+    @Delete(':chatRoomId/delete/:id')   
+    async remove(@Param('id') userId: string
+    ,@Param('chatRoomId') chatRoomId: string
+) {
+        try {
+            await this.chatParticipantsService.remove(
+                +chatRoomId,
+                +userId
+            );
             return {
                 success: true,
                 message: 'ChatParticipant Deleted Successfully',
