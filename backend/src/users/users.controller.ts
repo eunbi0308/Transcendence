@@ -8,7 +8,11 @@ import {
     ParseIntPipe,
     Delete,
     HttpException,
-    Req
+	NotFoundException,
+	InternalServerErrorException,
+    Req,
+    UseInterceptors,
+    UploadedFile
   } from '@nestjs/common';
   import { Request } from 'express';
   import { CreateUserDto } from './dto/create-user.dto';
@@ -17,6 +21,7 @@ import {
   import { UsersService } from './users.service';
   import Cookies from 'universal-cookie';
   import { JwtService } from '@nestjs/jwt';
+import { FileInterceptor } from '@nestjs/platform-express';
   
   @Controller('users')
   export class UsersController {
@@ -65,26 +70,27 @@ import {
     }
   
     @Get(':id')
-    async findOne(@Param('id') id: string) {
+    async findOne(@Param('id') id: number) {
         try {
             const data = await this.usersService.findOne(
                 +id,
             );
+			if (data === undefined) {
+				throw new NotFoundException('User not found');
+			}
+
             return {
-                success: true,
-                data,
-                message: 'User Fetched Successfully',
-            };
+				...data, //uppack data
+				avatar: data.avatar.toString('base64'), //override avatar with base64 encoded string instead of buffer
+			}
         } catch (error) {
-            return {
-                success: false,
-                message: error.message,
-            };
+			throw new InternalServerErrorException(error.message);
         }
     }
 
     @Patch('me')
-    async update(@Body() updateUserDto: UpdateUserDto, @Req() req: Request) 
+    @UseInterceptors(FileInterceptor('avatar'))
+    async update(@UploadedFile() avatar, @Body() updateUserDto: UpdateUserDto, @Req() req: Request) 
     {
         const token = req.signedCookies['jwt'];
         // console.log(token);
@@ -102,19 +108,27 @@ import {
         // throw new HttpException('JWT token has expired', 401);
         // }
 
+        console.log("updateUserDto: ", updateUserDto);
+
+        const enableTwoFactor = updateUserDto.enable_two_factor;
+
         try {
             const userId = await this.usersService.getUserIdFromCookie(token);
-
             console.log("user id: " + userId);
             await this.usersService.update(
                 userId,
-                updateUserDto,
+                {
+                    ...updateUserDto,
+                    avatar: avatar.buffer,
+                    enable_two_factor: enableTwoFactor,
+                }
             );
             return {
                 success: true,
                 message: 'User Updated Successfully',
             };
         } catch (error) {
+            console.log(error);
             return {
                 success: false,
                 message: error.message,

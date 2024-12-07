@@ -2,6 +2,7 @@
   "name": "transcendence",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:3000",
   "dependencies": {
     "@emotion/react": "^11.13.5",
     "@emotion/styled": "^11.13.5",
@@ -13,6 +14,7 @@
     "@types/jest": "^27.5.2",
     "@types/node": "^16.18.114",
     "@types/react-dom": "^18.3.1",
+    "@types/react-router-dom": "^5.3.3",
     "@types/styled-components": "^5.1.34",
     "axios": "^1.7.7",
     "formik": "^2.4.6",
