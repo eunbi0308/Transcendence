@@ -107,7 +107,10 @@ import { FileInterceptor } from '@nestjs/platform-express';
         // if (decodedToken.exp < currentTime) {
         // throw new HttpException('JWT token has expired', 401);
         // }
-        const enableTwoFactor = updateUserDto.enable_two_factor.toString() === 'true';
+
+        console.log("updateUserDto: ", updateUserDto);
+
+        const enableTwoFactor = updateUserDto.enable_two_factor;
 
         try {
             const userId = await this.usersService.getUserIdFromCookie(token);
@@ -125,6 +128,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
                 message: 'User Updated Successfully',
             };
         } catch (error) {
+            console.log(error);
             return {
                 success: false,
                 message: error.message,

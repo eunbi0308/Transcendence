@@ -29,9 +29,15 @@ const httpsOptions = {
 };
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, {httpsOptions, cors: true});
+  const app = await NestFactory.create(AppModule, {httpsOptions});
   app.use(cookieParser(jwtConfig().secret.toString()));
-
+  app.enableCors({
+    origin: [
+      process.env.FRONTEND_ORIGIN || 'http://localhost:3001',
+    ], // Replace with your frontend origin for production
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    credentials: true,
+  });
   await app.listen(3000);
 }
 bootstrap();

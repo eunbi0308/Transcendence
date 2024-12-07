@@ -1,18 +1,38 @@
-import React from "react";
+import React, { useCallback } from "react";
 import ReactDOM from "react-dom";
 import axios from "axios";
 import { useState } from "react";
 
 export default function UpdateUser() {
-    async function updateUser(formData: FormData) {
+    const [enabledTwoFactor, setEnabledTwoFactor] = React.useState(false);
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
+    
+    const updateUser = useCallback(async (formData: FormData) => {
         const nickname = formData.get("nickname");
+
+        if (!nickname)
+        {
+            alert("Please enter a nickname");
+            return;
+        }
+        if (!selectedFile)
+        {
+            alert("Please select an avatar");
+            return;
+        }
+
+        var data = new FormData();
+        data.append("nickname", nickname);
+        data.append("enabledTwoFactor", `${enabledTwoFactor}`);
+        data.append("avatar", selectedFile);
         
         try {
             const response = await axios(
                 {
                     method: 'patch',
                     url: 'https://localhost:3000/users/me',
-                    data: { nickname },
+                    data: data,
+                    withCredentials: true,
                 }
             )
             console.log('User updated successfully:', response.data);
@@ -20,7 +40,7 @@ export default function UpdateUser() {
             console.error('Failed to update user:', error);
         }
 
-    }
+    }, [enabledTwoFactor, selectedFile]);
 
     return (
         <form onSubmit={(e) => { e.preventDefault(); updateUser(new FormData(e.target as HTMLFormElement)); }}>
