@@ -3,15 +3,17 @@ import logo from './logo.svg';
 import { Route, Routes } from 'react-router-dom';
 import Home from "./pages/Home";
 import Login from "./pages/login/index";
-import Register from "./pages/Register";
+import UpdateUser from "./pages/updateUser";
+import Profile from './pages/user/Profile';
 // import './App.css';
 
-export function App2() {
+function App2() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
+      <Route path="/update" element={<UpdateUser />} />
+      <Route path="/profile/:id" element={<Profile />} />
     </Routes>
   );
 }

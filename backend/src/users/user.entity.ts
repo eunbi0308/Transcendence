@@ -19,12 +19,15 @@ export class User {
   @PrimaryColumn()
   id: number;
 
-  @Column({ type: "bytea", nullable: true })
+  @Column({ type: "bytea", nullable: false })
   @IsOptional()
   avatar: Buffer;
 
   @Column({ nullable: true })
   nickname: string;
+
+  @Column({ default: false })
+  enable_two_factor: boolean;
 
   @Column({ default: false })
   is_second_auth_done: boolean;
