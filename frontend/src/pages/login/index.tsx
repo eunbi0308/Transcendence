@@ -2,21 +2,32 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import styled from "styled-components";
 import TwoFactorAuth from "./TwoFactorAuth";
+import Button from '@mui/joy/Button';
 
 const Login = () => {
     return (
-    // This is the login page. It will redirect to the 42 intra login page.
-    <Style>
-        <div>
+        // This is the login page. It will redirect to the 42 intra login page.
+        <Style>
             <h1>Transcendence</h1>
-            <div className="login_form">
-                <a href={'https://localhost:3000/auth/42/login'}>
-                    <span>Login with 42.intra</span>
-                </a>
-            </div>
-        </div>
-    </Style>
-  );
+            <Button
+                component="a"
+                variant="solid" 
+                sx={{ 
+                    color: '#5865F2', 
+                    backgroundColor: 'white',
+                    transition: '0.3s',
+                    '&:hover': {
+                        backgroundColor: 'white',
+                        transform: 'scale(1.1)',
+                    }
+                }}
+                href="https://localhost:3000/auth/42/login"
+                size="lg"
+            >
+                Login with 42.intra
+            </Button>
+        </Style>
+    );
 };
 
 const Style = styled.div`
