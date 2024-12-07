@@ -5,7 +5,7 @@ import { chat_participant_roles, ChatParticipant } from '../../chat_participants
 
 export class CreateChatParticipantDto extends PartialType(ChatParticipant) {
     @ApiProperty({ description: 'Chat participant role' })
-    @IsOptional()
+    // @IsOptional()
     @IsEnum(chat_participant_roles)
     chat_participant_role?: chat_participant_roles;
 

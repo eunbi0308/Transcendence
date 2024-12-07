@@ -55,6 +55,42 @@ import {
             };
         }
     }
+
+    @Get('noPrivate')
+    async findAllWithoutPrivate() {
+        try {
+            const data =
+                await this.usersService.findAllWithoutPrivate();
+            return {
+                success: true,
+                data,
+                message: 'ChatRoom Fetched Successfully',
+            };
+        } catch (error) {
+            return {
+                sucess: false,
+                message: error.message,
+            };
+        }
+    }
+
+    @Get('includeParticipant')
+    async findAllincludeParticipant() {
+        try {
+            const data =
+                await this.usersService.findAllincludeParticipant();
+            return {
+                success: true,
+                data,
+                message: 'ChatRoom Fetched Successfully',
+            };
+        } catch (error) {
+            return {
+                sucess: false,
+                message: error.message,
+            };
+        }
+    }
   
     @Get(':id')
     async findOne(@Param('id') id: string) {
