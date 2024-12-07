@@ -1,21 +1,19 @@
+import React from 'react';
 import logo from './logo.svg';
 import { Route, Routes } from 'react-router-dom';
 import Home from "./pages/Home";
 import Login from "./pages/login/index";
-import UpdateUser from "./pages/updateUser";
-import { Chat } from "./chat/Chat.jsx"
+import Register from "./pages/Register";
 // import './App.css';
 
-function App() {
+export function App2() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/update" element={<UpdateUser />} />
-      <Route path='/chat' element={<Chat />}/>
+      <Route path="/register" element={<Register />} />
     </Routes>
   );
 }
 
-export default App;
-
+export default App2;
