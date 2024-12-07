@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 
 interface fetchRequestResponse<T> {
     data: T | null;
@@ -7,17 +7,21 @@ interface fetchRequestResponse<T> {
     loading: boolean;
 }
 
-
-export const useFetchRequest= <T,>(url: string): fetchRequestResponse<T> => {
+export const useFetchRequest= <T,>(
+    url: string, 
+    method: AxiosRequestConfig['method'] = 'get'
+): fetchRequestResponse<T> => {
     const [data, setData] = useState<T | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
     useEffect(() => {
         const fetchData = async () => {
-            setLoading(true); // Set loading to true before fetching
+            setLoading(true);
             try {
-                const response = await axios.get(url);
-                // console.log(url + " Fetched data:", response.data);
+                const response = await axios({
+                    url,
+                    method
+                });
                 setData(response.data.data);
             } catch (err: any) {
                 setError(err.message);
