@@ -3,6 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import Home from "./pages/Home";
 import Login from "./pages/login/index";
 import UpdateUser from "./pages/updateUser";
+import Profile from './pages/user/Profile';
 import { Chat } from "./chat/Chat.jsx"
 // import './App.css';
 
@@ -13,6 +14,7 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/update" element={<UpdateUser />} />
       <Route path='/chat' element={<Chat />}/>
+      <Route path="/profile/:id" element={<Profile />} />
     </Routes>
   );
 }
