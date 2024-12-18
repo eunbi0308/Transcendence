@@ -22,6 +22,7 @@ import { AppModule } from './app.module';
 import * as fs from 'fs';
 import * as cookieParser from 'cookie-parser';
 import jwtConfig from './auth/config/jwt.config';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 const httpsOptions = {
   key: fs.readFileSync('./secrets/cert-key.pem'),
@@ -30,7 +31,21 @@ const httpsOptions = {
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {httpsOptions});
+
+  const config = new DocumentBuilder()
+    .setTitle('NestJS Auth')
+    .setDescription('The NestJS Auth API description')
+    .setVersion('1.0')
+    .addServer('https://localhost:3000')
+    .addTag('auth')
+    .build();
+
+  const document = SwaggerModule.createDocument(app, config);
+
+  fs.writeFileSync('./openapi.json', JSON.stringify(document));
+
   app.use(cookieParser(jwtConfig().secret.toString()));
+
   app.enableCors({
     origin: [
       process.env.FRONTEND_ORIGIN || 'http://localhost:3001',
@@ -38,6 +53,10 @@ async function bootstrap() {
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
   });
+
+  // Setup Swagger UI (Optional)
+  SwaggerModule.setup('api-docs', app, document);
+
   await app.listen(3000);
 }
 bootstrap();
