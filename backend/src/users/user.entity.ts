@@ -35,6 +35,9 @@ export class User {
   @Column({ type: "smallint", nullable: true })
   second_auth_code: number;
 
+  @Column({ nullable: true })
+  two_factor_auth_secret: string;
+
   @Column({ nullable: false, })
   email: string;
 

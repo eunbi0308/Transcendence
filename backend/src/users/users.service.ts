@@ -1,11 +1,11 @@
 import {HttpException, Inject, Injectable} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, UpdateResult } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './user.entity';
 import { JwtService } from '@nestjs/jwt';
-import JwtConfig from "../auth/config/jwt.config";
+import JwtConfig from "../config/jwt.config";
 import {ConfigType} from "@nestjs/config";
 
 @Injectable()
@@ -92,4 +92,23 @@ export class UsersService {
     return decodedToken.sub;
   }
 
+  async setTwoFactorAuthenticationSecret(secret: string, userId: number): Promise<UpdateResult> {
+    return this.usersRepository.update(userId, {
+      two_factor_auth_secret: secret,
+    });
+  }
+
+  async turnOnTwoFactorAuthentication(userId: number): Promise<UpdateResult> {
+    return await this.usersRepository.update(userId, {
+      enable_two_factor: true,
+    });
+  }
+
+  async turnOffTwoFactorAuthentication(userId: number): Promise<UpdateResult> {
+    return await this.usersRepository.update(userId, {
+      // 유저가 2fa 활성화 여부를 끄게 되면 시크릿값또한 null로 수정하여 준다.
+      two_factor_auth_secret: null,
+      enable_two_factor: false,
+    })
+  }
 }

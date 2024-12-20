@@ -21,14 +21,14 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as fs from 'fs';
 import * as cookieParser from 'cookie-parser';
-import jwtConfig from './auth/config/jwt.config';
+import jwtConfig from './config/jwt.config';
 
-const httpsOptions = {
-  key: fs.readFileSync('./secrets/cert-key.pem'),
-  cert: fs.readFileSync('./secrets/cert.pem'),
-};
 
 async function bootstrap() {
+  const httpsOptions = {
+    key: fs.readFileSync('./secrets/cert-key.pem'),
+    cert: fs.readFileSync('./secrets/cert.pem'),
+  };
   const app = await NestFactory.create(AppModule, {httpsOptions});
   app.use(cookieParser(jwtConfig().secret.toString()));
   app.enableCors({
